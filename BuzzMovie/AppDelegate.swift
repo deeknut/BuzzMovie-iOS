@@ -17,6 +17,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        UINavigationBar.appearance().barTintColor = StyleConstants.defaultGrayColor
+        UINavigationBar.appearance().tintColor = UIColor.whiteColor()
+        UINavigationBar.appearance().translucent = true
+        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor(), NSFontAttributeName: UIFont.systemFontOfSize(25, weight: UIFontWeightUltraLight)]
+        
+        UITabBar.appearance().barTintColor = StyleConstants.defaultGrayColor
+        UITabBar.appearance().tintColor = UIColor.whiteColor()
+        UITabBar.appearance().translucent = true
+        
+        UIToolbar.appearance().barTintColor = StyleConstants.defaultGrayColor
+        UIToolbar.appearance().tintColor = UIColor.whiteColor()
+        UIToolbar.appearance().translucent = true
+        
+//        UITableView.appearance()
+        UITableView.appearance().separatorStyle = UITableViewCellSeparatorStyle.None
+        UITableView.appearance().backgroundColor = UIColor.blackColor()
+//        UITableViewCell.appearance().backgroundColor = UIColor.blackColor()
+        
         return true
     }
 

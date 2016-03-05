@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="14F1509" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="MovieCell" rowHeight="144" id="EuN-Lz-bue" customClass="MovieTableViewCell" customModule="BuzzMovie" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="144"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="EuN-Lz-bue" id="c5n-KC-bh6">
+                <rect key="frame" x="0.0" y="0.0" width="342" height="144"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <visualEffectView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VRx-6G-rg4">
+                        <rect key="frame" x="0.0" y="1" width="0.0" height="0.0"/>
+                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" id="Mrj-cr-SGc">
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        </view>
+                        <blurEffect style="light"/>
+                    </visualEffectView>
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" bounces="NO" scrollEnabled="NO" minimumZoomScale="0.0" maximumZoomScale="0.0" text="Deftly blending comedy, adventure, and honest emotion, Toy Story 3 is a rare second sequel that really works. " translatesAutoresizingMaskIntoConstraints="NO" id="CZM-RQ-6Hn">
+                        <rect key="frame" x="102" y="37" width="240" height="70"/>
+                        <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="0.0"/>
+                        <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
+                        <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="10"/>
+                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                    </textView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="toystory3.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="bDk-DE-bdU">
+                        <rect key="frame" x="8" y="8" width="86" height="128"/>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="In Theaters: Jun 18, 2010" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sjl-Vm-f7k">
+                        <rect key="frame" x="102" y="101" width="191" height="21"/>
+                        <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="11"/>
+                        <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Toy Story 3" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="02r-0G-Hks">
+                        <rect key="frame" x="102" y="8" width="191" height="21"/>
+                        <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="19"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="8.9" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zaT-XN-ko9">
+                        <rect key="frame" x="296" y="8" width="46" height="21"/>
+                        <fontDescription key="fontDescription" type="system" weight="light" pointSize="24"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Fantasy/Comedy-Drama" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ohq-Cm-WcM">
+                        <rect key="frame" x="102" y="26" width="191" height="21"/>
+                        <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="13"/>
+                        <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="G" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LbI-by-7pz">
+                        <rect key="frame" x="296" y="113" width="46" height="21"/>
+                        <fontDescription key="fontDescription" type="system" weight="light" pointSize="21"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Runtime: 1 hr. 43 min." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0JQ-xK-bfW">
+                        <rect key="frame" x="102" y="115" width="191" height="21"/>
+                        <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="11"/>
+                        <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <color key="backgroundColor" red="0.1215686275" green="0.12941176469999999" blue="0.14117647059999999" alpha="1" colorSpace="calibratedRGB"/>
+                <constraints>
+                    <constraint firstItem="0JQ-xK-bfW" firstAttribute="leading" secondItem="c5n-KC-bh6" secondAttribute="leadingMargin" constant="94" id="0UR-KV-Op0"/>
+                    <constraint firstItem="CZM-RQ-6Hn" firstAttribute="leading" secondItem="c5n-KC-bh6" secondAttribute="leadingMargin" constant="94" id="TO7-ix-KNi"/>
+                    <constraint firstItem="ohq-Cm-WcM" firstAttribute="leading" secondItem="c5n-KC-bh6" secondAttribute="leadingMargin" constant="94" id="gLg-QX-165"/>
+                    <constraint firstItem="Sjl-Vm-f7k" firstAttribute="leading" secondItem="c5n-KC-bh6" secondAttribute="leadingMargin" constant="94" id="jVW-b8-ass"/>
+                    <constraint firstItem="zaT-XN-ko9" firstAttribute="leading" secondItem="02r-0G-Hks" secondAttribute="trailing" constant="3" id="jhe-FJ-5ha"/>
+                    <constraint firstItem="LbI-by-7pz" firstAttribute="leading" secondItem="0JQ-xK-bfW" secondAttribute="trailing" constant="3" id="pwW-Dd-7EK"/>
+                    <constraint firstItem="02r-0G-Hks" firstAttribute="leading" secondItem="c5n-KC-bh6" secondAttribute="leadingMargin" constant="94" id="pyU-fm-ssw"/>
+                    <constraint firstItem="LbI-by-7pz" firstAttribute="leading" secondItem="Sjl-Vm-f7k" secondAttribute="trailing" constant="3" id="sLm-Jj-Usg"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" red="0.1215686275" green="0.12941176469999999" blue="0.14117647059999999" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="LbI-by-7pz" secondAttribute="trailing" constant="33" id="IJ8-dV-vWJ"/>
+                <constraint firstAttribute="trailing" secondItem="ohq-Cm-WcM" secondAttribute="trailing" constant="82" id="heu-Gx-lfa"/>
+                <constraint firstAttribute="trailing" secondItem="CZM-RQ-6Hn" secondAttribute="trailing" constant="33" id="s8W-jR-qWf"/>
+                <constraint firstAttribute="trailing" secondItem="zaT-XN-ko9" secondAttribute="trailing" constant="33" id="yvh-sf-JaA"/>
+            </constraints>
+            <connections>
+                <outlet property="averageRatingLabel" destination="zaT-XN-ko9" id="Egr-Nr-Wgf"/>
+                <outlet property="consensusTextView" destination="CZM-RQ-6Hn" id="KIn-mo-tJp"/>
+                <outlet property="genreLabel" destination="ohq-Cm-WcM" id="GLo-Xv-fe0"/>
+                <outlet property="mpaaRatingLabel" destination="LbI-by-7pz" id="EtV-0y-wpQ"/>
+                <outlet property="posterImageView" destination="bDk-DE-bdU" id="6vR-8j-4ci"/>
+                <outlet property="runtimeLabel" destination="0JQ-xK-bfW" id="RcU-T6-Zr9"/>
+                <outlet property="theaterDateLabel" destination="Sjl-Vm-f7k" id="0Me-aT-s8g"/>
+                <outlet property="titleLabel" destination="02r-0G-Hks" id="tr9-F2-k9W"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="toystory3.jpg" width="733" height="1100"/>
+    </resources>
+</document>
