@@ -34,6 +34,8 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var containerViewWidth: NSLayoutConstraint!
     @IBOutlet weak var containerViewHeight: NSLayoutConstraint!
     
+    var uid: String!
+    
     var root = Firebase(url: "https://deeknutssquad.firebaseio.com/")
     
     
@@ -48,6 +50,9 @@ class LoginViewController: UIViewController {
                 //registerButton = back to login
                 registerButton.addTarget(nil, action: Selector("loginModeSwitch"), forControlEvents: .TouchUpInside)
                 registerButton.setAttributedTitle(NSAttributedString(string: "Back to Login"), forState: .Normal)
+                
+                //passwordKeyboard
+                passwordField.returnKeyType = .Next
             } else {
                 animateToLoginMode()
                 //loginRegisterButton = register
@@ -58,6 +63,8 @@ class LoginViewController: UIViewController {
                 registerButton.addTarget(nil, action: Selector("registerModeSwitch"), forControlEvents: .TouchUpInside)
                 registerButton.setAttributedTitle(NSAttributedString(string: "Register"), forState: .Normal)
                 
+                //passwordKeyboard
+                passwordField.returnKeyType = .Go
             }
         }
     }
@@ -125,13 +132,45 @@ class LoginViewController: UIViewController {
     }
     
     
-    @IBAction func didPressNext(sender: AnyObject) {
-        passwordField.becomeFirstResponder()
+    @IBAction func didPressNext(sender: UITextField) {
+        let fieldName = sender.placeholder!
+        switch fieldName {
+            case "Username":
+                passwordField.becomeFirstResponder()
+                break;
+            case "Password":
+                if (!registerMode) {
+                    login()
+                } else {
+                    retypePasswordField.becomeFirstResponder()
+                }
+                break;
+            case "Retype Password":
+                majorField.becomeFirstResponder()
+                break;
+            case "Major":
+                interestsField.becomeFirstResponder()
+                break;
+            case "Interests":
+                if (registerMode) {
+                    register()
+                }
+                break;
+            default:
+                break;
+        }
     }
     
-    @IBAction func didPressGo(sender: AnyObject) {
-        passwordField.resignFirstResponder()
-        login()
+    @IBAction func editingDidBegin(sender: UITextField) {
+        sender.textColor = StyleConstants.defaultBlueColor
+    }
+    
+    func resignAllResponders() {
+        self.usernameField.resignFirstResponder()
+        self.passwordField.resignFirstResponder()
+        self.retypePasswordField.resignFirstResponder()
+        self.majorField.resignFirstResponder()
+        self.interestsField.resignFirstResponder()
     }
     
     //===========================================================================
@@ -147,8 +186,8 @@ class LoginViewController: UIViewController {
     }
     
     func segueToUser() {
-//        self.performSegueWithIdentifier("UserSegue", sender: self)
-        loginFailed()
+        self.performSegueWithIdentifier("UserSegue", sender: self)
+//        loginFailed()
     }
     
     
@@ -161,9 +200,9 @@ class LoginViewController: UIViewController {
             shakeCenterX()
             return
         }
-        performSelector(Selector("segueToUser"), withObject: self, afterDelay: 1)
-        usernameField.resignFirstResponder()
-        passwordField.resignFirstResponder()
+        
+        resignAllResponders()
+        loggingInLabel.text = "Logging in..."
         UIView.animateWithDuration(0.5, animations: {
             self.titleLabel.alpha = 0
             self.usernameField.alpha = 0
@@ -173,6 +212,17 @@ class LoginViewController: UIViewController {
             self.stayLabel.alpha = 0
             self.loginRegisterButton.alpha = 0
             self.loggingInLabel.alpha = 1
+        })
+        //authentication
+        root.authUser(usernameField.text, password: passwordField.text, withCompletionBlock: {error, authData in
+            if error != nil {
+                self.loginFailed()
+            } else {
+                self.uid = authData.uid
+//                if (self.staySwitch.on) {
+//                }
+                self.performSelector(Selector("segueToUser"), withObject: self, afterDelay: 0)
+            }
         })
         
     }
@@ -200,7 +250,73 @@ class LoginViewController: UIViewController {
     }
     
     func register() {
+        if (usernameField.text == "") {
+            shakeCenterX()
+            usernameField.textColor = UIColor.redColor()
+            return
+        }
+        if (passwordField.text == ""){
+            shakeCenterX()
+            passwordField.textColor = UIColor.redColor()
+            return
+        }
+        if (passwordField.text != retypePasswordField.text) {
+            shakeCenterX()
+            //maybe do something about how password don't match
+            passwordField.textColor = UIColor.redColor()
+            retypePasswordField.textColor = UIColor.redColor()
+            return
+        }
+        resignAllResponders()
+        loggingInLabel.text = "Registering..."
+        UIView.animateWithDuration(0.5, animations: {
+            self.titleLabel.alpha = 0
+            self.usernameField.alpha = 0
+            self.passwordField.alpha = 0
+            self.staySwitch.alpha = 0
+            self.registerButton.alpha = 0
+            self.stayLabel.alpha = 0
+            self.loginRegisterButton.alpha = 0
+            self.retypePasswordField.alpha = 0
+            self.majorField.alpha = 0
+            self.interestsField.alpha = 0
+            self.loggingInLabel.alpha = 1
+        })
         
+        //creation
+        root.createUser(usernameField.text, password: passwordField.text,
+            withValueCompletionBlock: { error, result in
+                if error != nil {
+                    self.registerFailed()
+                    // There was an error creating the account
+                } else {
+                    let uid = result["uid"] as? String
+                    let initialValues = [
+                        "major":self.majorField.text,
+                        "interests":self.interestsField.text
+                    ] as? AnyObject
+                    self.root.childByAppendingPath("users").childByAppendingPath(uid).setValue(initialValues)
+                    self.loginModeSwitch()
+                    self.performSelector(Selector("login"), withObject: self, afterDelay: 1)
+                    print("Successfully created user account with uid: \(uid)")
+                }
+        })
+    }
+    func registerFailed() {
+        shakeCenterX()
+        UIView.animateWithDuration(0.5, animations: {
+            self.titleLabel.alpha = 1
+            self.usernameField.alpha = 1
+            self.passwordField.alpha = 1
+            self.staySwitch.alpha = 1
+            self.registerButton.alpha = 1
+            self.stayLabel.alpha = 1
+            self.loginRegisterButton.alpha = 1
+            self.retypePasswordField.alpha = 1
+            self.majorField.alpha = 1
+            self.interestsField.alpha = 1
+            self.loggingInLabel.alpha = 0
+        })
     }
     
     func loginModeSwitch() {
@@ -223,16 +339,8 @@ class LoginViewController: UIViewController {
         }
     }
     
-    func animateViewToCenter() {
-        
-    }
-    
-    func showLoginAnimation() {
-        
-    }
-    
     func animateToRegisterMode() {
-        UIView.animateWithDuration(1.5, delay: 0, usingSpringWithDamping: 0, initialSpringVelocity: 0, options: [], animations: {
+        UIView.animateWithDuration(0.5, delay: 0, options: [], animations: {
             self.retypePasswordField.alpha = 1
             self.majorField.alpha = 1
             self.interestsField.alpha = 1
@@ -242,7 +350,7 @@ class LoginViewController: UIViewController {
     }
 
     func animateToLoginMode() {
-        UIView.animateWithDuration(1.5, delay: 0, usingSpringWithDamping: 0, initialSpringVelocity: 0, options: [], animations: {
+        UIView.animateWithDuration(0.5, delay: 0, options: [], animations: {
             self.retypePasswordField.alpha = 0
             self.majorField.alpha = 0
             self.interestsField.alpha = 0

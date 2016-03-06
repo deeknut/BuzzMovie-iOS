@@ -47,7 +47,8 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" keyboardAppearance="alert" returnKeyType="next"/>
                                                     <connections>
-                                                        <action selector="didPressNext:" destination="z17-Vd-P9I" eventType="primaryActionTriggered" id="tHv-I8-LtH"/>
+                                                        <action selector="didPressNext:" destination="z17-Vd-P9I" eventType="primaryActionTriggered" id="z8i-nc-iGp"/>
+                                                        <action selector="editingDidBegin:" destination="z17-Vd-P9I" eventType="editingDidBegin" id="Bzn-nX-Pny"/>
                                                     </connections>
                                                 </textField>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="S1x-gj-vDt">
@@ -60,7 +61,8 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" keyboardAppearance="alert" returnKeyType="go" secureTextEntry="YES"/>
                                                     <connections>
-                                                        <action selector="didPressGo:" destination="z17-Vd-P9I" eventType="primaryActionTriggered" id="MlM-K5-7i7"/>
+                                                        <action selector="didPressNext:" destination="z17-Vd-P9I" eventType="primaryActionTriggered" id="DWy-W7-ykC"/>
+                                                        <action selector="editingDidBegin:" destination="z17-Vd-P9I" eventType="editingDidBegin" id="Vr5-1Q-CbB"/>
                                                     </connections>
                                                 </textField>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qv6-se-U5G">
@@ -103,20 +105,32 @@
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textField opaque="NO" clipsSubviews="YES" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Retype Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="88m-5e-B6V">
+                                                <textField opaque="NO" clipsSubviews="YES" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Retype Password" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="88m-5e-B6V">
                                                     <rect key="frame" x="14" y="111" width="272" height="30"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" keyboardAppearance="alert" returnKeyType="next" secureTextEntry="YES"/>
+                                                    <connections>
+                                                        <action selector="didPressNext:" destination="z17-Vd-P9I" eventType="primaryActionTriggered" id="m2f-Op-qcN"/>
+                                                        <action selector="editingDidBegin:" destination="z17-Vd-P9I" eventType="editingDidBegin" id="cXW-A1-Mhe"/>
+                                                    </connections>
                                                 </textField>
-                                                <textField opaque="NO" clipsSubviews="YES" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Interests" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MeA-7j-KYs">
+                                                <textField opaque="NO" clipsSubviews="YES" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Interests" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="MeA-7j-KYs">
                                                     <rect key="frame" x="14" y="185" width="272" height="30"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" keyboardAppearance="alert" returnKeyType="done"/>
+                                                    <connections>
+                                                        <action selector="didPressNext:" destination="z17-Vd-P9I" eventType="primaryActionTriggered" id="V3D-lA-W0r"/>
+                                                        <action selector="editingDidBegin:" destination="z17-Vd-P9I" eventType="editingDidBegin" id="ZOB-CN-Vjh"/>
+                                                    </connections>
                                                 </textField>
-                                                <textField opaque="NO" clipsSubviews="YES" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Major" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="cDN-dI-pyW">
+                                                <textField opaque="NO" clipsSubviews="YES" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Major" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="cDN-dI-pyW">
                                                     <rect key="frame" x="14" y="148" width="272" height="30"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" keyboardAppearance="alert" returnKeyType="next"/>
+                                                    <connections>
+                                                        <action selector="didPressNext:" destination="z17-Vd-P9I" eventType="primaryActionTriggered" id="yok-mP-oBX"/>
+                                                        <action selector="editingDidBegin:" destination="z17-Vd-P9I" eventType="editingDidBegin" id="sCQ-mt-Nps"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <constraints>
