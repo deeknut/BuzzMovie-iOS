@@ -44,10 +44,12 @@ class LoginViewController: UIViewController {
             if registerMode {
                 animateToRegisterMode()
                 //loginRegisterButton = register
+                loginRegisterButton.removeTarget(nil, action: Selector("login"), forControlEvents: .TouchUpInside)
                 loginRegisterButton.addTarget(nil, action: Selector("register"), forControlEvents: .TouchUpInside)
                 loginRegisterButton.setAttributedTitle(NSAttributedString(string: "Register"), forState: .Normal)
                 
                 //registerButton = back to login
+                registerButton.removeTarget(nil, action: Selector("registerModeSwitch"), forControlEvents: .TouchUpInside)
                 registerButton.addTarget(nil, action: Selector("loginModeSwitch"), forControlEvents: .TouchUpInside)
                 registerButton.setAttributedTitle(NSAttributedString(string: "Back to Login"), forState: .Normal)
                 
@@ -56,10 +58,12 @@ class LoginViewController: UIViewController {
             } else {
                 animateToLoginMode()
                 //loginRegisterButton = register
+                loginRegisterButton.removeTarget(nil, action: Selector("register"), forControlEvents: .TouchUpInside)
                 loginRegisterButton.addTarget(nil, action: Selector("login"), forControlEvents: .TouchUpInside)
                 loginRegisterButton.setAttributedTitle(NSAttributedString(string: "Login"), forState: .Normal)
                 
                 //registerButton = back to login
+                registerButton.removeTarget(nil, action: Selector("loginModeSwitch"), forControlEvents: .TouchUpInside)
                 registerButton.addTarget(nil, action: Selector("registerModeSwitch"), forControlEvents: .TouchUpInside)
                 registerButton.setAttributedTitle(NSAttributedString(string: "Register"), forState: .Normal)
                 
