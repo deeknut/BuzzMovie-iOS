@@ -1,30 +1,19 @@
 //
-//  ProfileViewController.swift
+//  MainNavigationController.swift
 //  BuzzMovie
 //
-//  Created by Brian Wang on 2/23/16.
+//  Created by Brian Wang on 3/14/16.
 //  Copyright © 2016 DK. All rights reserved.
 //
 
 import UIKit
 
-class ProfileViewController: UIViewController {
+class MainNavigationController: UINavigationController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBarHidden = false
-        self.setNeedsStatusBarAppearanceUpdate()
 
         // Do any additional setup after loading the view.
-    }
-    
-    
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return .LightContent
-    }
-    
-    override func prefersStatusBarHidden() -> Bool {
-        return false
     }
 
     override func didReceiveMemoryWarning() {
@@ -33,6 +22,9 @@ class ProfileViewController: UIViewController {
     }
     
 
+    @IBAction func unwindToNav(unwindSegue: UIStoryboardSegue, towardsViewController subsequentVC: UIViewController) {
+        performSegueWithIdentifier("unwindToTabBar", sender: self)
+    }
     /*
     // MARK: - Navigation
 

@@ -11,19 +11,21 @@ import UIKit
 class HomeTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     @IBOutlet weak var tableView: UITableView!
+//    let API_KEY
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+//        self.navigationController?.navigationBarHidden = false
+//        self.tabBarController?.navigationController?.navigationBarHidden = false
+//        self.navigationItem.title = "BuzzMovie"
+//        self.navigationController?.navigationBar.
+        
 //        self.view.backgroundColor = UIColor.clearColor()
 //        self.tableView.backgroundColor = UIColor.clearColor()
 //        self.navigationController?.view.backgroundColor = UIColor.clearColor()
 //        self.navigationController?.tabBarController?.view.backgroundColor = UIColor.clearColor()
         
         self.setNeedsStatusBarAppearanceUpdate()
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -37,6 +39,10 @@ class HomeTableViewController: UIViewController, UITableViewDataSource, UITableV
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
     }
 
 }

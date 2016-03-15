@@ -10,6 +10,8 @@
 		4800D7CC89940C7FDCD8C1FD /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 873DBCAA4D7BB480567E24A1 /* Pods.framework */; };
 		DF0761E91C7E3A6D002C9158 /* Extra.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF0761E81C7E3A6D002C9158 /* Extra.swift */; };
 		DF0761EB1C7E418D002C9158 /* StyleConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF0761EA1C7E418D002C9158 /* StyleConstants.swift */; };
+		DF7EF80F1C97291D00C21D73 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF7EF80E1C97291D00C21D73 /* MainTabBarController.swift */; };
+		DF7EF8111C972E0A00C21D73 /* MainNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF7EF8101C972E0A00C21D73 /* MainNavigationController.swift */; };
 		DFA3CE5A1C7C27DC002584A1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA3CE591C7C27DC002584A1 /* AppDelegate.swift */; };
 		DFA3CE5F1C7C27DC002584A1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DFA3CE5D1C7C27DC002584A1 /* Main.storyboard */; };
 		DFA3CE621C7C27DC002584A1 /* BuzzMovie.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DFA3CE601C7C27DC002584A1 /* BuzzMovie.xcdatamodeld */; };
@@ -32,6 +34,8 @@
 		873DBCAA4D7BB480567E24A1 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF0761E81C7E3A6D002C9158 /* Extra.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Extra.swift; path = Other/Extra.swift; sourceTree = "<group>"; };
 		DF0761EA1C7E418D002C9158 /* StyleConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StyleConstants.swift; path = Other/StyleConstants.swift; sourceTree = "<group>"; };
+		DF7EF80E1C97291D00C21D73 /* MainTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainTabBarController.swift; path = ViewControllers/MainTabBarController.swift; sourceTree = "<group>"; };
+		DF7EF8101C972E0A00C21D73 /* MainNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainNavigationController.swift; path = ViewControllers/MainNavigationController.swift; sourceTree = "<group>"; };
 		DFA3CE561C7C27DB002584A1 /* BuzzMovie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BuzzMovie.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DFA3CE591C7C27DC002584A1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DFA3CE5E1C7C27DC002584A1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -132,6 +136,8 @@
 				DFBCF56D1C7D2BC20025BDC8 /* ProfileViewController.swift */,
 				DFBCF57A1C7D4DCF0025BDC8 /* LoginViewController.swift */,
 				DFBCF57C1C7D6F7E0025BDC8 /* SearchTableViewController.swift */,
+				DF7EF80E1C97291D00C21D73 /* MainTabBarController.swift */,
+				DF7EF8101C972E0A00C21D73 /* MainNavigationController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -290,8 +296,10 @@
 				DFA3CE741C7D0E80002584A1 /* HomeTableViewController.swift in Sources */,
 				DFA3CE7A1C7D1133002584A1 /* Movie.swift in Sources */,
 				DFA3CE5A1C7C27DC002584A1 /* AppDelegate.swift in Sources */,
+				DF7EF80F1C97291D00C21D73 /* MainTabBarController.swift in Sources */,
 				DFBCF57B1C7D4DCF0025BDC8 /* LoginViewController.swift in Sources */,
 				DFBCF56E1C7D2BC20025BDC8 /* ProfileViewController.swift in Sources */,
+				DF7EF8111C972E0A00C21D73 /* MainNavigationController.swift in Sources */,
 				DF0761E91C7E3A6D002C9158 /* Extra.swift in Sources */,
 				DFA3CE621C7C27DC002584A1 /* BuzzMovie.xcdatamodeld in Sources */,
 				DF0761EB1C7E418D002C9158 /* StyleConstants.swift in Sources */,

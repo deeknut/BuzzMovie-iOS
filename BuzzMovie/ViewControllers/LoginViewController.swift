@@ -80,19 +80,26 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.navigationBarHidden = false
         
         loginRegisterButton.addTarget(nil, action: Selector("login"), forControlEvents: .TouchUpInside)
         registerButton.addTarget(nil, action: Selector("registerModeSwitch"), forControlEvents: .TouchUpInside)
-        
+        self.navigationController?.navigationBarHidden = true
         // Do any additional setup after loading the view.
     }
     
     override func viewWillAppear(animated: Bool) {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidAppear:", name: UIKeyboardWillChangeFrameNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidDisappear", name: UIKeyboardWillHideNotification, object: nil)
-        
         containerViewHeight.constant = 190
         self.view.layoutIfNeeded()
+        
+        let defaults = NSUserDefaults.standardUserDefaults()
+        if let username = defaults.objectForKey("username"), password = defaults.objectForKey("password") {
+            usernameField.text = username as? String
+            passwordField.text = password as? String
+            login()
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -177,12 +184,26 @@ class LoginViewController: UIViewController {
         self.interestsField.resignFirstResponder()
     }
     
+    func clearAllFields() {
+        usernameField.text = ""
+        passwordField.text = ""
+        retypePasswordField.text = ""
+        majorField.text = ""
+        interestsField.text = ""
+    }
+    
     //===========================================================================
     //MARK: - SEGUES
     //===========================================================================
     
-    @IBAction override func unwindForSegue(unwindSegue: UIStoryboardSegue, towardsViewController subsequentVC: UIViewController) {
-        
+    @IBAction func unwindToLogin(unwindSegue: UIStoryboardSegue, towardsViewController subsequentVC: UIViewController) {
+        clearAllFields()
+        let defaults = NSUserDefaults.standardUserDefaults()
+        defaults.removeObjectForKey("username")
+        defaults.removeObjectForKey("password")
+        defaults.synchronize()
+        animateToLoginMode()
+        loginFailed()
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -207,24 +228,20 @@ class LoginViewController: UIViewController {
         
         resignAllResponders()
         loggingInLabel.text = "Logging in..."
-        UIView.animateWithDuration(0.5, animations: {
-            self.titleLabel.alpha = 0
-            self.usernameField.alpha = 0
-            self.passwordField.alpha = 0
-            self.staySwitch.alpha = 0
-            self.registerButton.alpha = 0
-            self.stayLabel.alpha = 0
-            self.loginRegisterButton.alpha = 0
-            self.loggingInLabel.alpha = 1
-        })
+        showLoginLabel()
+        
         //authentication
         root.authUser(usernameField.text, password: passwordField.text, withCompletionBlock: {error, authData in
             if error != nil {
                 self.loginFailed()
             } else {
                 self.uid = authData.uid
-//                if (self.staySwitch.on) {
-//                }
+                if (self.staySwitch.on) {
+                    let defaults = NSUserDefaults.standardUserDefaults()
+                    defaults.setObject(self.usernameField.text, forKey: "username")
+                    defaults.setObject(self.passwordField.text, forKey: "password")
+                    defaults.synchronize()
+                }
                 self.performSelector(Selector("segueToUser"), withObject: self, afterDelay: 0)
             }
         })
@@ -234,16 +251,6 @@ class LoginViewController: UIViewController {
     func loginFailed() {
         
         shakeCenterX()
-        UIView.animateWithDuration(0.5, animations: {
-            self.titleLabel.alpha = 1
-            self.usernameField.alpha = 1
-            self.passwordField.alpha = 1
-            self.staySwitch.alpha = 1
-            self.registerButton.alpha = 1
-            self.stayLabel.alpha = 1
-            self.loginRegisterButton.alpha = 1
-            self.loggingInLabel.alpha = 0
-        })
         
     }
     //===========================================================================
@@ -273,19 +280,7 @@ class LoginViewController: UIViewController {
         }
         resignAllResponders()
         loggingInLabel.text = "Registering..."
-        UIView.animateWithDuration(0.5, animations: {
-            self.titleLabel.alpha = 0
-            self.usernameField.alpha = 0
-            self.passwordField.alpha = 0
-            self.staySwitch.alpha = 0
-            self.registerButton.alpha = 0
-            self.stayLabel.alpha = 0
-            self.loginRegisterButton.alpha = 0
-            self.retypePasswordField.alpha = 0
-            self.majorField.alpha = 0
-            self.interestsField.alpha = 0
-            self.loggingInLabel.alpha = 1
-        })
+        showRegisterLabel()
         
         //creation
         root.createUser(usernameField.text, password: passwordField.text,
@@ -308,23 +303,12 @@ class LoginViewController: UIViewController {
     }
     func registerFailed() {
         shakeCenterX()
-        UIView.animateWithDuration(0.5, animations: {
-            self.titleLabel.alpha = 1
-            self.usernameField.alpha = 1
-            self.passwordField.alpha = 1
-            self.staySwitch.alpha = 1
-            self.registerButton.alpha = 1
-            self.stayLabel.alpha = 1
-            self.loginRegisterButton.alpha = 1
-            self.retypePasswordField.alpha = 1
-            self.majorField.alpha = 1
-            self.interestsField.alpha = 1
-            self.loggingInLabel.alpha = 0
-        })
+        showRegisterFields()
     }
     
     func loginModeSwitch() {
         registerMode = false
+        showLoginFields()
     }
     
     //===========================================================================
@@ -361,5 +345,63 @@ class LoginViewController: UIViewController {
             self.containerViewHeight.constant = 190
             self.view.layoutIfNeeded()
             }, completion: nil)
+    }
+    
+    func showLoginFields() {
+        UIView.animateWithDuration(0.5, animations: {
+            self.titleLabel.alpha = 1
+            self.usernameField.alpha = 1
+            self.passwordField.alpha = 1
+            self.staySwitch.alpha = 1
+            self.registerButton.alpha = 1
+            self.stayLabel.alpha = 1
+            self.loginRegisterButton.alpha = 1
+            self.loggingInLabel.alpha = 0
+        })
+    }
+    
+    func showRegisterFields() {
+        UIView.animateWithDuration(0.5, animations: {
+            self.titleLabel.alpha = 1
+            self.usernameField.alpha = 1
+            self.passwordField.alpha = 1
+            self.staySwitch.alpha = 1
+            self.registerButton.alpha = 1
+            self.stayLabel.alpha = 1
+            self.loginRegisterButton.alpha = 1
+            self.retypePasswordField.alpha = 1
+            self.majorField.alpha = 1
+            self.interestsField.alpha = 1
+            self.loggingInLabel.alpha = 0
+        })
+    }
+    
+    func showLoginLabel() {
+        UIView.animateWithDuration(0.5, animations: {
+            self.titleLabel.alpha = 0
+            self.usernameField.alpha = 0
+            self.passwordField.alpha = 0
+            self.staySwitch.alpha = 0
+            self.registerButton.alpha = 0
+            self.stayLabel.alpha = 0
+            self.loginRegisterButton.alpha = 0
+            self.loggingInLabel.alpha = 1
+        })
+    }
+    
+    func showRegisterLabel() {
+        UIView.animateWithDuration(0.5, animations: {
+            self.titleLabel.alpha = 0
+            self.usernameField.alpha = 0
+            self.passwordField.alpha = 0
+            self.staySwitch.alpha = 0
+            self.registerButton.alpha = 0
+            self.stayLabel.alpha = 0
+            self.loginRegisterButton.alpha = 0
+            self.retypePasswordField.alpha = 0
+            self.majorField.alpha = 0
+            self.interestsField.alpha = 0
+            self.loggingInLabel.alpha = 1
+        })
     }
 }
