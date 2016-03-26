@@ -44,13 +44,13 @@ class LoginViewController: UIViewController {
             if registerMode {
                 animateToRegisterMode()
                 //loginRegisterButton = register
-                loginRegisterButton.removeTarget(nil, action: Selector("login"), forControlEvents: .TouchUpInside)
-                loginRegisterButton.addTarget(nil, action: Selector("register"), forControlEvents: .TouchUpInside)
+                loginRegisterButton.removeTarget(nil, action: #selector(LoginViewController.login), forControlEvents: .TouchUpInside)
+                loginRegisterButton.addTarget(nil, action: #selector(LoginViewController.register), forControlEvents: .TouchUpInside)
                 loginRegisterButton.setAttributedTitle(NSAttributedString(string: "Register"), forState: .Normal)
                 
                 //registerButton = back to login
-                registerButton.removeTarget(nil, action: Selector("registerModeSwitch"), forControlEvents: .TouchUpInside)
-                registerButton.addTarget(nil, action: Selector("loginModeSwitch"), forControlEvents: .TouchUpInside)
+                registerButton.removeTarget(nil, action: #selector(LoginViewController.registerModeSwitch), forControlEvents: .TouchUpInside)
+                registerButton.addTarget(nil, action: #selector(LoginViewController.loginModeSwitch), forControlEvents: .TouchUpInside)
                 registerButton.setAttributedTitle(NSAttributedString(string: "Back to Login"), forState: .Normal)
                 
                 //passwordKeyboard
@@ -58,13 +58,13 @@ class LoginViewController: UIViewController {
             } else {
                 animateToLoginMode()
                 //loginRegisterButton = register
-                loginRegisterButton.removeTarget(nil, action: Selector("register"), forControlEvents: .TouchUpInside)
-                loginRegisterButton.addTarget(nil, action: Selector("login"), forControlEvents: .TouchUpInside)
+                loginRegisterButton.removeTarget(nil, action: #selector(LoginViewController.register), forControlEvents: .TouchUpInside)
+                loginRegisterButton.addTarget(nil, action: #selector(LoginViewController.login), forControlEvents: .TouchUpInside)
                 loginRegisterButton.setAttributedTitle(NSAttributedString(string: "Login"), forState: .Normal)
                 
                 //registerButton = back to login
-                registerButton.removeTarget(nil, action: Selector("loginModeSwitch"), forControlEvents: .TouchUpInside)
-                registerButton.addTarget(nil, action: Selector("registerModeSwitch"), forControlEvents: .TouchUpInside)
+                registerButton.removeTarget(nil, action: #selector(LoginViewController.loginModeSwitch), forControlEvents: .TouchUpInside)
+                registerButton.addTarget(nil, action: #selector(LoginViewController.registerModeSwitch), forControlEvents: .TouchUpInside)
                 registerButton.setAttributedTitle(NSAttributedString(string: "Register"), forState: .Normal)
                 
                 //passwordKeyboard
@@ -82,15 +82,15 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         self.navigationController?.navigationBarHidden = false
         
-        loginRegisterButton.addTarget(nil, action: Selector("login"), forControlEvents: .TouchUpInside)
-        registerButton.addTarget(nil, action: Selector("registerModeSwitch"), forControlEvents: .TouchUpInside)
+        loginRegisterButton.addTarget(nil, action: #selector(LoginViewController.login), forControlEvents: .TouchUpInside)
+        registerButton.addTarget(nil, action: #selector(LoginViewController.registerModeSwitch), forControlEvents: .TouchUpInside)
         self.navigationController?.navigationBarHidden = true
         // Do any additional setup after loading the view.
     }
     
     override func viewWillAppear(animated: Bool) {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidAppear:", name: UIKeyboardWillChangeFrameNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidDisappear", name: UIKeyboardWillHideNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LoginViewController.keyboardDidAppear(_:)), name: UIKeyboardWillChangeFrameNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LoginViewController.keyboardDidDisappear), name: UIKeyboardWillHideNotification, object: nil)
         containerViewHeight.constant = 190
         self.view.layoutIfNeeded()
         
@@ -242,14 +242,14 @@ class LoginViewController: UIViewController {
                     defaults.setObject(self.passwordField.text, forKey: "password")
                     defaults.synchronize()
                 }
-                self.performSelector(Selector("segueToUser"), withObject: self, afterDelay: 0)
+                self.performSelector(#selector(LoginViewController.segueToUser), withObject: self, afterDelay: 0)
             }
         })
         
     }
     
     func loginFailed() {
-        
+        showLoginFields()
         shakeCenterX()
         
     }
@@ -296,7 +296,7 @@ class LoginViewController: UIViewController {
                     ] as? AnyObject
                     self.root.childByAppendingPath("users").childByAppendingPath(uid).setValue(initialValues)
                     self.loginModeSwitch()
-                    self.performSelector(Selector("login"), withObject: self, afterDelay: 1)
+                    self.performSelector(#selector(LoginViewController.login), withObject: self, afterDelay: 1)
                     print("Successfully created user account with uid: \(uid)")
                 }
         })

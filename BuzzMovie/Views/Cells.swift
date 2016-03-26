@@ -21,7 +21,14 @@ class MovieTableViewCell:UITableViewCell {
     
     var movie: Movie! {
         didSet {
-            
+            mpaaRatingLabel.text = movie.mpaaRating
+            titleLabel.text = movie.title
+            posterImageView.image = movie.image
+            genreLabel.text = ""
+            averageRatingLabel.text = String(movie.buzzRating)
+            theaterDateLabel.text = "In Theatres: \(movie.theaterReleaseDate)"
+            runtimeLabel.text = "Runtime: \(movie.runtime)"
+            consensusTextView.text = movie.synopsis
         }
     }
 }

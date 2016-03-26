@@ -7,11 +7,19 @@
 //
 
 import UIKit
+import Alamofire
+import SwiftyJSON
+
 
 class HomeTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     @IBOutlet weak var tableView: UITableView!
-//    let API_KEY
+    let API_KEY = "yedukp76ffytfuy24zsqk7f5"
+    var movies:[Movie] = [] {
+        didSet {
+            tableView.reloadData()
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -26,6 +34,10 @@ class HomeTableViewController: UIViewController, UITableViewDataSource, UITableV
 //        self.navigationController?.tabBarController?.view.backgroundColor = UIColor.clearColor()
         
         self.setNeedsStatusBarAppearanceUpdate()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        fetchMovies()
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -44,7 +56,44 @@ class HomeTableViewController: UIViewController, UITableViewDataSource, UITableV
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
     }
+    
+    func fetchMovies() {
+        movies.removeAll()
+        let url = "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/opening.json"
+        let parameters = [
+            "apikey": API_KEY,
+            "limit":"5"
+        ]
+        Alamofire.request(.GET, url, parameters: parameters)
+            .responseJSON { response in
+                print(response.request)  // original URL request
+                print(response.response) // URL response
+                print(response.data)     // server data
+                print(response.result)   // result of response serialization
+                
+                if let unconvertedJSON = response.result.value {
+                    print("\(unconvertedJSON)")
+                    let json:JSON = JSON(unconvertedJSON)
+                    for moviejson in json["movies"].array! {
+                        //only purpose of this is to get the full movie data. Secondary .GET gets all the information.
+                        let secondaryurl:String = moviejson["links"]["self"].string!
+                        Alamofire.request(.GET, secondaryurl, parameters: ["apikey": self.API_KEY])
+                            .responseJSON { response in
+                                if let unconvertedJSON2 = response.result.value {
+                                    let json2:JSON = JSON(unconvertedJSON2)
+                                    if let error = json2["error"].string {
+                                        print(error)
+                                    } else {
+                                        let movie = Movie(json: json2 as JSON)
+                                        self.movies.append(movie)
+                                    }
+                                }
+                        }
 
+                    }
+                }
+        }
+    }
 }
 
 
@@ -56,12 +105,12 @@ extension HomeTableViewController {
     }
 
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 5
+        return movies.count
     }
     
     //spacing between section
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 7
+        return 5
     }
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -75,8 +124,7 @@ extension HomeTableViewController {
         tableView.registerNib(UINib.init(nibName: "MovieTableViewCell", bundle: nil), forCellReuseIdentifier: "MovieCell")
         let cell = tableView.dequeueReusableCellWithIdentifier("MovieCell") as! MovieTableViewCell
             
-        // Configure the cell...
-
+        cell.movie = movies[indexPath.section]
         return cell
     }
 }
