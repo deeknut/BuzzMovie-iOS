@@ -34,13 +34,13 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="In Theaters: Jun 18, 2010" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sjl-Vm-f7k">
-                                    <rect key="frame" x="99" y="101" width="170" height="26"/>
+                                    <rect key="frame" x="102" y="101" width="167" height="26"/>
                                     <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="11"/>
                                     <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Runtime: 1 hr. 43 min." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0JQ-xK-bfW">
-                                    <rect key="frame" x="99" y="122" width="170" height="13.5"/>
+                                    <rect key="frame" x="102" y="122" width="167" height="13.5"/>
                                     <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="11"/>
                                     <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
@@ -71,7 +71,7 @@
                                         </mask>
                                     </variation>
                                 </textView>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="toystory3.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="bDk-DE-bdU">
+                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bDk-DE-bdU">
                                     <rect key="frame" x="8" y="8" width="86" height="128"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="128" id="38K-UR-5WN"/>
@@ -116,9 +116,9 @@
                                 <constraint firstAttribute="trailing" secondItem="LbI-by-7pz" secondAttribute="trailing" constant="8" id="oLe-j5-xjZ"/>
                                 <constraint firstItem="0JQ-xK-bfW" firstAttribute="top" secondItem="Sjl-Vm-f7k" secondAttribute="bottom" constant="-5" id="oUK-jb-IzR"/>
                                 <constraint firstItem="bDk-DE-bdU" firstAttribute="leading" secondItem="Mrj-cr-SGc" secondAttribute="leading" constant="8" id="ozc-HL-qCA"/>
-                                <constraint firstItem="Sjl-Vm-f7k" firstAttribute="leading" secondItem="bDk-DE-bdU" secondAttribute="trailing" constant="5" id="uIU-4U-Zd2"/>
+                                <constraint firstItem="Sjl-Vm-f7k" firstAttribute="leading" secondItem="bDk-DE-bdU" secondAttribute="trailing" constant="8" id="uIU-4U-Zd2"/>
                                 <constraint firstItem="bDk-DE-bdU" firstAttribute="top" secondItem="Mrj-cr-SGc" secondAttribute="top" constant="8" id="vzr-3x-7Q3"/>
-                                <constraint firstItem="0JQ-xK-bfW" firstAttribute="leading" secondItem="bDk-DE-bdU" secondAttribute="trailing" constant="5" id="z0w-7E-aqL"/>
+                                <constraint firstItem="0JQ-xK-bfW" firstAttribute="leading" secondItem="bDk-DE-bdU" secondAttribute="trailing" constant="8" id="z0w-7E-aqL"/>
                                 <constraint firstItem="CZM-RQ-6Hn" firstAttribute="top" secondItem="ohq-Cm-WcM" secondAttribute="bottom" constant="-5" id="znM-9m-HtG"/>
                             </constraints>
                         </view>
@@ -147,7 +147,4 @@
             </connections>
         </tableViewCell>
     </objects>
-    <resources>
-        <image name="toystory3.jpg" width="733" height="1100"/>
-    </resources>
 </document>

@@ -14,7 +14,9 @@ import SwiftyJSON
 class HomeTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     @IBOutlet weak var tableView: UITableView!
-    let API_KEY = "yedukp76ffytfuy24zsqk7f5"
+    let RT_API_KEY = "yedukp76ffytfuy24zsqk7f5"
+    let TMDB_API_KEY = "a45a0f8d482aeac6e5ea456259ac1cd6"
+    let OMDB_API_KEY = "a69daed3"
     var movies:[Movie] = [] {
         didSet {
             tableView.reloadData()
@@ -61,8 +63,8 @@ class HomeTableViewController: UIViewController, UITableViewDataSource, UITableV
         movies.removeAll()
         let url = "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/opening.json"
         let parameters = [
-            "apikey": API_KEY,
-            "limit":"5"
+            "apikey": RT_API_KEY,
+            "limit":"20"
         ]
         Alamofire.request(.GET, url, parameters: parameters)
             .responseJSON { response in
@@ -75,20 +77,29 @@ class HomeTableViewController: UIViewController, UITableViewDataSource, UITableV
                     print("\(unconvertedJSON)")
                     let json:JSON = JSON(unconvertedJSON)
                     for moviejson in json["movies"].array! {
-                        //only purpose of this is to get the full movie data. Secondary .GET gets all the information.
-                        let secondaryurl:String = moviejson["links"]["self"].string!
-                        Alamofire.request(.GET, secondaryurl, parameters: ["apikey": self.API_KEY])
-                            .responseJSON { response in
-                                if let unconvertedJSON2 = response.result.value {
-                                    let json2:JSON = JSON(unconvertedJSON2)
-                                    if let error = json2["error"].string {
-                                        print(error)
-                                    } else {
-                                        let movie = Movie(json: json2 as JSON)
-                                        self.movies.append(movie)
-                                    }
-                                }
+                        //SPLIT
+                        if let error = moviejson["error"].string {
+                            print(error)
+                        } else {
+                            let movie = Movie(json: moviejson as JSON)
+                            self.movies.append(movie)
                         }
+                        //SPLIT
+                        
+//                        //only purpose of this is to get the full movie data. Secondary .GET gets all the information.
+//                        let secondaryurl:String = moviejson["links"]["self"].string!
+//                        Alamofire.request(.GET, secondaryurl, parameters: ["apikey": self.RT_API_KEY])
+//                            .responseJSON { response in
+//                                if let unconvertedJSON2 = response.result.value {
+//                                    let json2:JSON = JSON(unconvertedJSON2)
+//                                    if let error = json2["error"].string {
+//                                        print(error)
+//                                    } else {
+//                                        let movie = Movie(json: json2 as JSON)
+//                                        self.movies.append(movie)
+//                                    }
+//                                }
+//                        }
 
                     }
                 }

@@ -41,7 +41,7 @@ struct Movie {
     
     //year of movie
     var year: Int {
-        return json["year"].int!
+        return json["year"].int ?? -1
     }
     
     //genres of movies in an array
@@ -51,6 +51,9 @@ struct Movie {
     
     //mpaarating PG-13, MA, etc.
     var mpaaRating: String {
+        if json["mpaa_rating"].string == "Unrated" {
+            return "TBD"
+        }
         return json["mpaa_rating"].string ?? "TBD"
     }
     
@@ -104,14 +107,20 @@ struct Movie {
     }
     
     
-    var image: UIImage! {
-        if let path = json["posters"]["original"].string {
-            let imageurl:NSURL = NSURL(fileURLWithPath: path)
-            let imagedata:NSData = NSData(contentsOfURL: imageurl)!
-            return UIImage(data: imagedata)
-        }
-        return nil
+    
+//    var image:UIImage {
+//        if let path = json["posters"]["original"].string {
+//            let imageurl:NSURL = NSURL(fileURLWithPath: path)
+//            let imagedata:NSData = NSData(contentsOfURL: imageurl)!
+//            return UIImage(data: imagedata)
+//        }
+//        return nil
+//    }
+    
+    var imdbid:String? {
+        return json["alternate_ids"]["imdb"].string
     }
+    
     var abridgedcast: [JSON] {
         return json["abridged_cast"].array ?? []
     }
