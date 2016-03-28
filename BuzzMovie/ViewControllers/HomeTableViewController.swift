@@ -13,6 +13,9 @@ import SwiftyJSON
 
 class HomeTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
+    //===========================================================================
+    //MARK - VARIABLES
+    //===========================================================================
     @IBOutlet weak var tableView: UITableView!
     let RT_API_KEY = "yedukp76ffytfuy24zsqk7f5"
     let TMDB_API_KEY = "a45a0f8d482aeac6e5ea456259ac1cd6"
@@ -20,11 +23,23 @@ class HomeTableViewController: UIViewController, UITableViewDataSource, UITableV
     var movies:[Movie] = [] {
         didSet {
             tableView.reloadData()
+            if movies.count == 0 {
+                tableView.hidden = true
+            } else {
+                tableView.hidden = false
+            }
         }
     }
+    
+    //===========================================================================
+    //MARK - VIEWDIDLOAD/VIEWWILLAPPEAR
+    //===========================================================================
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.tableView.hidden = true
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(HomeTableViewController.refresh), forControlEvents: .ValueChanged)
+        tableView.addSubview(refreshControl)
 //        self.navigationController?.navigationBarHidden = false
 //        self.tabBarController?.navigationController?.navigationBarHidden = false
 //        self.navigationItem.title = "BuzzMovie"
@@ -42,6 +57,10 @@ class HomeTableViewController: UIViewController, UITableViewDataSource, UITableV
         fetchMovies()
     }
     
+    //===========================================================================
+    //MARK - STATUS BAR
+    //===========================================================================
+    
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return .LightContent
     }
@@ -55,12 +74,19 @@ class HomeTableViewController: UIViewController, UITableViewDataSource, UITableV
         // Dispose of any resources that can be recreated.
     }
     
+    //===========================================================================
+    //MARK - SEGUES
+    //===========================================================================
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
     }
     
+    //===========================================================================
+    //MARK - API CALLS
+    //===========================================================================
     func fetchMovies() {
-        movies.removeAll()
+        var fetchedMovies:[Movie] = []
         let url = "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/opening.json"
         let parameters = [
             "apikey": RT_API_KEY,
@@ -68,13 +94,13 @@ class HomeTableViewController: UIViewController, UITableViewDataSource, UITableV
         ]
         Alamofire.request(.GET, url, parameters: parameters)
             .responseJSON { response in
-                print(response.request)  // original URL request
-                print(response.response) // URL response
-                print(response.data)     // server data
-                print(response.result)   // result of response serialization
+//                print(response.request)  // original URL request
+//                print(response.response) // URL response
+//                print(response.data)     // server data
+//                print(response.result)   // result of response serialization
                 
                 if let unconvertedJSON = response.result.value {
-                    print("\(unconvertedJSON)")
+//                    print("\(unconvertedJSON)")
                     let json:JSON = JSON(unconvertedJSON)
                     for moviejson in json["movies"].array! {
                         //SPLIT
@@ -82,33 +108,37 @@ class HomeTableViewController: UIViewController, UITableViewDataSource, UITableV
                             print(error)
                         } else {
                             let movie = Movie(json: moviejson as JSON)
-                            self.movies.append(movie)
+                            fetchedMovies.append(movie)
                         }
-                        //SPLIT
-                        
-//                        //only purpose of this is to get the full movie data. Secondary .GET gets all the information.
-//                        let secondaryurl:String = moviejson["links"]["self"].string!
-//                        Alamofire.request(.GET, secondaryurl, parameters: ["apikey": self.RT_API_KEY])
-//                            .responseJSON { response in
-//                                if let unconvertedJSON2 = response.result.value {
-//                                    let json2:JSON = JSON(unconvertedJSON2)
-//                                    if let error = json2["error"].string {
-//                                        print(error)
-//                                    } else {
-//                                        let movie = Movie(json: json2 as JSON)
-//                                        self.movies.append(movie)
-//                                    }
-//                                }
-//                        }
-
                     }
+                    self.checkMovies(fetchedMovies)
                 }
         }
+    }
+    
+    func checkMovies(fetchedMovies:[Movie]) {
+        if !fetchedMovies.elementsEqual(movies, isEquivalent: {movie1, movie2 in
+            return movie1.RTid == movie2.RTid
+        }) {
+            movies = fetchedMovies
+        }
+    }
+    
+    //===========================================================================
+    //MARK - REFRESH
+    //===========================================================================
+    func refresh(refreshControl: UIRefreshControl) {
+        fetchMovies()
+        refreshControl.endRefreshing()
     }
 }
 
 
 extension HomeTableViewController {
+    
+    //===========================================================================
+    //MARK - TABLEVIEW
+    //===========================================================================
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
@@ -134,7 +164,10 @@ extension HomeTableViewController {
   
         tableView.registerNib(UINib.init(nibName: "MovieTableViewCell", bundle: nil), forCellReuseIdentifier: "MovieCell")
         let cell = tableView.dequeueReusableCellWithIdentifier("MovieCell") as! MovieTableViewCell
-            
+        cell.imageReceived = false
+        cell.imagePending = false
+        cell.posterImageView.image = UIImage(named: "DefaultPosterImage")
+        cell.backgroundImageView.image = nil
         cell.movie = movies[indexPath.section]
         return cell
     }

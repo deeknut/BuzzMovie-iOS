@@ -11,7 +11,7 @@ import Firebase
 
 class LoginViewController: UIViewController {
     
-    //
+    //General Outlets
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var usernameField: UITextField!
@@ -22,12 +22,12 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var loginRegisterButton: UIButton!
     @IBOutlet weak var loggingInLabel: UILabel!
     
-    
-    //Register Specific
+    //Register Specific Outlets
     @IBOutlet weak var retypePasswordField: UITextField!
     @IBOutlet weak var majorField: UITextField!
     @IBOutlet weak var interestsField: UITextField!
     
+    //AutoLayoutConstraint References
     @IBOutlet weak var containerViewCenterX: NSLayoutConstraint!
     @IBOutlet weak var containerViewCenterY: NSLayoutConstraint!
     @IBOutlet weak var containerViewTopConstraint: NSLayoutConstraint!

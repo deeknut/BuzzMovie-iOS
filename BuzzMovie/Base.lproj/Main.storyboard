@@ -360,10 +360,10 @@
             </objects>
             <point key="canvasLocation" x="218" y="108"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Main Navigation Controller-->
         <scene sceneID="HP9-Ll-cJG">
             <objects>
-                <navigationController id="zqK-OP-Mr6" sceneMemberID="viewController">
+                <navigationController id="zqK-OP-Mr6" customClass="MainNavigationController" customModule="BuzzMovie" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="" image="Profile" id="trM-3E-uYk"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="WMa-Tf-8ce">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -371,9 +371,11 @@
                     </navigationBar>
                     <connections>
                         <segue destination="foH-iY-ndb" kind="relationship" relationship="rootViewController" id="ddw-s5-oUV"/>
+                        <segue destination="xiV-XB-Yty" kind="unwind" identifier="unwindToTabBar" unwindAction="unwindToTabBar:towardsViewController:" id="YyI-nS-DFe"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="u6k-Nd-Nfb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="xiV-XB-Yty" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="1068.5" y="956.5"/>
         </scene>
@@ -425,19 +427,12 @@
                             <constraint firstItem="BRI-IB-ZIF" firstAttribute="centerX" secondItem="VnM-Kr-SPS" secondAttribute="centerX" id="sIO-Ut-Oyb"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="BuzzMovie" id="lSz-of-jzf">
-                        <barButtonItem key="rightBarButtonItem" systemItem="cancel" id="f5y-fk-obS">
-                            <connections>
-                                <segue destination="YBx-TR-fOz" kind="unwind" unwindAction="unwindToNav:towardsViewController:" id="AHR-zC-lPE"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="BuzzMovie" id="lSz-of-jzf"/>
                     <connections>
                         <outlet property="tableView" destination="BRI-IB-ZIF" id="j2B-5s-Qz9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2Br-1O-ryF" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="YBx-TR-fOz" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="1706.5" y="-728.5"/>
         </scene>
@@ -453,9 +448,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </view>
-                    <navigationItem key="navigationItem" id="ij2-gh-WZ0"/>
+                    <navigationItem key="navigationItem" id="ij2-gh-WZ0">
+                        <barButtonItem key="rightBarButtonItem" title="Logout" id="R4B-tO-ron">
+                            <connections>
+                                <segue destination="jiN-uo-4T0" kind="unwind" unwindAction="unwindToNav:towardsViewController:" id="4C1-yH-asD"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MAB-eY-ZTF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="jiN-uo-4T0" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="1706.5" y="956.5"/>
         </scene>
