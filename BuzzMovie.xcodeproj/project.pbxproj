@@ -25,7 +25,8 @@
 		DFBCF5761C7D42630025BDC8 /* MovieTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DFBCF5751C7D42630025BDC8 /* MovieTableViewCell.xib */; };
 		DFBCF5781C7D454D0025BDC8 /* loginbackground.png in Resources */ = {isa = PBXBuildFile; fileRef = DFBCF5771C7D454D0025BDC8 /* loginbackground.png */; };
 		DFBCF57B1C7D4DCF0025BDC8 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFBCF57A1C7D4DCF0025BDC8 /* LoginViewController.swift */; };
-		DFBCF57D1C7D6F7E0025BDC8 /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFBCF57C1C7D6F7E0025BDC8 /* SearchTableViewController.swift */; };
+		DFE094BE1CA8B92A0024C2B2 /* SearchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DFE094BD1CA8B92A0024C2B2 /* SearchTableViewCell.xib */; };
+		DFE094C01CA8C8490024C2B2 /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE094BF1CA8C8490024C2B2 /* SearchTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,7 +52,8 @@
 		DFBCF5751C7D42630025BDC8 /* MovieTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MovieTableViewCell.xib; sourceTree = "<group>"; };
 		DFBCF5771C7D454D0025BDC8 /* loginbackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginbackground.png; sourceTree = "<group>"; };
 		DFBCF57A1C7D4DCF0025BDC8 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginViewController.swift; path = ViewControllers/LoginViewController.swift; sourceTree = "<group>"; };
-		DFBCF57C1C7D6F7E0025BDC8 /* SearchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchTableViewController.swift; path = ViewControllers/SearchTableViewController.swift; sourceTree = "<group>"; };
+		DFE094BD1CA8B92A0024C2B2 /* SearchTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchTableViewCell.xib; sourceTree = "<group>"; };
+		DFE094BF1CA8C8490024C2B2 /* SearchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchTableViewController.swift; path = ViewControllers/SearchTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,9 +137,9 @@
 				DFA3CE731C7D0E80002584A1 /* HomeTableViewController.swift */,
 				DFBCF56D1C7D2BC20025BDC8 /* ProfileViewController.swift */,
 				DFBCF57A1C7D4DCF0025BDC8 /* LoginViewController.swift */,
-				DFBCF57C1C7D6F7E0025BDC8 /* SearchTableViewController.swift */,
 				DF7EF80E1C97291D00C21D73 /* MainTabBarController.swift */,
 				DF7EF8101C972E0A00C21D73 /* MainNavigationController.swift */,
+				DFE094BF1CA8C8490024C2B2 /* SearchTableViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -163,6 +165,7 @@
 			isa = PBXGroup;
 			children = (
 				DFBCF5751C7D42630025BDC8 /* MovieTableViewCell.xib */,
+				DFE094BD1CA8B92A0024C2B2 /* SearchTableViewCell.xib */,
 			);
 			name = XIB;
 			sourceTree = "<group>";
@@ -233,6 +236,7 @@
 				DFBCF5781C7D454D0025BDC8 /* loginbackground.png in Resources */,
 				DFBCF5761C7D42630025BDC8 /* MovieTableViewCell.xib in Resources */,
 				DFA3CE671C7C27DC002584A1 /* LaunchScreen.storyboard in Resources */,
+				DFE094BE1CA8B92A0024C2B2 /* SearchTableViewCell.xib in Resources */,
 				DFA3CE641C7C27DC002584A1 /* Assets.xcassets in Resources */,
 				DFA3CE5F1C7C27DC002584A1 /* Main.storyboard in Resources */,
 			);
@@ -300,11 +304,11 @@
 				DFBCF57B1C7D4DCF0025BDC8 /* LoginViewController.swift in Sources */,
 				DFBCF56E1C7D2BC20025BDC8 /* ProfileViewController.swift in Sources */,
 				DF7EF8111C972E0A00C21D73 /* MainNavigationController.swift in Sources */,
+				DFE094C01CA8C8490024C2B2 /* SearchTableViewController.swift in Sources */,
 				DF0761E91C7E3A6D002C9158 /* Extra.swift in Sources */,
 				DFA3CE621C7C27DC002584A1 /* BuzzMovie.xcdatamodeld in Sources */,
 				DF0761EB1C7E418D002C9158 /* StyleConstants.swift in Sources */,
 				DFA3CE761C7D0E96002584A1 /* Cells.swift in Sources */,
-				DFBCF57D1C7D6F7E0025BDC8 /* SearchTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

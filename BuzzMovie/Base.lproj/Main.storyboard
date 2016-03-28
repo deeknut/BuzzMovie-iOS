@@ -301,25 +301,6 @@
             </objects>
             <point key="canvasLocation" x="-1104.5" y="107.5"/>
         </scene>
-        <!--Search Table View Controller-->
-        <scene sceneID="2dA-Kq-Imp">
-            <objects>
-                <tableViewController id="FGU-fM-RMd" customClass="SearchTableViewController" customModule="BuzzMovie" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="144" sectionHeaderHeight="28" sectionFooterHeight="28" id="j7X-rN-F6W">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <connections>
-                            <outlet property="dataSource" destination="FGU-fM-RMd" id="qBc-do-cal"/>
-                            <outlet property="delegate" destination="FGU-fM-RMd" id="OMk-5T-jg3"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" id="7HF-i7-gXI"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="v1Q-40-i7p" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1706.5" y="108.5"/>
-        </scene>
         <!--Main Navigation Controller-->
         <scene sceneID="lDA-9s-EpF">
             <objects>
@@ -389,7 +370,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="FGU-fM-RMd" kind="relationship" relationship="rootViewController" id="MRv-ke-Z0C"/>
+                        <segue destination="qNn-8l-or6" kind="relationship" relationship="rootViewController" id="cJG-5D-f35"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wAl-0b-lJx" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -460,6 +441,46 @@
                 <exit id="jiN-uo-4T0" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="1706.5" y="956.5"/>
+        </scene>
+        <!--Search Table View Controller-->
+        <scene sceneID="Srg-Vh-mgS">
+            <objects>
+                <viewController id="qNn-8l-or6" customClass="SearchTableViewController" customModule="BuzzMovie" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="z38-8B-lQ5"/>
+                        <viewControllerLayoutGuide type="bottom" id="4PE-tI-fmG"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="gBA-fi-8Te">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="144" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="t1b-jP-jt9">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="qNn-8l-or6" id="hBs-Wb-JRH"/>
+                                    <outlet property="delegate" destination="qNn-8l-or6" id="Dcd-uM-o0S"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="4PE-tI-fmG" firstAttribute="top" secondItem="t1b-jP-jt9" secondAttribute="bottom" constant="-49" id="7oy-62-1Rj"/>
+                            <constraint firstItem="t1b-jP-jt9" firstAttribute="centerY" secondItem="gBA-fi-8Te" secondAttribute="centerY" id="92o-DP-lj3"/>
+                            <constraint firstItem="t1b-jP-jt9" firstAttribute="top" secondItem="z38-8B-lQ5" secondAttribute="bottom" constant="-64" id="AQI-br-M2c"/>
+                            <constraint firstItem="t1b-jP-jt9" firstAttribute="centerX" secondItem="gBA-fi-8Te" secondAttribute="centerX" id="Kvp-0W-6Nm"/>
+                            <constraint firstItem="t1b-jP-jt9" firstAttribute="width" secondItem="gBA-fi-8Te" secondAttribute="width" id="Rl3-zt-Hm7"/>
+                            <constraint firstItem="t1b-jP-jt9" firstAttribute="height" secondItem="gBA-fi-8Te" secondAttribute="height" id="bJp-lF-C71"/>
+                            <constraint firstItem="t1b-jP-jt9" firstAttribute="width" secondItem="gBA-fi-8Te" secondAttribute="height" multiplier="375:667" id="gIk-Xx-XZj"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="Wvd-fI-qHM"/>
+                    <connections>
+                        <outlet property="tableView" destination="t1b-jP-jt9" id="rTc-0d-Wlt"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Z7W-oj-A96" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1706.5" y="107.5"/>
         </scene>
     </scenes>
     <resources>
