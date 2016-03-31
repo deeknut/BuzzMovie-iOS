@@ -9,7 +9,9 @@
 import UIKit
 import Alamofire
 import SwiftyJSON
-
+let RT_API_KEY = "yedukp76ffytfuy24zsqk7f5"
+let TMDB_API_KEY = "a45a0f8d482aeac6e5ea456259ac1cd6"
+let OMDB_API_KEY = "a69daed3"
 
 class HomeTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
@@ -17,9 +19,7 @@ class HomeTableViewController: UIViewController, UITableViewDataSource, UITableV
     //MARK - VARIABLES
     //===========================================================================
     @IBOutlet weak var tableView: UITableView!
-    let RT_API_KEY = "yedukp76ffytfuy24zsqk7f5"
-    let TMDB_API_KEY = "a45a0f8d482aeac6e5ea456259ac1cd6"
-    let OMDB_API_KEY = "a69daed3"
+
     var movies:[Movie] = [] {
         didSet {
             tableView.reloadData()
@@ -164,8 +164,8 @@ extension HomeTableViewController {
   
         tableView.registerNib(UINib.init(nibName: "MovieTableViewCell", bundle: nil), forCellReuseIdentifier: "MovieCell")
         let cell = tableView.dequeueReusableCellWithIdentifier("MovieCell") as! MovieTableViewCell
-        cell.imageReceived = false
-        cell.imagePending = false
+        cell.dataReceived = false
+        cell.dataPending = false
         cell.posterImageView.image = UIImage(named: "DefaultPosterImage")
         cell.backgroundImageView.image = nil
         cell.movie = movies[indexPath.section]

@@ -9,22 +9,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "BuzzMovie/Views/Cells.swift"
-            timestampString = "480824590.18188"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "21"
-            endingLineNumber = "21"
-            landmarkName = "MovieTableViewCell"
-            landmarkType = "3">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "BuzzMovie/ViewControllers/LoginViewController.swift"
             timestampString = "479612832.872925"
             startingColumnNumber = "9223372036854775807"
@@ -346,11 +330,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BuzzMovie/Other/Movie.swift"
-            timestampString = "480818452.714453"
+            timestampString = "480871164.430038"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "56"
-            endingLineNumber = "56"
+            startingLineNumber = "60"
+            endingLineNumber = "60"
             landmarkName = "Movie"
             landmarkType = "3">
          </BreakpointContent>
@@ -362,11 +346,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BuzzMovie/Other/Movie.swift"
-            timestampString = "480818452.714453"
+            timestampString = "480871164.430038"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "40"
-            endingLineNumber = "40"
+            startingLineNumber = "43"
+            endingLineNumber = "43"
             landmarkName = "Movie"
             landmarkType = "3">
          </BreakpointContent>
@@ -410,45 +394,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BuzzMovie/Views/Cells.swift"
-            timestampString = "480824590.18188"
+            timestampString = "481099829.049374"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "80"
-            endingLineNumber = "80"
-            landmarkName = "getImage()"
-            landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "BuzzMovie.MovieTableViewCell.(getImage () -&gt; ()).(closure #1)"
-                  moduleName = "BuzzMovie"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/bigwangsmash/Desktop/cs2340/BuzzMovie/BuzzMovie/Views/Cells.swift"
-                  timestampString = "480818558.423668"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "81"
-                  endingLineNumber = "81"
-                  offsetFromSymbolStart = "6620">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "BuzzMovie.MovieTableViewCell.(getImage () -&gt; ()).(closure #1)"
-                  moduleName = "BuzzMovie"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/bigwangsmash/Desktop/cs2340/BuzzMovie/BuzzMovie/Views/Cells.swift"
-                  timestampString = "480818558.423847"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "81"
-                  endingLineNumber = "81"
-                  offsetFromSymbolStart = "7196">
-               </Location>
-            </Locations>
+            startingLineNumber = "32"
+            endingLineNumber = "32"
+            landmarkName = "MovieTableViewCell"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -458,13 +410,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BuzzMovie/Views/Cells.swift"
-            timestampString = "480824590.18188"
+            timestampString = "481102738.645302"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "81"
-            endingLineNumber = "81"
-            landmarkName = "getImage()"
-            landmarkType = "5">
+            startingLineNumber = "52"
+            endingLineNumber = "52"
+            landmarkName = "SearchTableViewCell"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

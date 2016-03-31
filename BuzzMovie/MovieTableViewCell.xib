@@ -24,8 +24,8 @@
                             <rect key="frame" x="0.0" y="0.0" width="342" height="143.5"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Toy Story 3" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="02r-0G-Hks">
-                                    <rect key="frame" x="102" y="8" width="182" height="23"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" misplaced="YES" text="Toy Story 3" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="02r-0G-Hks">
+                                    <rect key="frame" x="102" y="9" width="182" height="23"/>
                                     <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="19"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
@@ -159,14 +159,6 @@
                 </constraints>
                 <variation key="default">
                     <mask key="constraints">
-                        <exclude reference="EOz-Ub-pJl"/>
-                        <exclude reference="Es4-dw-Kne"/>
-                        <exclude reference="FM3-Nq-cF1"/>
-                        <exclude reference="KZ9-Vg-KqZ"/>
-                        <exclude reference="n7p-H4-8Xs"/>
-                        <exclude reference="nTz-o2-Eyu"/>
-                        <exclude reference="t9L-U3-BYJ"/>
-                        <exclude reference="zeL-kx-ie8"/>
                         <exclude reference="96l-Si-9jS"/>
                         <exclude reference="BrW-MK-0eS"/>
                         <exclude reference="Cou-Kp-WJ4"/>
@@ -176,20 +168,28 @@
                         <exclude reference="lpg-4k-vJR"/>
                         <exclude reference="pv3-az-Gvn"/>
                         <exclude reference="ymR-cW-hJE"/>
+                        <exclude reference="EOz-Ub-pJl"/>
+                        <exclude reference="Es4-dw-Kne"/>
+                        <exclude reference="FM3-Nq-cF1"/>
+                        <exclude reference="KZ9-Vg-KqZ"/>
+                        <exclude reference="n7p-H4-8Xs"/>
+                        <exclude reference="nTz-o2-Eyu"/>
+                        <exclude reference="t9L-U3-BYJ"/>
+                        <exclude reference="zeL-kx-ie8"/>
                     </mask>
                 </variation>
             </tableViewCellContentView>
             <color key="backgroundColor" red="0.1215686275" green="0.12941176469999999" blue="0.14117647059999999" alpha="1" colorSpace="calibratedRGB"/>
             <connections>
-                <outlet property="averageRatingLabel" destination="zaT-XN-ko9" id="Egr-Nr-Wgf"/>
+                <outlet property="avgRatingLabel" destination="zaT-XN-ko9" id="mg3-df-NkL"/>
                 <outlet property="backgroundImageView" destination="7gO-Ho-g91" id="iLm-0t-700"/>
                 <outlet property="consensusTextView" destination="CZM-RQ-6Hn" id="KIn-mo-tJp"/>
-                <outlet property="genreLabel" destination="ohq-Cm-WcM" id="GLo-Xv-fe0"/>
-                <outlet property="mpaaRatingLabel" destination="LbI-by-7pz" id="EtV-0y-wpQ"/>
-                <outlet property="posterImageView" destination="bDk-DE-bdU" id="6vR-8j-4ci"/>
-                <outlet property="runtimeLabel" destination="0JQ-xK-bfW" id="RcU-T6-Zr9"/>
+                <outlet property="genreLabel" destination="ohq-Cm-WcM" id="eRN-Pq-RfS"/>
+                <outlet property="mpaaRatingLabel" destination="LbI-by-7pz" id="6Un-ms-dee"/>
+                <outlet property="posterImageView" destination="bDk-DE-bdU" id="PD8-Ge-c3x"/>
+                <outlet property="runtimeLabel" destination="0JQ-xK-bfW" id="zAf-Gr-t6a"/>
                 <outlet property="theaterDateLabel" destination="Sjl-Vm-f7k" id="0Me-aT-s8g"/>
-                <outlet property="titleLabel" destination="02r-0G-Hks" id="tr9-F2-k9W"/>
+                <outlet property="titleLabel" destination="02r-0G-Hks" id="CSX-ez-8ne"/>
             </connections>
         </tableViewCell>
     </objects>

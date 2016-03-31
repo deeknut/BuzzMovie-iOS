@@ -398,6 +398,7 @@
                                 </connections>
                             </tableView>
                         </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="BRI-IB-ZIF" firstAttribute="centerY" secondItem="VnM-Kr-SPS" secondAttribute="centerY" id="Fg8-eD-TBm"/>
                             <constraint firstItem="BRI-IB-ZIF" firstAttribute="width" secondItem="VnM-Kr-SPS" secondAttribute="width" id="M8l-kc-rpE"/>
@@ -454,7 +455,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="144" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="t1b-jP-jt9">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="75" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="t1b-jP-jt9">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
@@ -463,6 +464,7 @@
                                 </connections>
                             </tableView>
                         </subviews>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="4PE-tI-fmG" firstAttribute="top" secondItem="t1b-jP-jt9" secondAttribute="bottom" constant="-49" id="7oy-62-1Rj"/>
                             <constraint firstItem="t1b-jP-jt9" firstAttribute="centerY" secondItem="gBA-fi-8Te" secondAttribute="centerY" id="92o-DP-lj3"/>
