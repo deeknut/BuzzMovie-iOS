@@ -75,7 +75,10 @@ struct Movie {
     
     //genres of movies in an array
     var genres: [String] {
-        return json["genres"].arrayObject as! [String]
+        if let genres = json["genres"].arrayObject {
+            return genres as! [String]
+        }
+        return []
     }
     
     //mpaarating PG-13, MA, etc.
@@ -101,7 +104,7 @@ struct Movie {
     
     //theater release date formatted to US Locale: "Jun 18, 2010"
     var theaterReleaseDate: String {
-        print(json)
+//        print(json)
         if let string = json["release_dates"]["theater"].string {
             return Movie.localeFromDateFormatter.stringFromDate(Movie.dateFromRTFormatter.dateFromString(string)!)
         }
@@ -141,9 +144,10 @@ struct Movie {
     
     
     
+    
     var image:UIImage?
     var imdbid:String? {
-        return json["alternate_ids"]["imdb"].string
+        return json["alternate_ids"]["imdb"].string ?? ""
     }
     
     var abridgedcast: [JSON] {
@@ -152,6 +156,10 @@ struct Movie {
     
     init(json:JSON) {
         self.json = json
+    }
+    
+    func isEqualTo(movie: Movie) -> Bool {
+        return self.RTid == movie.RTid
     }
     
     func setImageAndGenreForCell() {
@@ -169,10 +177,10 @@ struct Movie {
                 //                print(response.result)   // result of response serialization
                 
                 if let unconvertedJSON = response.result.value {
-                    //                    print("\(unconvertedJSON)")
+//                    print("\(unconvertedJSON)")
                     let json:JSON = JSON(unconvertedJSON)
                     for moviejson in json["results"].array! {
-                        if self.title.lowercaseString == moviejson["original_title"].string!.lowercaseString || self.title == moviejson["title"].string!.lowercaseString {
+                        if self.title.lowercaseString == moviejson["original_title"].string?.lowercaseString || self.title == moviejson["title"].string?.lowercaseString {
                             //looking for poster
                             if let posterurl = moviejson["poster_path"].string {
                                 let imageurl:NSURL = NSURL(string: imagebaseurl + posterurl)!

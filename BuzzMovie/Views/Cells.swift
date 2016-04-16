@@ -29,6 +29,12 @@ class MovieTableViewCell:GeneralCell{
     
     var movie: Movie! {
         didSet {
+            //reset
+            dataReceived = false
+            dataPending = false
+            posterImageView.image = UIImage(named: "DefaultPosterImage")
+            backgroundImageView.image = nil
+            
             theaterDateLabel.text = "In Theatres: \(movie.theaterReleaseDate)"
             consensusTextView.text = movie.synopsis
             runtimeLabel.text = "Runtime: \(movie.runtime)"
@@ -49,6 +55,11 @@ class SearchTableViewCell:GeneralCell {
     
     var movie: Movie! {
         didSet {
+            //reset
+            dataReceived = false
+            dataPending = false
+            posterImageView.image = UIImage(named: "DefaultPosterImage")
+            
             runtimeLabel.text = "Runtime: \(movie.runtime)"
             mpaaRatingLabel.text = movie.mpaaRating
             titleLabel.text = movie.title

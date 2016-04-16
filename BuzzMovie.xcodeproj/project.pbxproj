@@ -12,6 +12,7 @@
 		DF0761EB1C7E418D002C9158 /* StyleConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF0761EA1C7E418D002C9158 /* StyleConstants.swift */; };
 		DF7EF80F1C97291D00C21D73 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF7EF80E1C97291D00C21D73 /* MainTabBarController.swift */; };
 		DF7EF8111C972E0A00C21D73 /* MainNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF7EF8101C972E0A00C21D73 /* MainNavigationController.swift */; };
+		DF90AFB11CC03CAD00755D71 /* CardView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DF90AFB01CC03CAD00755D71 /* CardView.xib */; };
 		DFA3CE5A1C7C27DC002584A1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA3CE591C7C27DC002584A1 /* AppDelegate.swift */; };
 		DFA3CE5F1C7C27DC002584A1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DFA3CE5D1C7C27DC002584A1 /* Main.storyboard */; };
 		DFA3CE621C7C27DC002584A1 /* BuzzMovie.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DFA3CE601C7C27DC002584A1 /* BuzzMovie.xcdatamodeld */; };
@@ -37,6 +38,7 @@
 		DF0761EA1C7E418D002C9158 /* StyleConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StyleConstants.swift; path = Other/StyleConstants.swift; sourceTree = "<group>"; };
 		DF7EF80E1C97291D00C21D73 /* MainTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainTabBarController.swift; path = ViewControllers/MainTabBarController.swift; sourceTree = "<group>"; };
 		DF7EF8101C972E0A00C21D73 /* MainNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainNavigationController.swift; path = ViewControllers/MainNavigationController.swift; sourceTree = "<group>"; };
+		DF90AFB01CC03CAD00755D71 /* CardView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CardView.xib; sourceTree = "<group>"; };
 		DFA3CE561C7C27DB002584A1 /* BuzzMovie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BuzzMovie.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DFA3CE591C7C27DC002584A1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DFA3CE5E1C7C27DC002584A1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 			children = (
 				DFBCF5751C7D42630025BDC8 /* MovieTableViewCell.xib */,
 				DFE094BD1CA8B92A0024C2B2 /* SearchTableViewCell.xib */,
+				DF90AFB01CC03CAD00755D71 /* CardView.xib */,
 			);
 			name = XIB;
 			sourceTree = "<group>";
@@ -233,6 +236,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DFBCF5711C7D38440025BDC8 /* toystory3.jpg in Resources */,
+				DF90AFB11CC03CAD00755D71 /* CardView.xib in Resources */,
 				DFBCF5781C7D454D0025BDC8 /* loginbackground.png in Resources */,
 				DFBCF5761C7D42630025BDC8 /* MovieTableViewCell.xib in Resources */,
 				DFA3CE671C7C27DC002584A1 /* LaunchScreen.storyboard in Resources */,

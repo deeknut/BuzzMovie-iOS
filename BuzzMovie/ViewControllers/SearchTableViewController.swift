@@ -92,6 +92,7 @@ extension SearchTableViewController: UISearchBarDelegate, UISearchResultsUpdatin
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         //search button clicked
         movies = []
+        self.tableView.reloadData()
         let searchString = searchBar.text!
         let url = "http://api.rottentomatoes.com/api/public/v1.0/movies.json"
         let parameters = [

@@ -10,10 +10,16 @@ import UIKit
 
 class ProfileViewController: UIViewController {
 
+    @IBOutlet weak var tableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBarHidden = false
+//        self.navigationController?.navigationBarHidden = false
         self.setNeedsStatusBarAppearanceUpdate()
+        
+        tableView.delegate = self
+        tableView.dataSource = self
+        
+        
 
         // Do any additional setup after loading the view.
     }
@@ -43,4 +49,16 @@ class ProfileViewController: UIViewController {
     }
     */
 
+}
+
+extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier("LikesCell", forIndexPath: indexPath)
+        
+        return cell
+    }
 }
