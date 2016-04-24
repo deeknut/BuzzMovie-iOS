@@ -19,6 +19,10 @@ class SearchTableViewController: UIViewController{
     
     var movies:[Movie] = []
     
+    var selectedMovie:Movie!
+    var selectedImage:UIImage?
+    var selectedGenreString:String?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setNeedsStatusBarAppearanceUpdate()
@@ -57,30 +61,94 @@ class SearchTableViewController: UIViewController{
         return false
     }
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        let destination = segue.destinationViewController as! MovieViewController
+        destination.movie = self.selectedMovie
+        destination.selectedImage = self.selectedImage
+        destination.selectedGenreString = self.selectedGenreString
     }
-    */
-
+    
+    func fetchImageGenreAndSegue(movie:Movie) {
+        let searchurl = "https://api.themoviedb.org/3/search/movie"
+        let imagebaseurl = "http://image.tmdb.org/t/p/original"
+        let parameters = [
+            "api_key": TMDB_API_KEY,
+            "query": movie.title
+        ]
+        Alamofire.request(.GET, searchurl, parameters: parameters)
+            .responseJSON { response in
+                //                print(response.request)  // original URL request
+                //                print(response.response) // URL response
+                //                print(response.data)     // server data
+                //                print(response.result)   // result of response serialization
+                
+                if let unconvertedJSON = response.result.value {
+//                    print("\(unconvertedJSON)")
+                    let json:JSON = JSON(unconvertedJSON)
+                    for moviejson in json["results"].array! {
+                        if movie.title.lowercaseString == moviejson["original_title"].string?.lowercaseString || movie.title == moviejson["title"].string?.lowercaseString {
+                            //looking for poster
+                            if let posterurl = moviejson["poster_path"].string {
+                                let imageurl:NSURL = NSURL(string: imagebaseurl + posterurl)!
+                                if let imagedata = NSData(contentsOfURL: imageurl) {
+                                    let image = UIImage(data: imagedata)
+                                    self.selectedImage = image
+                                }
+                            } else {
+                                self.performSegueWithIdentifier("MovieView", sender: self)
+                                return
+//                                print("movie.title: \(self.movie.title.lowercaseString)")
+//                                print("moviejson[original_title]: \(moviejson["original_title"].string!.lowercaseString)")
+//                                print("moviejson[title]: \(moviejson["title"].string!.lowercaseString)")
+//                                print(moviejson)
+                            }
+                            
+                            //looking for genres
+                            if let genrelist = moviejson["genre_ids"].arrayObject as! [Int]? {
+                                var genreString = ""
+                                for i in genrelist{
+                                    if let g = Movie.genreMap[String(i)] {
+                                        genreString += g
+                                        if i != genrelist.last {
+                                            genreString += "/"
+                                        }
+                                    }
+                                }
+                                self.selectedGenreString = genreString
+                            }
+                            self.performSegueWithIdentifier("MovieView", sender: self)
+                            return
+                        }
+                        
+                        self.performSegueWithIdentifier("MovieView", sender: self)
+                        return
+                    }
+                
+                }
+        }
+    }
 }
 
 extension SearchTableViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         tableView.registerNib(UINib.init(nibName: "SearchTableViewCell", bundle: nil), forCellReuseIdentifier: "SearchCell")
         let cell = tableView.dequeueReusableCellWithIdentifier("SearchCell", forIndexPath: indexPath) as! SearchTableViewCell
-        cell.dataReceived = false
-        cell.dataPending = false
-        cell.posterImageView.image = UIImage(named: "DefaultPosterImage")
+//        cell.dataReceived = false
+//        cell.dataPending = false
+//        cell.posterImageView.image = UIImage(named: "DefaultPosterImage")
         cell.movie = movies[indexPath.row]
         return cell
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return movies.count
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        selectedMovie = (tableView.cellForRowAtIndexPath(indexPath) as! SearchTableViewCell).movie
+        selectedImage = nil
+        selectedGenreString = nil
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        fetchImageGenreAndSegue(selectedMovie)
     }
 }
 

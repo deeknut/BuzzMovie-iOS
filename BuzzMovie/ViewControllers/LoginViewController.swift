@@ -9,6 +9,8 @@
 import UIKit
 import Firebase
 
+var uid: String!
+
 class LoginViewController: UIViewController {
     
     //General Outlets
@@ -34,7 +36,6 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var containerViewWidth: NSLayoutConstraint!
     @IBOutlet weak var containerViewHeight: NSLayoutConstraint!
     
-    var uid: String!
     
     var root = Firebase(url: "https://deeknutssquad.firebaseio.com/")
     
@@ -44,7 +45,7 @@ class LoginViewController: UIViewController {
             if registerMode {
                 animateToRegisterMode()
                 //loginRegisterButton = register
-                loginRegisterButton.removeTarget(nil, action: #selector(LoginViewController.login), forControlEvents: .TouchUpInside)
+                loginRegisterButton.removeTarget(nil, action: #selector(LoginViewController.prepareToLogin), forControlEvents: .TouchUpInside)
                 loginRegisterButton.addTarget(nil, action: #selector(LoginViewController.register), forControlEvents: .TouchUpInside)
                 loginRegisterButton.setAttributedTitle(NSAttributedString(string: "Register"), forState: .Normal)
                 
@@ -59,7 +60,7 @@ class LoginViewController: UIViewController {
                 animateToLoginMode()
                 //loginRegisterButton = register
                 loginRegisterButton.removeTarget(nil, action: #selector(LoginViewController.register), forControlEvents: .TouchUpInside)
-                loginRegisterButton.addTarget(nil, action: #selector(LoginViewController.login), forControlEvents: .TouchUpInside)
+                loginRegisterButton.addTarget(nil, action: #selector(LoginViewController.prepareToLogin), forControlEvents: .TouchUpInside)
                 loginRegisterButton.setAttributedTitle(NSAttributedString(string: "Login"), forState: .Normal)
                 
                 //registerButton = back to login
@@ -82,7 +83,7 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         self.navigationController?.navigationBarHidden = false
         
-        loginRegisterButton.addTarget(nil, action: #selector(LoginViewController.login), forControlEvents: .TouchUpInside)
+        loginRegisterButton.addTarget(nil, action: #selector(LoginViewController.prepareToLogin), forControlEvents: .TouchUpInside)
         registerButton.addTarget(nil, action: #selector(LoginViewController.registerModeSwitch), forControlEvents: .TouchUpInside)
         self.navigationController?.navigationBarHidden = true
         // Do any additional setup after loading the view.
@@ -98,7 +99,7 @@ class LoginViewController: UIViewController {
         if let username = defaults.objectForKey("username"), password = defaults.objectForKey("password") {
             usernameField.text = username as? String
             passwordField.text = password as? String
-            login()
+            prepareToLogin()
         }
     }
 
@@ -151,7 +152,7 @@ class LoginViewController: UIViewController {
                 break;
             case "Password":
                 if (!registerMode) {
-                    login()
+                    prepareToLogin()
                 } else {
                     retypePasswordField.becomeFirstResponder()
                 }
@@ -203,7 +204,8 @@ class LoginViewController: UIViewController {
         defaults.removeObjectForKey("password")
         defaults.synchronize()
         animateToLoginMode()
-        loginFailed()
+        showLoginFields()
+        titleLabel.text = "BuzzMovie"
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -220,22 +222,56 @@ class LoginViewController: UIViewController {
     //MARK: - LOGIN
     //===========================================================================
     
-    func login() {
+    func prepareToLogin() {
+//        self.titleLabel.text = "BuzzMovie"
         if (usernameField.text == "" || passwordField.text == "") {
             shakeCenterX()
             return
         }
         
+        let usersRoot = root.childByAppendingPath("users")
+        usersRoot.observeSingleEventOfType(.Value, withBlock: {snapshot in
+            var found = false
+            for uidsnapshot in snapshot.children {
+                let fetchedEmail = uidsnapshot.value["email"] as! String
+                if (fetchedEmail == self.usernameField.text!) {
+                    found = true
+                    let locked = uidsnapshot.value["locked"] as! String
+                    if locked == "true" {
+                        //account locked.
+                        self.titleLabel.text = "Account Locked. Contact Admin"
+                        self.loginFailed()
+                    } else {
+                        //account isn't locked, continue with authenticating
+                        self.login()
+                    }
+                } else {
+                    //could not find matching profile
+                }
+            }
+            if !found {
+                self.titleLabel.text = "User Not Found. Register?"
+                self.loginFailed()
+            }
+        })
+        
+    }
+    
+    func login() {
         resignAllResponders()
         loggingInLabel.text = "Logging in..."
         showLoginLabel()
-        
-        //authentication
-        root.authUser(usernameField.text, password: passwordField.text, withCompletionBlock: {error, authData in
+        self.root.authUser(self.usernameField.text, password: self.passwordField.text, withCompletionBlock: {error, authData in
             if error != nil {
                 self.loginFailed()
+                if (error.userInfo[NSLocalizedDescriptionKey]!.containsString("INVALID_PASSWORD")) {
+                    //invalid password, mark for incorrect login
+                    self.markUserForIncorrectLogin(self.usernameField.text!)
+                }
             } else {
-                self.uid = authData.uid
+                uid = authData.uid
+                let uidRoot = self.root.childByAppendingPath("users/\(uid)")
+                uidRoot.childByAppendingPath("loginattempts").setValue("0")
                 if (self.staySwitch.on) {
                     let defaults = NSUserDefaults.standardUserDefaults()
                     defaults.setObject(self.usernameField.text, forKey: "username")
@@ -245,7 +281,32 @@ class LoginViewController: UIViewController {
                 self.performSelector(#selector(LoginViewController.segueToUser), withObject: self, afterDelay: 0)
             }
         })
-        
+    }
+    
+    func markUserForIncorrectLogin(email:String) {
+        let usersRoot = root.childByAppendingPath("users")
+        usersRoot.observeSingleEventOfType(.Value, withBlock: {snapshot in
+//            print(snapshot.value)
+            for uidsnapshot in snapshot.children {
+                let fetchedEmail = uidsnapshot.value["email"] as! String
+                
+                if (fetchedEmail == email) {
+                    let attempts:Int = Int(uidsnapshot.value["loginattempts"] as! String)!
+                    let uid = uidsnapshot.key
+                    let uidRoot = usersRoot.childByAppendingPath("\(uid)")
+                    if (attempts == 2) {
+                        self.titleLabel.text = "Account Locked. Contact Admin"
+                        uidRoot.childByAppendingPath("locked").setValue("true")
+                    } else {
+                        self.titleLabel.text = "Wrong Password. \(2 - attempts) Attempts Left"
+                    }
+                    uidRoot.childByAppendingPath("loginattempts").setValue(String(attempts + 1))
+                }
+            }
+        })
+    }
+    
+    func isLocked(email:String) {
     }
     
     func loginFailed() {
@@ -289,13 +350,19 @@ class LoginViewController: UIViewController {
                     self.registerFailed()
                     // There was an error creating the account
                 } else {
-                    let uid = result["uid"] as? String
+                    uid = result["uid"] as! String
                     let initialValues = [
-                        "major":self.majorField.text,
-                        "interests":self.interestsField.text
-                    ] as? AnyObject
-                    self.root.childByAppendingPath("users").childByAppendingPath(uid).setValue(initialValues)
-                    self.loginModeSwitch()
+                        "email": self.usernameField.text!,
+                        "major": self.majorField.text!,
+                        "interests": self.interestsField.text!,
+                        "locked": "false",
+                        "loginattempts": "0"
+                    ]
+                    let uidRoot = self.root.childByAppendingPath("users/\(uid)")
+                    uidRoot.setValue(initialValues)
+//                    self.loginModeSwitch()
+                    self.registerMode = false
+                    self.animateToLoginMode()
                     self.performSelector(#selector(LoginViewController.login), withObject: self, afterDelay: 1)
                     print("Successfully created user account with uid: \(uid)")
                 }

@@ -17,8 +17,8 @@ class GeneralCell:UITableViewCell {
     @IBOutlet weak var runtimeLabel: UILabel!
     @IBOutlet weak var avgRatingLabel: UILabel!
     @IBOutlet weak var mpaaRatingLabel: UILabel!
-    var dataReceived:Bool = false
-    var dataPending:Bool = false
+//    var dataReceived:Bool = false
+//    var dataPending:Bool = false
 }
 
 class MovieTableViewCell:GeneralCell{
@@ -29,9 +29,10 @@ class MovieTableViewCell:GeneralCell{
     
     var movie: Movie! {
         didSet {
+//            print(movie.originalImage)
             //reset
-            dataReceived = false
-            dataPending = false
+//            dataReceived = false
+//            dataPending = false
             posterImageView.image = UIImage(named: "DefaultPosterImage")
             backgroundImageView.image = nil
             
@@ -43,12 +44,16 @@ class MovieTableViewCell:GeneralCell{
             genreLabel.text = "No Genre Info Available"
             avgRatingLabel.text = String(movie.buzzRating)
             movie.cell = self
-            if !dataReceived && !dataPending {
-                dataPending = true
-                movie.setImageAndGenreForCell()
-            }
+//            if !dataReceived && !dataPending {
+//                dataPending = true
+            movie.setImageAndGenreForCell()
+//            }
         }
     }
+    
+//    func setMovie(movie:Movie) {
+//        self.movie = movie
+//    }
 }
 
 class SearchTableViewCell:GeneralCell {
@@ -56,8 +61,8 @@ class SearchTableViewCell:GeneralCell {
     var movie: Movie! {
         didSet {
             //reset
-            dataReceived = false
-            dataPending = false
+//            dataReceived = false
+//            dataPending = false
             posterImageView.image = UIImage(named: "DefaultPosterImage")
             
             runtimeLabel.text = "Runtime: \(movie.runtime)"
@@ -66,10 +71,22 @@ class SearchTableViewCell:GeneralCell {
             genreLabel.text = "No Genre Info Available"
             avgRatingLabel.text = String(movie.buzzRating)
             movie.cell = self
-            if !dataReceived && !dataPending {
-                dataPending = true
-                movie.setImageAndGenreForCell()
-            }
+//            if !dataReceived && !dataPending {
+//                dataPending = true
+            movie.setImageAndGenreForCell()
+//            }
         }
     }
+}
+
+class MovieImageCell:UITableViewCell {
+    @IBOutlet weak var movieImageView: UIImageView!
+    
+}
+
+class MovieInfoCell:UITableViewCell {
+    @IBOutlet weak var genreLabel: UILabel!
+    @IBOutlet weak var mpaaRatingLabel: UILabel!
+    @IBOutlet weak var synopsisLabel: UILabel!
+    
 }

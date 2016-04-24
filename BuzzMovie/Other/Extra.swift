@@ -34,3 +34,12 @@ extension UINavigationController {
         return self.topViewController
     }
 }
+
+extension Int {
+    var runtimeString:String {
+        let hours = self/60
+        let minutes = self%60
+        let runTimeString = "\(hours) hr. \(minutes) min."
+        return runTimeString
+    }
+}

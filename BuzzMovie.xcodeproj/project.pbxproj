@@ -10,9 +10,9 @@
 		4800D7CC89940C7FDCD8C1FD /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 873DBCAA4D7BB480567E24A1 /* Pods.framework */; };
 		DF0761E91C7E3A6D002C9158 /* Extra.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF0761E81C7E3A6D002C9158 /* Extra.swift */; };
 		DF0761EB1C7E418D002C9158 /* StyleConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF0761EA1C7E418D002C9158 /* StyleConstants.swift */; };
+		DF48F0FF1CC6D1AE008A1ED9 /* MovieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF48F0FE1CC6D1AE008A1ED9 /* MovieViewController.swift */; };
 		DF7EF80F1C97291D00C21D73 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF7EF80E1C97291D00C21D73 /* MainTabBarController.swift */; };
 		DF7EF8111C972E0A00C21D73 /* MainNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF7EF8101C972E0A00C21D73 /* MainNavigationController.swift */; };
-		DF90AFB11CC03CAD00755D71 /* CardView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DF90AFB01CC03CAD00755D71 /* CardView.xib */; };
 		DFA3CE5A1C7C27DC002584A1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA3CE591C7C27DC002584A1 /* AppDelegate.swift */; };
 		DFA3CE5F1C7C27DC002584A1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DFA3CE5D1C7C27DC002584A1 /* Main.storyboard */; };
 		DFA3CE621C7C27DC002584A1 /* BuzzMovie.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DFA3CE601C7C27DC002584A1 /* BuzzMovie.xcdatamodeld */; };
@@ -21,12 +21,14 @@
 		DFA3CE741C7D0E80002584A1 /* HomeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA3CE731C7D0E80002584A1 /* HomeTableViewController.swift */; };
 		DFA3CE761C7D0E96002584A1 /* Cells.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA3CE751C7D0E96002584A1 /* Cells.swift */; };
 		DFA3CE7A1C7D1133002584A1 /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA3CE791C7D1133002584A1 /* Movie.swift */; };
+		DFAFBBC11CCC0C0B00CB8DB3 /* MovieHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DFAFBBC01CCC0C0B00CB8DB3 /* MovieHeaderView.xib */; };
+		DFAFBBC31CCC0DF000CB8DB3 /* MovieHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFAFBBC21CCC0DF000CB8DB3 /* MovieHeaderView.swift */; };
+		DFAFBBC61CCC0E1D00CB8DB3 /* MovieTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DFAFBBC41CCC0E1D00CB8DB3 /* MovieTableViewCell.xib */; };
+		DFAFBBC71CCC0E1D00CB8DB3 /* SearchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DFAFBBC51CCC0E1D00CB8DB3 /* SearchTableViewCell.xib */; };
 		DFBCF56E1C7D2BC20025BDC8 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFBCF56D1C7D2BC20025BDC8 /* ProfileViewController.swift */; };
 		DFBCF5711C7D38440025BDC8 /* toystory3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DFBCF5701C7D38440025BDC8 /* toystory3.jpg */; };
-		DFBCF5761C7D42630025BDC8 /* MovieTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DFBCF5751C7D42630025BDC8 /* MovieTableViewCell.xib */; };
 		DFBCF5781C7D454D0025BDC8 /* loginbackground.png in Resources */ = {isa = PBXBuildFile; fileRef = DFBCF5771C7D454D0025BDC8 /* loginbackground.png */; };
 		DFBCF57B1C7D4DCF0025BDC8 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFBCF57A1C7D4DCF0025BDC8 /* LoginViewController.swift */; };
-		DFE094BE1CA8B92A0024C2B2 /* SearchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DFE094BD1CA8B92A0024C2B2 /* SearchTableViewCell.xib */; };
 		DFE094C01CA8C8490024C2B2 /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE094BF1CA8C8490024C2B2 /* SearchTableViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -36,9 +38,9 @@
 		873DBCAA4D7BB480567E24A1 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF0761E81C7E3A6D002C9158 /* Extra.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Extra.swift; path = Other/Extra.swift; sourceTree = "<group>"; };
 		DF0761EA1C7E418D002C9158 /* StyleConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StyleConstants.swift; path = Other/StyleConstants.swift; sourceTree = "<group>"; };
+		DF48F0FE1CC6D1AE008A1ED9 /* MovieViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MovieViewController.swift; path = ViewControllers/MovieViewController.swift; sourceTree = "<group>"; };
 		DF7EF80E1C97291D00C21D73 /* MainTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainTabBarController.swift; path = ViewControllers/MainTabBarController.swift; sourceTree = "<group>"; };
 		DF7EF8101C972E0A00C21D73 /* MainNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainNavigationController.swift; path = ViewControllers/MainNavigationController.swift; sourceTree = "<group>"; };
-		DF90AFB01CC03CAD00755D71 /* CardView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CardView.xib; sourceTree = "<group>"; };
 		DFA3CE561C7C27DB002584A1 /* BuzzMovie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BuzzMovie.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DFA3CE591C7C27DC002584A1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DFA3CE5E1C7C27DC002584A1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -49,12 +51,14 @@
 		DFA3CE731C7D0E80002584A1 /* HomeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomeTableViewController.swift; path = ViewControllers/HomeTableViewController.swift; sourceTree = "<group>"; };
 		DFA3CE751C7D0E96002584A1 /* Cells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Cells.swift; path = Views/Cells.swift; sourceTree = "<group>"; };
 		DFA3CE791C7D1133002584A1 /* Movie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Movie.swift; path = Other/Movie.swift; sourceTree = "<group>"; };
+		DFAFBBC01CCC0C0B00CB8DB3 /* MovieHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MovieHeaderView.xib; path = XIB/MovieHeaderView.xib; sourceTree = "<group>"; };
+		DFAFBBC21CCC0DF000CB8DB3 /* MovieHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MovieHeaderView.swift; path = Views/MovieHeaderView.swift; sourceTree = "<group>"; };
+		DFAFBBC41CCC0E1D00CB8DB3 /* MovieTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MovieTableViewCell.xib; path = XIB/MovieTableViewCell.xib; sourceTree = "<group>"; };
+		DFAFBBC51CCC0E1D00CB8DB3 /* SearchTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SearchTableViewCell.xib; path = XIB/SearchTableViewCell.xib; sourceTree = "<group>"; };
 		DFBCF56D1C7D2BC20025BDC8 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileViewController.swift; path = ViewControllers/ProfileViewController.swift; sourceTree = "<group>"; };
 		DFBCF5701C7D38440025BDC8 /* toystory3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = toystory3.jpg; sourceTree = "<group>"; };
-		DFBCF5751C7D42630025BDC8 /* MovieTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MovieTableViewCell.xib; sourceTree = "<group>"; };
 		DFBCF5771C7D454D0025BDC8 /* loginbackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginbackground.png; sourceTree = "<group>"; };
 		DFBCF57A1C7D4DCF0025BDC8 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginViewController.swift; path = ViewControllers/LoginViewController.swift; sourceTree = "<group>"; };
-		DFE094BD1CA8B92A0024C2B2 /* SearchTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchTableViewCell.xib; sourceTree = "<group>"; };
 		DFE094BF1CA8C8490024C2B2 /* SearchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchTableViewController.swift; path = ViewControllers/SearchTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -142,6 +146,7 @@
 				DF7EF80E1C97291D00C21D73 /* MainTabBarController.swift */,
 				DF7EF8101C972E0A00C21D73 /* MainNavigationController.swift */,
 				DFE094BF1CA8C8490024C2B2 /* SearchTableViewController.swift */,
+				DF48F0FE1CC6D1AE008A1ED9 /* MovieViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -150,6 +155,7 @@
 			isa = PBXGroup;
 			children = (
 				DFA3CE751C7D0E96002584A1 /* Cells.swift */,
+				DFAFBBC21CCC0DF000CB8DB3 /* MovieHeaderView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -166,9 +172,9 @@
 		DFBCF5721C7D41DF0025BDC8 /* XIB */ = {
 			isa = PBXGroup;
 			children = (
-				DFBCF5751C7D42630025BDC8 /* MovieTableViewCell.xib */,
-				DFE094BD1CA8B92A0024C2B2 /* SearchTableViewCell.xib */,
-				DF90AFB01CC03CAD00755D71 /* CardView.xib */,
+				DFAFBBC41CCC0E1D00CB8DB3 /* MovieTableViewCell.xib */,
+				DFAFBBC51CCC0E1D00CB8DB3 /* SearchTableViewCell.xib */,
+				DFAFBBC01CCC0C0B00CB8DB3 /* MovieHeaderView.xib */,
 			);
 			name = XIB;
 			sourceTree = "<group>";
@@ -235,12 +241,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DFAFBBC11CCC0C0B00CB8DB3 /* MovieHeaderView.xib in Resources */,
+				DFAFBBC71CCC0E1D00CB8DB3 /* SearchTableViewCell.xib in Resources */,
+				DFAFBBC61CCC0E1D00CB8DB3 /* MovieTableViewCell.xib in Resources */,
 				DFBCF5711C7D38440025BDC8 /* toystory3.jpg in Resources */,
-				DF90AFB11CC03CAD00755D71 /* CardView.xib in Resources */,
 				DFBCF5781C7D454D0025BDC8 /* loginbackground.png in Resources */,
-				DFBCF5761C7D42630025BDC8 /* MovieTableViewCell.xib in Resources */,
 				DFA3CE671C7C27DC002584A1 /* LaunchScreen.storyboard in Resources */,
-				DFE094BE1CA8B92A0024C2B2 /* SearchTableViewCell.xib in Resources */,
 				DFA3CE641C7C27DC002584A1 /* Assets.xcassets in Resources */,
 				DFA3CE5F1C7C27DC002584A1 /* Main.storyboard in Resources */,
 			);
@@ -301,6 +307,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DF48F0FF1CC6D1AE008A1ED9 /* MovieViewController.swift in Sources */,
 				DFA3CE741C7D0E80002584A1 /* HomeTableViewController.swift in Sources */,
 				DFA3CE7A1C7D1133002584A1 /* Movie.swift in Sources */,
 				DFA3CE5A1C7C27DC002584A1 /* AppDelegate.swift in Sources */,
@@ -312,6 +319,7 @@
 				DF0761E91C7E3A6D002C9158 /* Extra.swift in Sources */,
 				DFA3CE621C7C27DC002584A1 /* BuzzMovie.xcdatamodeld in Sources */,
 				DF0761EB1C7E418D002C9158 /* StyleConstants.swift in Sources */,
+				DFAFBBC31CCC0DF000CB8DB3 /* MovieHeaderView.swift in Sources */,
 				DFA3CE761C7D0E96002584A1 /* Cells.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

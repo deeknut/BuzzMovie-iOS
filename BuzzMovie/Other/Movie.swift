@@ -81,6 +81,9 @@ struct Movie {
         return []
     }
     
+    //string after fetched from tmdb
+    var genreString: String?
+    
     //mpaarating PG-13, MA, etc.
     var mpaaRating: String {
         if json["mpaa_rating"].string == "Unrated" {
@@ -142,12 +145,19 @@ struct Movie {
         return json["synopsis"].string ?? "No available synopsis"
     }
     
+    //caching for image loaded from tmdb
+    var originalImage:UIImage! {
+        didSet {
+//            print(self.cell)
+//            print(title)
+//            print(originalImage)
+//            print()
+        }
+    }
     
-    
-    
-    var image:UIImage?
-    var imdbid:String? {
-        return json["alternate_ids"]["imdb"].string ?? ""
+    //imdbid
+    var imdbid:String {
+        return json["alternate_ids"]["imdb"].string ?? "Unavailable"
     }
     
     var abridgedcast: [JSON] {
@@ -156,13 +166,79 @@ struct Movie {
     
     init(json:JSON) {
         self.json = json
+//        getImageAndGenre()
     }
     
     func isEqualTo(movie: Movie) -> Bool {
         return self.RTid == movie.RTid
     }
     
-    func setImageAndGenreForCell() {
+//    mutating func getImageAndGenre() {
+//        let searchurl = "https://api.themoviedb.org/3/search/movie"
+//        let imagebaseurl = "http://image.tmdb.org/t/p/w185"
+//        let parameters = [
+//            "api_key": TMDB_API_KEY,
+//            "query": title
+//        ]
+//        Alamofire.request(.GET, searchurl, parameters: parameters)
+//            .responseJSON { response in
+//                //                print(response.request)  // original URL request
+//                //                print(response.response) // URL response
+//                //                print(response.data)     // server data
+//                //                print(response.result)   // result of response serialization
+//                
+//                if let unconvertedJSON = response.result.value {
+////                    print("\(unconvertedJSON)")
+//                    let json:JSON = JSON(unconvertedJSON)
+//                    for moviejson in json["results"].array! {
+//                        if self.title.lowercaseString == moviejson["original_title"].string?.lowercaseString || self.title == moviejson["title"].string?.lowercaseString {
+//                            //looking for poster
+//                            if let posterurl = moviejson["poster_path"].string {
+//                                let imageurl:NSURL = NSURL(string: imagebaseurl + posterurl)!
+//                                if let imagedata = NSData(contentsOfURL: imageurl) {
+//                                    let image = UIImage(data: imagedata)
+////                                    dispatch_async(dispatch_get_main_queue(), {
+//                                    self.originalImage = image
+////                                    })
+//                                }
+//                            } else {
+////                                print("movie.title: \(self.movie.title.lowercaseString)")
+////                                print("moviejson[original_title]: \(moviejson["original_title"].string!.lowercaseString)")
+////                                print("moviejson[title]: \(moviejson["title"].string!.lowercaseString)")
+////                                print(moviejson)
+//                            }
+//                            
+//                            //looking for genres
+//                            if let genrelist = moviejson["genre_ids"].arrayObject as! [Int]? {
+//                                var genreString = ""
+//                                for i in genrelist{
+//                                    if let g = Movie.genreMap[String(i)] {
+//                                        genreString += g
+//                                        if i != genrelist.last {
+//                                            genreString += "/"
+//                                        }
+//                                    }
+//                                }
+////                                dispatch_async(dispatch_get_main_queue(), {
+//                                self.genreString = genreString
+////                                })
+//                            }
+//                            return
+//                        }
+//                    }
+//                }
+//        }
+//        
+//    }
+    
+    mutating func setImageAndGenreForCell() {
+//        print (self.originalImage)
+        if let image = self.originalImage, genreString = self.genreString, cell = self.cell {
+            cell.posterImageView.image = image
+            (cell as? MovieTableViewCell)?.backgroundImageView.image = image
+            cell.genreLabel.text = genreString
+            return
+        }
         let searchurl = "https://api.themoviedb.org/3/search/movie"
         let imagebaseurl = "http://image.tmdb.org/t/p/w185"
         let parameters = [
@@ -186,8 +262,11 @@ struct Movie {
                                 let imageurl:NSURL = NSURL(string: imagebaseurl + posterurl)!
                                 if let imagedata = NSData(contentsOfURL: imageurl) {
                                     let image = UIImage(data: imagedata)
+//                                    dispatch_async(dispatch_get_main_queue(), {
+                                    self.originalImage = image
+//                                    })
                                     if let cell = self.cell {
-                                        cell.dataReceived = true
+//                                        cell.dataReceived = true
                                         cell.posterImageView.image = image
                                         (cell as? MovieTableViewCell)?.backgroundImageView.image = image
                                     }
@@ -210,6 +289,9 @@ struct Movie {
                                         }
                                     }
                                 }
+//                                dispatch_async(dispatch_get_main_queue(), {
+                                self.genreString = genreString
+//                                })
                                 if let cell = self.cell {
                                     cell.genreLabel.text = genreString
                                 }
@@ -223,11 +305,4 @@ struct Movie {
     }
 }
 
-extension Int {
-    var runtimeString:String {
-        let hours = self/60
-        let minutes = self%60
-        let runTimeString = "\(hours) hr. \(minutes) min."
-        return runTimeString
-    }
-}
+
