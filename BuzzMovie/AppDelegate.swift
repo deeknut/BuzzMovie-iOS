@@ -32,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
 //        UITableView.appearance()
         UITableView.appearance().separatorStyle = UITableViewCellSeparatorStyle.None
-        UITableView.appearance().backgroundColor = StyleConstants.defaultGrayColor
+        UITableView.appearance().backgroundColor = StyleConstants.defaultDarkGrayColor
 //        UITableViewHeaderFooterView.appearance().backgroundColor = UIColor.clearColor()
 //        UITableViewCell.appearance().backgroundColor = UIColor.blackColor()
         

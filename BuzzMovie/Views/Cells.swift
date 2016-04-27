@@ -84,9 +84,28 @@ class MovieImageCell:UITableViewCell {
     
 }
 
+class MovieActionCell:UITableViewCell {
+    var viewController:MovieViewController!
+    
+}
+
 class MovieInfoCell:UITableViewCell {
+    
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var avgRatingLabel: UILabel!
     @IBOutlet weak var genreLabel: UILabel!
     @IBOutlet weak var mpaaRatingLabel: UILabel!
     @IBOutlet weak var synopsisLabel: UILabel!
+    @IBOutlet weak var theaterDateLabel: UILabel!
+    @IBOutlet weak var runtimeLabel: UILabel!
+    @IBOutlet weak var dvdDateLabel: UILabel!
+    @IBOutlet weak var criticsRatingLabel: UILabel!
+    @IBOutlet weak var audienceRatingLabel: UILabel!
+    
+}
+
+class AdminCell:UITableViewCell {
+    @IBOutlet weak var emailLabel: UILabel!
+    @IBOutlet weak var statusLabel: UILabel!
     
 }

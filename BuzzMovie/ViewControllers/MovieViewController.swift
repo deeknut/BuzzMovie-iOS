@@ -101,9 +101,17 @@ extension MovieViewController:UITableViewDelegate, UITableViewDataSource {
             return cell
         } else {
             let cell = tableView.dequeueReusableCellWithIdentifier("MovieInfoCell", forIndexPath: indexPath) as! MovieInfoCell
+            cell.backgroundColor = UIColor.clearColor()
             cell.genreLabel.text = selectedGenreString ?? "Unknown Genre"
             cell.mpaaRatingLabel.text = movie.mpaaRating
             cell.synopsisLabel.text = movie.synopsis
+            cell.titleLabel.text = movie.title
+            cell.avgRatingLabel.text = "\(movie.buzzRating)"
+            cell.theaterDateLabel.text = "In Theaters: \(movie.theaterReleaseDate)"
+            cell.dvdDateLabel.text = "On DVD: \(movie.dvdReleaseDate)"
+            cell.runtimeLabel.text = "Runtime: \(movie.runtime)"
+            cell.criticsRatingLabel.text = "RT Critics Rating: \(movie.criticsRating)%"
+            cell.audienceRatingLabel.text = "RT Audience Rating: \(movie.audienceRating)%"
             return cell
         }
     }

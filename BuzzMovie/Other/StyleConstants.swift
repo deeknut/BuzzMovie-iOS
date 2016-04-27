@@ -16,4 +16,5 @@ struct StyleConstants {
     static let georgiaTechGold = UIColor.colorFromHex(0xFFE08B)
     static let defaultGrayColor = UIColor(red: 20/255.0, green: 23/255.0, blue: 21/255.0, alpha: 1.0)
     static let defaultLightGrayColor = UIColor(red: 200/255.0, green: 200/255.0, blue: 200/255.0, alpha: 1.0)
+    static let defaultDarkGrayColor = UIColor(red: 10/255.0, green: 13/255.0, blue: 11/255.0, alpha: 1.0)
 }

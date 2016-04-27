@@ -13,6 +13,9 @@ import SwiftyJSON
 
 class SearchTableViewController: UIViewController{
 
+    //===========================================================================
+    //MARK - VARIABLES
+    //===========================================================================
     @IBOutlet weak var tableView: UITableView!
     
     var searchController: UISearchController!
@@ -23,6 +26,9 @@ class SearchTableViewController: UIViewController{
     var selectedImage:UIImage?
     var selectedGenreString:String?
     
+    //===========================================================================
+    //MARK - VIEWDIDLOAD
+    //===========================================================================
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setNeedsStatusBarAppearanceUpdate()
@@ -53,6 +59,9 @@ class SearchTableViewController: UIViewController{
         // Dispose of any resources that can be recreated.
     }
     
+    //===========================================================================
+    //MARK - STATUS BAR
+    //===========================================================================
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return .LightContent
     }
@@ -60,7 +69,10 @@ class SearchTableViewController: UIViewController{
     override func prefersStatusBarHidden() -> Bool {
         return false
     }
-
+    
+    //===========================================================================
+    //MARK - SEGUES
+    //===========================================================================
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let destination = segue.destinationViewController as! MovieViewController
         destination.movie = self.selectedMovie
@@ -68,6 +80,9 @@ class SearchTableViewController: UIViewController{
         destination.selectedGenreString = self.selectedGenreString
     }
     
+    //===========================================================================
+    //MARK - API
+    //===========================================================================
     func fetchImageGenreAndSegue(movie:Movie) {
         let searchurl = "https://api.themoviedb.org/3/search/movie"
         let imagebaseurl = "http://image.tmdb.org/t/p/original"
@@ -130,6 +145,9 @@ class SearchTableViewController: UIViewController{
 }
 
 extension SearchTableViewController: UITableViewDelegate, UITableViewDataSource {
+    //===========================================================================
+    //MARK - TABLEVIEW
+    //===========================================================================
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         tableView.registerNib(UINib.init(nibName: "SearchTableViewCell", bundle: nil), forCellReuseIdentifier: "SearchCell")
         let cell = tableView.dequeueReusableCellWithIdentifier("SearchCell", forIndexPath: indexPath) as! SearchTableViewCell
@@ -153,6 +171,9 @@ extension SearchTableViewController: UITableViewDelegate, UITableViewDataSource 
 }
 
 extension SearchTableViewController: UISearchBarDelegate, UISearchResultsUpdating, UISearchControllerDelegate {
+    //===========================================================================
+    //MARK - SEARCH BAR DELEGATE
+    //===========================================================================
     func updateSearchResultsForSearchController(searchController: UISearchController) {
         
     }

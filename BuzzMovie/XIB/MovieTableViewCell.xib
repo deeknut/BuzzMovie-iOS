@@ -57,7 +57,7 @@
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" minimumZoomScale="0.0" maximumZoomScale="0.0" text="Deftly blending comedy, adventure, and honest emotion, Toy Story 3 is a rare second sequel that really works. " translatesAutoresizingMaskIntoConstraints="NO" id="CZM-RQ-6Hn">
+                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" minimumZoomScale="0.0" maximumZoomScale="0.0" text="Deftly blending comedy, adventure, and honest emotion, Toy Story 3 is a rare second sequel that really works. " textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="CZM-RQ-6Hn">
                                     <rect key="frame" x="102" y="39" width="240" height="68"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="0.0"/>

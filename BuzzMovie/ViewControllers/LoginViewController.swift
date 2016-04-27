@@ -192,30 +192,43 @@ class LoginViewController: UIViewController {
         majorField.text = ""
         interestsField.text = ""
     }
+    //===========================================================================
+    //MARK: - NSUSERDEFAULTS
+    //===========================================================================
+    func clearDefaultCredentials() {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        defaults.removeObjectForKey("username")
+        defaults.removeObjectForKey("password")
+        defaults.synchronize()
+        
+    }
+    
+    func setDefaultCredentials(username:String, password:String) {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        defaults.setObject(username, forKey: "username")
+        defaults.setObject(password, forKey: "password")
+        defaults.synchronize()
+    }
     
     //===========================================================================
     //MARK: - SEGUES
     //===========================================================================
     
     @IBAction func unwindToLogin(unwindSegue: UIStoryboardSegue, towardsViewController subsequentVC: UIViewController) {
-        clearAllFields()
-        let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.removeObjectForKey("username")
-        defaults.removeObjectForKey("password")
-        defaults.synchronize()
+        if unwindSegue.identifier != "Admin" {
+            clearAllFields()
+            clearDefaultCredentials()
+        }
         animateToLoginMode()
         showLoginFields()
         titleLabel.text = "BuzzMovie"
     }
     
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
     }
     
-    func segueToUser() {
-        self.performSegueWithIdentifier("UserSegue", sender: self)
-//        loginFailed()
-    }
     
     
     //===========================================================================
@@ -236,21 +249,29 @@ class LoginViewController: UIViewController {
                 let fetchedEmail = uidsnapshot.value["email"] as! String
                 if (fetchedEmail == self.usernameField.text!) {
                     found = true
-                    let locked = uidsnapshot.value["locked"] as! String
-                    if locked == "true" {
-                        //account locked.
-                        self.titleLabel.text = "Account Locked. Contact Admin"
+                    let banned = uidsnapshot.value["banned"] as! String
+                    if banned == "true" {
+                       //account banned.
+                        self.titleLabel.text = "Account Banned. Contact Admin"
+                        self.clearDefaultCredentials()
                         self.loginFailed()
                     } else {
-                        //account isn't locked, continue with authenticating
-                        self.login()
+                        let locked = uidsnapshot.value["locked"] as! String
+                        if locked == "true" {
+                            //account locked.
+                            self.titleLabel.text = "Account Locked. Contact Admin"
+                            self.clearDefaultCredentials()
+                            self.loginFailed()
+                        } else {
+                            //account isn't locked, continue with authenticating
+                            self.login()
+                        }
                     }
-                } else {
-                    //could not find matching profile
                 }
             }
             if !found {
                 self.titleLabel.text = "User Not Found. Register?"
+                self.clearDefaultCredentials()
                 self.loginFailed()
             }
         })
@@ -273,12 +294,29 @@ class LoginViewController: UIViewController {
                 let uidRoot = self.root.childByAppendingPath("users/\(uid)")
                 uidRoot.childByAppendingPath("loginattempts").setValue("0")
                 if (self.staySwitch.on) {
-                    let defaults = NSUserDefaults.standardUserDefaults()
-                    defaults.setObject(self.usernameField.text, forKey: "username")
-                    defaults.setObject(self.passwordField.text, forKey: "password")
-                    defaults.synchronize()
+                    self.setDefaultCredentials(self.usernameField.text!, password: self.passwordField.text!)
                 }
-                self.performSelector(#selector(LoginViewController.segueToUser), withObject: self, afterDelay: 0)
+                uidRoot.observeSingleEventOfType(.Value, withBlock: { snapshot in
+                    if let isAdmin = snapshot.value["admin"] as! String? {
+                        if isAdmin == "true" {
+                            let alertController = UIAlertController(title: "Admin Privileges", message: "Choose your mode", preferredStyle: .Alert)
+                            let actionAdmin = UIAlertAction(title: "Admin", style: .Default, handler: { action in
+                                self.performSegueWithIdentifier("AdminSegue", sender: self)
+                            })
+                            let actionUser = UIAlertAction(title: "User", style: .Default, handler: { action in
+                                self.performSegueWithIdentifier("UserSegue", sender: self)
+                            })
+                            alertController.addAction(actionAdmin)
+                            alertController.addAction(actionUser)
+                            
+                            self.presentViewController(alertController, animated: true, completion: nil)
+                        } else {
+                            //default
+                            self.performSegueWithIdentifier("UserSegue", sender: self)
+                            
+                        }
+                    }
+                })
             }
         })
     }
@@ -343,6 +381,12 @@ class LoginViewController: UIViewController {
         loggingInLabel.text = "Registering..."
         showRegisterLabel()
         
+        var dateFormatter:NSDateFormatter = {
+            let dateFormatter = NSDateFormatter()
+            dateFormatter.dateFormat = "MMMM d, yyyy"
+            return dateFormatter
+        }()
+        
         //creation
         root.createUser(usernameField.text, password: passwordField.text,
             withValueCompletionBlock: { error, result in
@@ -356,7 +400,10 @@ class LoginViewController: UIViewController {
                         "major": self.majorField.text!,
                         "interests": self.interestsField.text!,
                         "locked": "false",
-                        "loginattempts": "0"
+                        "admin": "false",
+                        "loginattempts": "0",
+                        "banned": "false",
+                        "registerdate": dateFormatter.stringFromDate(NSDate())
                     ]
                     let uidRoot = self.root.childByAppendingPath("users/\(uid)")
                     uidRoot.setValue(initialValues)
