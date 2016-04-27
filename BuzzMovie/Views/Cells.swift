@@ -84,8 +84,39 @@ class MovieImageCell:UITableViewCell {
     
 }
 
+protocol MovieActionDelegate {
+    func didLike(button:UIButton)
+    func didUnLike(button:UIButton)
+    func didAddRating(button:UIButton)
+}
+
 class MovieActionCell:UITableViewCell {
-    var viewController:MovieViewController!
+    var delegate:MovieActionDelegate?
+    
+    @IBOutlet weak var likeButton: UIButton!
+    @IBOutlet weak var addRatingButton: UIButton!
+    
+    override func awakeFromNib() {
+        likeButton.addTarget(self, action: #selector(MovieActionCell.like), forControlEvents: .TouchUpInside)
+    }
+    
+    func like() {
+        likeButton.removeTarget(self, action: #selector(MovieActionCell.like), forControlEvents: .TouchUpInside)
+        likeButton.addTarget(self, action: #selector(MovieActionCell.unlike), forControlEvents: .TouchUpInside)
+        likeButton.setBackgroundImage(UIImage(named: "Like"), forState: .Normal)
+        delegate?.didLike(likeButton)
+    }
+    
+    func unlike() {
+        likeButton.removeTarget(self, action: #selector(MovieActionCell.unlike), forControlEvents: .TouchUpInside)
+        likeButton.addTarget(self, action: #selector(MovieActionCell.like), forControlEvents: .TouchUpInside)
+        likeButton.setBackgroundImage(UIImage(named: "Unlike"), forState: .Normal)
+        delegate?.didUnLike(likeButton)
+    }
+    
+    @IBAction func addRating(sender: UIButton) {
+        delegate?.didAddRating(likeButton)
+    }
     
 }
 

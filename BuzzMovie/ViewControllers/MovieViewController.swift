@@ -40,6 +40,9 @@ class MovieViewController: UIViewController {
         tableView.dataSource = self
         tableView.backgroundColor = UIColor.clearColor()
         
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 500
+        
         self.setNeedsStatusBarAppearanceUpdate()
 
     }
@@ -88,8 +91,9 @@ extension MovieViewController:UITableViewDelegate, UITableViewDataSource {
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //index == 0 is image
-        //index == 1 is information
-        return 2
+        //index == 1 is actions
+        //index == 2 is information
+        return 3
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -98,6 +102,10 @@ extension MovieViewController:UITableViewDelegate, UITableViewDataSource {
             if let image = selectedImage {
                 cell.movieImageView.image = image
             }
+            return cell
+        } else if indexPath.row == 1 {
+            let cell = tableView.dequeueReusableCellWithIdentifier("MovieActionCell", forIndexPath: indexPath) as! MovieActionCell
+            cell.backgroundColor = UIColor.clearColor()
             return cell
         } else {
             let cell = tableView.dequeueReusableCellWithIdentifier("MovieInfoCell", forIndexPath: indexPath) as! MovieInfoCell
@@ -110,19 +118,25 @@ extension MovieViewController:UITableViewDelegate, UITableViewDataSource {
             cell.theaterDateLabel.text = "In Theaters: \(movie.theaterReleaseDate)"
             cell.dvdDateLabel.text = "On DVD: \(movie.dvdReleaseDate)"
             cell.runtimeLabel.text = "Runtime: \(movie.runtime)"
-            cell.criticsRatingLabel.text = "RT Critics Rating: \(movie.criticsRating)%"
+            if movie.criticsRating != -1 {
+                cell.criticsRatingLabel.text = "RT Critics Rating: \(movie.criticsRating)%"
+            } else {
+                cell.criticsRatingLabel.text = "RT Critics Rating: TBD"
+            }
             cell.audienceRatingLabel.text = "RT Audience Rating: \(movie.audienceRating)%"
             return cell
         }
     }
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if indexPath.row == 0 {
-            if let image = selectedImage {
-                return self.view.frame.width * image.size.height / image.size.width * 0.75
-            }
-            return 0
-        } else {
-            return 700
-        }
-    }
+//    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+//        if indexPath.row == 0 {
+//            if let image = selectedImage {
+//                return self.view.frame.width * image.size.height / image.size.width * 0.75
+//            }
+//            return 0
+//        } else if indexPath.row == 1 {
+//            return 50
+//        } else {
+//            return 750
+//        }
+//    }
 }
