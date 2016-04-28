@@ -342,6 +342,9 @@ class HomeTableViewController: UIViewController {
             var usersCount:UInt = 0
             for uidSnapshot in snapshot.children {
                 self.root.childByAppendingPath("users/\(uidSnapshot.key)/recommendations").observeSingleEventOfType(.Value, withBlock: {recSnapshots in
+                    if recSnapshots.childrenCount == 0 {
+                        usersCount += 1
+                    }
                     var recCount:UInt = 0
                     for recommendation in recSnapshots.children {
                         let RTid = recommendation.key
@@ -363,16 +366,18 @@ class HomeTableViewController: UIViewController {
                                         if let _ = avgRating {
                                             movies.append(movie)
                                         }
-                                        if (recCount == recSnapshots.childrenCount - 1 && usersCount == snapshot.childrenCount - 1) {
+                                        if (recCount >= recSnapshots.childrenCount - 1 && usersCount >= snapshot.childrenCount - 1) {
                                             movies.sortInPlace({movie1, movie2 in
                                                 return (movie1.avgRating! - movie2.avgRating! > 0)
                                             })
                                             closure(movies)
                                         }
-                                        if (recCount == recSnapshots.childrenCount - 1) {
+                                        if (recCount >= recSnapshots.childrenCount - 1) {
+                                            recCount = 0
                                             usersCount += 1
+                                        } else {
+                                            recCount += 1
                                         }
-                                        recCount += 1
                                     })
                                 
                                 }

@@ -549,7 +549,7 @@
                             </segmentedControl>
                             <searchBar contentMode="redraw" barStyle="black" placeholder="Search by Major" translatesAutoresizingMaskIntoConstraints="NO" id="Yda-5m-LJY">
                                 <rect key="frame" x="0.0" y="93" width="375" height="44"/>
-                                <textInputTraits key="textInputTraits" returnKeyType="search"/>
+                                <textInputTraits key="textInputTraits" keyboardAppearance="alert" returnKeyType="search"/>
                             </searchBar>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -1771,6 +1771,6 @@
         <image name="loginbackground.png" width="1667" height="1560"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="PiW-DJ-nCd"/>
+        <segue reference="acb-BU-ecb"/>
     </inferredMetricsTieBreakers>
 </document>
