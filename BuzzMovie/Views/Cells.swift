@@ -42,7 +42,14 @@ class MovieTableViewCell:GeneralCell{
             mpaaRatingLabel.text = movie.mpaaRating
             titleLabel.text = movie.title
             genreLabel.text = "No Genre Info Available"
-            avgRatingLabel.text = String(movie.buzzRating)
+            avgRatingLabel.text = "TBD"
+            movie.loadAvgRating({ avgrating in
+                if let avgrating = avgrating {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.avgRatingLabel.text = "\(avgrating)"
+                    })
+                }
+            })
             movie.cell = self
 //            if !dataReceived && !dataPending {
 //                dataPending = true
@@ -69,7 +76,14 @@ class SearchTableViewCell:GeneralCell {
             mpaaRatingLabel.text = movie.mpaaRating
             titleLabel.text = movie.title
             genreLabel.text = "No Genre Info Available"
-            avgRatingLabel.text = String(movie.buzzRating)
+            avgRatingLabel.text = "TBD"
+            movie.loadAvgRating({ avgrating in
+                if let avgrating = avgrating {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.avgRatingLabel.text = "\(avgrating)"
+                    })
+                }
+            })
             movie.cell = self
 //            if !dataReceived && !dataPending {
 //                dataPending = true
@@ -95,23 +109,36 @@ class MovieActionCell:UITableViewCell {
     
     @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var addRatingButton: UIButton!
+    @IBOutlet weak var userRatingLabel: UILabel!
     
     override func awakeFromNib() {
         likeButton.addTarget(self, action: #selector(MovieActionCell.like), forControlEvents: .TouchUpInside)
     }
     
     func like() {
-        likeButton.removeTarget(self, action: #selector(MovieActionCell.like), forControlEvents: .TouchUpInside)
-        likeButton.addTarget(self, action: #selector(MovieActionCell.unlike), forControlEvents: .TouchUpInside)
-        likeButton.setBackgroundImage(UIImage(named: "Like"), forState: .Normal)
+        setLike(true)
         delegate?.didLike(likeButton)
     }
     
     func unlike() {
-        likeButton.removeTarget(self, action: #selector(MovieActionCell.unlike), forControlEvents: .TouchUpInside)
-        likeButton.addTarget(self, action: #selector(MovieActionCell.like), forControlEvents: .TouchUpInside)
-        likeButton.setBackgroundImage(UIImage(named: "Unlike"), forState: .Normal)
+        setLike(false)
         delegate?.didUnLike(likeButton)
+    }
+    
+    func setLike(like:Bool) {
+        if like {
+            likeButton.removeTarget(self, action: #selector(MovieActionCell.like), forControlEvents: .TouchUpInside)
+            likeButton.addTarget(self, action: #selector(MovieActionCell.unlike), forControlEvents: .TouchUpInside)
+            dispatch_async(dispatch_get_main_queue(), {
+                self.likeButton.setBackgroundImage(UIImage(named: "Like"), forState: .Normal)
+            })
+        } else {
+            likeButton.removeTarget(self, action: #selector(MovieActionCell.unlike), forControlEvents: .TouchUpInside)
+            likeButton.addTarget(self, action: #selector(MovieActionCell.like), forControlEvents: .TouchUpInside)
+            dispatch_async(dispatch_get_main_queue(), {
+                self.likeButton.setBackgroundImage(UIImage(named: "NotLike"), forState: .Normal)
+            })
+        }
     }
     
     @IBAction func addRating(sender: UIButton) {

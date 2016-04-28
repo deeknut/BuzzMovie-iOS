@@ -13,6 +13,7 @@
 		DF226ED91CCE99D90035A99C /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF226ED81CCE99D90035A99C /* User.swift */; };
 		DF226EDD1CD038990035A99C /* ProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF226EDC1CD038990035A99C /* ProfileTableViewController.swift */; };
 		DF226EE11CD04C020035A99C /* EditProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF226EE01CD04C020035A99C /* EditProfileTableViewController.swift */; };
+		DF226EE31CD17BEB0035A99C /* MovieRatingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF226EE21CD17BEB0035A99C /* MovieRatingViewController.swift */; };
 		DF48F0FF1CC6D1AE008A1ED9 /* MovieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF48F0FE1CC6D1AE008A1ED9 /* MovieViewController.swift */; };
 		DF7EF80F1C97291D00C21D73 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF7EF80E1C97291D00C21D73 /* MainTabBarController.swift */; };
 		DF7EF8111C972E0A00C21D73 /* MainNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF7EF8101C972E0A00C21D73 /* MainNavigationController.swift */; };
@@ -44,6 +45,7 @@
 		DF226ED81CCE99D90035A99C /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = User.swift; path = Other/User.swift; sourceTree = "<group>"; };
 		DF226EDC1CD038990035A99C /* ProfileTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileTableViewController.swift; path = ViewControllers/ProfileTableViewController.swift; sourceTree = "<group>"; };
 		DF226EE01CD04C020035A99C /* EditProfileTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EditProfileTableViewController.swift; path = ViewControllers/EditProfileTableViewController.swift; sourceTree = "<group>"; };
+		DF226EE21CD17BEB0035A99C /* MovieRatingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MovieRatingViewController.swift; path = ViewControllers/MovieRatingViewController.swift; sourceTree = "<group>"; };
 		DF48F0FE1CC6D1AE008A1ED9 /* MovieViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MovieViewController.swift; path = ViewControllers/MovieViewController.swift; sourceTree = "<group>"; };
 		DF7EF80E1C97291D00C21D73 /* MainTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainTabBarController.swift; path = ViewControllers/MainTabBarController.swift; sourceTree = "<group>"; };
 		DF7EF8101C972E0A00C21D73 /* MainNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainNavigationController.swift; path = ViewControllers/MainNavigationController.swift; sourceTree = "<group>"; };
@@ -152,10 +154,11 @@
 				DFA3CE731C7D0E80002584A1 /* HomeTableViewController.swift */,
 				DFBCF57A1C7D4DCF0025BDC8 /* LoginViewController.swift */,
 				DFE094BF1CA8C8490024C2B2 /* SearchTableViewController.swift */,
-				DF48F0FE1CC6D1AE008A1ED9 /* MovieViewController.swift */,
 				DFAFBBC81CCC832A00CB8DB3 /* AdminViewController.swift */,
 				DF226EDC1CD038990035A99C /* ProfileTableViewController.swift */,
 				DF226EE01CD04C020035A99C /* EditProfileTableViewController.swift */,
+				DF48F0FE1CC6D1AE008A1ED9 /* MovieViewController.swift */,
+				DF226EE21CD17BEB0035A99C /* MovieRatingViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -332,6 +335,7 @@
 				DFA3CE621C7C27DC002584A1 /* BuzzMovie.xcdatamodeld in Sources */,
 				DF0761EB1C7E418D002C9158 /* StyleConstants.swift in Sources */,
 				DFAFBBC31CCC0DF000CB8DB3 /* MovieHeaderView.swift in Sources */,
+				DF226EE31CD17BEB0035A99C /* MovieRatingViewController.swift in Sources */,
 				DFA3CE761C7D0E96002584A1 /* Cells.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

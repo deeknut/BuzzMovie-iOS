@@ -36,8 +36,8 @@
                                         </mask>
                                     </variation>
                                 </imageView>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" text="Toy Story 3" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ne3-13-GgD">
-                                    <rect key="frame" x="81" y="10" width="148" height="24"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Toy Story 3" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ne3-13-GgD">
+                                    <rect key="frame" x="81" y="10" width="168.5" height="24"/>
                                     <fontDescription key="fontDescription" type="system" weight="light" pointSize="20"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
@@ -54,8 +54,8 @@
                                     <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="8.9" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="llR-XV-j3S">
-                                    <rect key="frame" x="229" y="10" width="50" height="24"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="752" text="8.9" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="llR-XV-j3S">
+                                    <rect key="frame" x="249" y="10" width="29.5" height="24"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="30" id="6zt-a4-7P5"/>
                                         <constraint firstAttribute="width" constant="50" id="K07-Gq-p9f"/>
@@ -67,6 +67,7 @@
                                     <variation key="default">
                                         <mask key="constraints">
                                             <exclude reference="6zt-a4-7P5"/>
+                                            <exclude reference="K07-Gq-p9f"/>
                                             <exclude reference="WHJ-fr-vaq"/>
                                         </mask>
                                     </variation>

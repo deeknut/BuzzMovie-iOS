@@ -25,13 +25,13 @@
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Toy Story 3" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="02r-0G-Hks">
-                                    <rect key="frame" x="102" y="8" width="182" height="23"/>
+                                    <rect key="frame" x="102" y="8" width="188.5" height="23"/>
                                     <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="19"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fantasy/Comedy-Drama" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ohq-Cm-WcM">
-                                    <rect key="frame" x="102" y="28" width="185" height="18"/>
+                                    <rect key="frame" x="102" y="28" width="191.5" height="18"/>
                                     <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="13"/>
                                     <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
@@ -74,14 +74,19 @@
                                         </mask>
                                     </variation>
                                 </textView>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="8.9" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zaT-XN-ko9">
-                                    <rect key="frame" x="292" y="8" width="42" height="29"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="8.9" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zaT-XN-ko9">
+                                    <rect key="frame" x="298.5" y="8" width="35.5" height="29"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="42" id="Nb7-aY-Hnr"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" weight="light" pointSize="24"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
+                                    <variation key="default">
+                                        <mask key="constraints">
+                                            <exclude reference="Nb7-aY-Hnr"/>
+                                        </mask>
+                                    </variation>
                                 </label>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bDk-DE-bdU">
                                     <rect key="frame" x="8" y="9" width="86" height="128"/>

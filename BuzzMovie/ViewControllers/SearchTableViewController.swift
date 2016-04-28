@@ -80,6 +80,9 @@ class SearchTableViewController: UIViewController{
         destination.selectedGenreString = self.selectedGenreString
     }
     
+    override func unwindForSegue(unwindSegue: UIStoryboardSegue, towardsViewController subsequentVC: UIViewController) {
+        tableView.reloadData()
+    }
     //===========================================================================
     //MARK - API
     //===========================================================================

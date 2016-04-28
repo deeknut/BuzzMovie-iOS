@@ -9,6 +9,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Cosmos.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Firebase.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -27,12 +32,12 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>1D11ED6D2F7293F097BE48D0D06B684C</key>
+		<key>2D3264DFF9FC09046F266960010E47D2</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>728597AD35D6CF7FE4DF80A1351F0D0B</key>
+		<key>608B49B5DDACC601EE8044A1931993F9</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -43,6 +48,11 @@
 			<true/>
 		</dict>
 		<key>B7AC9326D819482593FE118E915409D7</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C308A7FF7E12D97180CECC7AFA9D06C2</key>
 		<dict>
 			<key>primary</key>
 			<true/>

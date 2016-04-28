@@ -87,6 +87,17 @@ class ProfileTableViewController: UITableViewController {
     //===========================================================================
     //MARK - SEGUES
     //===========================================================================
+    @IBAction func prepareToLogout(sender: AnyObject) {
+        let alertController = UIAlertController(title: "Logout", message: "Are you sure?", preferredStyle: .Alert)
+        let actionYes = UIAlertAction(title: "Yes", style: .Default, handler: { action in
+            self.performSegueWithIdentifier("Exit", sender: self)
+        })
+        let actionNo = UIAlertAction(title: "No", style: .Default, handler: nil)
+        alertController.addAction(actionYes)
+        alertController.addAction(actionNo)
+        
+        self.presentViewController(alertController, animated: true, completion: nil)
+    }
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "EditSegue" {
             let dest = segue.destinationViewController as! EditProfileTableViewController

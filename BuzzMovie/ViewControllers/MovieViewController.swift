@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class MovieViewController: UIViewController {
     //===========================================================================
@@ -24,9 +25,15 @@ class MovieViewController: UIViewController {
     var selectedImage:UIImage?
     var selectedGenreString:String?
     
+    var userRating:Double?
+    var recommendation:String?
+    
+    var user:User?
+    
+    var root = Firebase(url: "https://deeknutssquad.firebaseio.com/")
     
     //===========================================================================
-    //MARK - VIEWDIDLOAD
+    //MARK - VIEWDIDLOAD/SETUP/ROTATE
     //===========================================================================
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,7 +42,6 @@ class MovieViewController: UIViewController {
             backgroundImageView.image = image
         }
         titleLabel.text = movie.title
-        avgRatingLabel.text = String(movie.buzzRating)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = UIColor.clearColor()
@@ -43,14 +49,52 @@ class MovieViewController: UIViewController {
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 500
         
+        loadUser()
+        
         self.setNeedsStatusBarAppearanceUpdate()
 
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        tableView.reloadData()
+    }
+    
+    func checkLikes(closure:(Bool) -> Void){
+        root.childByAppendingPath("users/\(uid)/likes").observeSingleEventOfType(.Value, withBlock: { snapshot in
+            if let likes = snapshot.children {
+                for like in likes {
+                    if (like.key == self.movie.RTid) {
+                        closure(true)
+                    }
+                }
+            }
+            closure(false)
+        })
+    }
+    
+    func loadUser() {
+        root.childByAppendingPath("users/\(uid)").observeSingleEventOfType(.Value, withBlock: { snapshot in
+            let user = User(snapshot: snapshot)
+            self.user = user
+        })
+    }
+    
+    func loadUserRecommendation(closure:(Double?, String?) -> Void) {
+        root.childByAppendingPath("users/\(uid)/recommendations/\(movie.RTid)").observeSingleEventOfType(.Value, withBlock: { snapshot in
+            closure(snapshot.value["rating"] as? Double, snapshot.value["recommendation"] as? String)
+        })
+    }
+    
+    
+    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
+        tableView.layoutIfNeeded()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
     
     //===========================================================================
     //MARK - STATUSBAR
@@ -66,19 +110,23 @@ class MovieViewController: UIViewController {
     //===========================================================================
     //MARK - SEGUES
     //===========================================================================
-    @IBAction override func unwindForSegue(unwindSegue: UIStoryboardSegue, towardsViewController subsequentVC: UIViewController) {
-        self.navigationController?.navigationBarHidden = false
+    @IBAction func unwindForMovieView(unwindSegue: UIStoryboardSegue, towardsViewController subsequentVC: UIViewController) {
+        tableView.reloadData()
     }
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if segue.identifier == "Exit" {
+            self.navigationController?.navigationBarHidden = false
+        } else if segue.identifier == "RatingSegue" {
+            let dest = segue.destinationViewController as! MovieRatingViewController
+            dest.modalPresentationStyle = .OverCurrentContext
+            dest.userRating = self.userRating
+            dest.recommendation = self.recommendation
+            dest.user = self.user
+            dest.movie = self.movie
+        }
     }
-    */
+    
 
 }
 
@@ -106,6 +154,22 @@ extension MovieViewController:UITableViewDelegate, UITableViewDataSource {
         } else if indexPath.row == 1 {
             let cell = tableView.dequeueReusableCellWithIdentifier("MovieActionCell", forIndexPath: indexPath) as! MovieActionCell
             cell.backgroundColor = UIColor.clearColor()
+            checkLikes({ isLiked in
+                cell.setLike(isLiked)
+            })
+            
+            loadUserRecommendation({ rating, recommendation in
+                if let rating = rating, recommendation = recommendation {
+                    self.userRating = rating
+                    self.recommendation = recommendation
+                    cell.userRatingLabel.text = "Your rating: \(rating)"
+                } else {
+                    self.userRating = nil
+                    self.recommendation = nil
+                    cell.userRatingLabel.text = "Click star button to add rating"
+                }
+            })
+            cell.delegate = self
             return cell
         } else {
             let cell = tableView.dequeueReusableCellWithIdentifier("MovieInfoCell", forIndexPath: indexPath) as! MovieInfoCell
@@ -114,7 +178,19 @@ extension MovieViewController:UITableViewDelegate, UITableViewDataSource {
             cell.mpaaRatingLabel.text = movie.mpaaRating
             cell.synopsisLabel.text = movie.synopsis
             cell.titleLabel.text = movie.title
-            cell.avgRatingLabel.text = "\(movie.buzzRating)"
+            movie.loadAvgRating({ avgRating in
+                if let avgRating = avgRating {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.avgRatingLabel.text = "\(avgRating)"
+                        cell.avgRatingLabel.text = "\(avgRating)"
+                    })
+                } else {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.avgRatingLabel.text = "TBD"
+                        cell.avgRatingLabel.text = "TBD"
+                    })
+                }
+            })
             cell.theaterDateLabel.text = "In Theaters: \(movie.theaterReleaseDate)"
             cell.dvdDateLabel.text = "On DVD: \(movie.dvdReleaseDate)"
             cell.runtimeLabel.text = "Runtime: \(movie.runtime)"
@@ -124,19 +200,30 @@ extension MovieViewController:UITableViewDelegate, UITableViewDataSource {
                 cell.criticsRatingLabel.text = "RT Critics Rating: TBD"
             }
             cell.audienceRatingLabel.text = "RT Audience Rating: \(movie.audienceRating)%"
+            
             return cell
         }
     }
-//    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-//        if indexPath.row == 0 {
-//            if let image = selectedImage {
-//                return self.view.frame.width * image.size.height / image.size.width * 0.75
-//            }
-//            return 0
-//        } else if indexPath.row == 1 {
-//            return 50
-//        } else {
-//            return 750
-//        }
-//    }
+}
+
+extension MovieViewController: MovieActionDelegate {
+    func didLike(button: UIButton) {
+        root.childByAppendingPath("users/\(uid)/likes/\(movie.RTid)").setValue(movie.title)
+    }
+    
+    func didUnLike(button: UIButton) {
+        root.childByAppendingPath("users/\(uid)/likes/\(movie.RTid)").removeValue()
+    }
+    
+    func didAddRating(button: UIButton) {
+        if let _ = self.user {
+//            let dest = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("MovieRating") as! MovieRatingViewController
+//            dest.userRating = self.userRating
+//            dest.recommendation = self.recommendation
+//            dest.user = self.user
+//            dest.movie = self.movie
+//            self.presentViewController(dest, animated: true, completion: nil)
+            self.performSegueWithIdentifier("RatingSegue", sender: self)
+        }
+    }
 }

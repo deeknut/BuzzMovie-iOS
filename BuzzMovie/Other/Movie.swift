@@ -9,10 +9,12 @@
 import UIKit
 import SwiftyJSON
 import Alamofire
+import Firebase
 
 
+class Movie {
 
-struct Movie {
+    var root = Firebase(url: "https://deeknutssquad.firebaseio.com/")
     
     //list of all genre ids
     static let genreMap:[String:String] = [
@@ -60,7 +62,13 @@ struct Movie {
     
     //id for rottentomatoes
     var RTid: String {
-        return json["id"].string ?? "Nil"
+        if let intid = json["id"].string {
+            return intid
+        } else if let strid = json["id"].int {
+            return String(strid)
+        } else {
+            return "Nil"
+        }
     }
     
     //title of movie
@@ -164,6 +172,9 @@ struct Movie {
         return json["abridged_cast"].array ?? []
     }
     
+    var major:String?
+    var avgRating:Double?
+    
     init(json:JSON) {
         self.json = json
 //        getImageAndGenre()
@@ -171,6 +182,15 @@ struct Movie {
     
     func isEqualTo(movie: Movie) -> Bool {
         return self.RTid == movie.RTid
+    }
+    
+    
+    func loadAvgRating(closure:(Double?) -> Void) {
+        self.avgRating = nil
+        root.childByAppendingPath("movies/\(self.RTid)").observeSingleEventOfType(.Value, withBlock: { snapshot in
+            self.avgRating = snapshot.value["avgrating"] as? Double
+            closure(snapshot.value["avgrating"] as? Double)
+        })
     }
     
 //    mutating func getImageAndGenre() {
@@ -231,7 +251,7 @@ struct Movie {
 //        
 //    }
     
-    mutating func setImageAndGenreForCell() {
+    func setImageAndGenreForCell() {
 //        print (self.originalImage)
         if let image = self.originalImage, genreString = self.genreString, cell = self.cell {
             cell.posterImageView.image = image

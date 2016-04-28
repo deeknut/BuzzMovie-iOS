@@ -1,10 +1,12 @@
 PODS:
   - Alamofire (3.2.0)
+  - Cosmos (1.2.2)
   - Firebase (2.5.1)
   - SwiftyJSON (2.3.2)
 
 DEPENDENCIES:
   - Alamofire (~> 3.0)
+  - Cosmos (~> 1.2)
   - Firebase (>= 2.5.0)
   - SwiftyJSON (from `https://github.com/SwiftyJSON/SwiftyJSON.git`)
 
@@ -19,6 +21,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   Alamofire: 4da478599fccddff361205c8929333d7fe18dceb
+  Cosmos: 87c49100c69d2cb2eebfa4eb8d1e801fe29ff774
   Firebase: 3565ea88b830f28f2c77ecc524622bc71a20d085
   SwiftyJSON: 04ccea08915aa0109039157c7974cf0298da292a
 

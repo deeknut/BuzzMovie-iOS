@@ -9,6 +9,7 @@
 import UIKit
 import Alamofire
 import SwiftyJSON
+import Firebase
 let RT_API_KEY = "yedukp76ffytfuy24zsqk7f5"
 let TMDB_API_KEY = "a45a0f8d482aeac6e5ea456259ac1cd6"
 //let OMDB_API_KEY = "a69daed3"
@@ -35,12 +36,16 @@ class HomeTableViewController: UIViewController {
     @IBOutlet weak var tableView2TopConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableView2BottomConstraint: NSLayoutConstraint!
     
+    //firebase
+    var root = Firebase(url: "https://deeknutssquad.firebaseio.com/")
+    
     //tableView sources
     var newMovies:[Movie] = [] {
         didSet {
             movieDidSet(newMovies, tableView0)
         }
     }
+    var rawRecommendedMovies:[Movie] = []
     var recommendedMovies:[Movie] = [] {
         didSet {
             movieDidSet(recommendedMovies, tableView1)
@@ -101,6 +106,8 @@ class HomeTableViewController: UIViewController {
         self.tableView0.hidden = true
         self.tableView1.hidden = true
         self.tableView2.hidden = true
+    
+        
         
         //white status bar
         self.setNeedsStatusBarAppearanceUpdate()
@@ -156,6 +163,12 @@ class HomeTableViewController: UIViewController {
 //        destination.originalImage = selectedMovie.originalImage
     }
     
+    override func unwindForSegue(unwindSegue: UIStoryboardSegue, towardsViewController subsequentVC: UIViewController) {
+        reloadTable(newMovies, tableView0)
+        reloadTable(recommendedMovies, tableView1)
+        reloadTable(topdvdMovies, tableView2)
+    }
+    
     //===========================================================================
     //MARK - SEGCONTROL
     //===========================================================================
@@ -204,11 +217,20 @@ class HomeTableViewController: UIViewController {
     //===========================================================================
     func fetchMovies(url: String, segmentIndex:Int, limit:Int) {
         if segmentIndex == 1 {
-            let tempMovies = fetchRecommendations()
-            if !self.moviesIsEqual(tempMovies, recommendedMovies) {
-                recommendedMovies = tempMovies
-                setMovies()
-            }
+            fetchRecommendations({ movies in
+                self.rawRecommendedMovies = movies
+                let tempMovies = movies.filter({ movie in
+                    if self.searchBar.text == "" {
+                        return true
+                    }
+                    return movie.major!.containsString(self.searchBar.text!)
+                })
+                if !self.moviesIsEqual(tempMovies, self.recommendedMovies) {
+                    self.recommendedMovies = tempMovies
+                    self.setMovies()
+                }
+                
+            })
             return
         }
         var fetchedMovies:[Movie] = []
@@ -314,8 +336,53 @@ class HomeTableViewController: UIViewController {
         }
     }
     
-    func fetchRecommendations() -> [Movie] {
-        return []
+    func fetchRecommendations(closure:([Movie]) -> Void) {
+        var movies:[Movie] = []
+        root.childByAppendingPath("users").observeSingleEventOfType(.Value, withBlock: { snapshot in
+            var usersCount:UInt = 0
+            for uidSnapshot in snapshot.children {
+                self.root.childByAppendingPath("users/\(uidSnapshot.key)/recommendations").observeSingleEventOfType(.Value, withBlock: {recSnapshots in
+                    var recCount:UInt = 0
+                    for recommendation in recSnapshots.children {
+                        let RTid = recommendation.key
+                        let url = "http://api.rottentomatoes.com/api/public/v1.0/movies/\(RTid).json"
+                        let major = recommendation.value["major"] as! String
+                        Alamofire.request(.GET, url, parameters: ["apikey": RT_API_KEY])
+                            .responseJSON { response in
+                                //                print(response.request)  // original URL request
+                                //                print(response.response) // URL response
+                                //                print(response.data)     // server data
+                                //                print(response.result)   // result of response serialization
+                                
+                                if let unconvertedJSON = response.result.value {
+//                                    print("\(unconvertedJSON)")
+                                    let json:JSON = JSON(unconvertedJSON)
+                                    let movie = Movie(json: json)
+                                    movie.major = major
+                                    movie.loadAvgRating({avgRating in
+                                        if let _ = avgRating {
+                                            movies.append(movie)
+                                        }
+                                        if (recCount == recSnapshots.childrenCount - 1 && usersCount == snapshot.childrenCount - 1) {
+                                            movies.sortInPlace({movie1, movie2 in
+                                                return (movie1.avgRating! - movie2.avgRating! > 0)
+                                            })
+                                            closure(movies)
+                                        }
+                                        if (recCount == recSnapshots.childrenCount - 1) {
+                                            usersCount += 1
+                                        }
+                                        recCount += 1
+                                    })
+                                
+                                }
+                        }
+                    }
+                })
+                
+            }
+            //after eveyrthing is done
+        })
     }
     
     func moviesIsEqual(movies1:[Movie],_ movies2:[Movie]) -> Bool{
@@ -421,6 +488,9 @@ extension HomeTableViewController: UITableViewDelegate, UITableViewDataSource {
         if(scrollView.contentOffset.y != -64 && scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.frame.size.height)) {
             //user has scrolled to the bottom
             let index = movieSegControl.selectedSegmentIndex
+            if index == 1 {
+                return
+            }
             currentLimits[index] += 20
             fetchMovies(apiUrls[index], segmentIndex: index, limit: currentLimits[index])
         }
@@ -437,6 +507,19 @@ extension HomeTableViewController: UISearchBarDelegate{
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
+    }
+    
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        let tempMovies = rawRecommendedMovies.filter({ movie in
+            if searchText == "" {
+                return true
+            }
+            return movie.major!.containsString(searchText)
+        })
+        if !self.moviesIsEqual(tempMovies, self.recommendedMovies) {
+            self.recommendedMovies = tempMovies
+            self.setMovies()
+        }
     }
     
 }
