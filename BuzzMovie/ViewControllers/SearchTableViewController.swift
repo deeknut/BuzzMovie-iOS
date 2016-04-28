@@ -18,6 +18,10 @@ class SearchTableViewController: UIViewController{
     //===========================================================================
     @IBOutlet weak var tableView: UITableView!
     
+    @IBOutlet weak var magnifyingGlassImage: UIImageView!
+    @IBOutlet weak var infoLabel: UILabel!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
     var searchController: UISearchController!
     
     var movies:[Movie] = []
@@ -183,6 +187,9 @@ extension SearchTableViewController: UISearchBarDelegate, UISearchResultsUpdatin
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         //search button clicked
+        activityIndicator.startAnimating()
+        magnifyingGlassImage.hidden = true
+        infoLabel.hidden = true
         movies = []
         self.tableView.reloadData()
         let searchString = searchBar.text!
@@ -214,6 +221,7 @@ extension SearchTableViewController: UISearchBarDelegate, UISearchResultsUpdatin
                             self.movies.append(movie)
                         }
                     }
+                    self.activityIndicator.stopAnimating()
                     self.tableView.reloadData()
                 }
         }

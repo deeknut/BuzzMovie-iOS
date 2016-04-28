@@ -386,7 +386,6 @@ class HomeTableViewController: UIViewController {
                 })
                 
             }
-            //after eveyrthing is done
         })
     }
     
