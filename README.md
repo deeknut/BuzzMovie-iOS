@@ -9,8 +9,8 @@
 - Alamofire
 - Cosmos
 
-<br>
-<img src="./Screenshots/home.png" style="width: 50%; max-width: 320px">
+</br>
+<img src="./ScreenShots/home.PNG" style="width: 50%; max-width: 200px">
 </br>
 #### Programmed with love by Brian Wang
 - [Github: (brianwang9100)](https://github.com/brianwang9100)
@@ -26,21 +26,21 @@
 
 
 #### Screenshots
-<br>
-<img src="./Screenshots/login.png" style="width: 50%; max-width: 320px">
 </br>
-<br>
-<img src="./Screenshots/view.png" style="width: 50%; max-width: 320px">
+<img src="./ScreenShots/login.PNG" style="width: 50%; max-width: 320px">
 </br>
-<br>
-<img src="./Screenshots/view2.png" style="width: 50%; max-width: 320px">
 </br>
-<br>
-<img src="./Screenshots/rating.png" style="width: 50%; max-width: 320px">
+<img src="./ScreeSshots/view.PNG" style="width: 50%; max-width: 320px">
 </br>
-<br>
-<img src="./Screenshots/beforesearch.png" style="width: 50%; max-width: 320px">
 </br>
-<br>
-<img src="./Screenshots/search.png" style="width: 50%; max-width: 320px">
+<img src="./ScreenShots/view2.PNG" style="width: 50%; max-width: 320px">
+</br>
+</br>
+<img src="./ScreenShots/rating.PNG" style="width: 50%; max-width: 320px">
+</br>
+</br>
+<img src="./ScreenShots/beforesearch.PNG" style="width: 50%; max-width: 320px">
+</br>
+</br>
+<img src="./ScreenShots/search.PNG" style="width: 50%; max-width: 320px">
 </br>
