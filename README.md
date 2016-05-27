@@ -1,7 +1,7 @@
 # BuzzMovie
 #### Movie App for CS2340 (Object Oriented Design)
 
-###### Tech Stack
+###### Tech Used
 - Rotten Tomatoes
 - TMDB API
 - Firebase
@@ -17,13 +17,12 @@
 - [Email: (brianwang9100@gmail.com)](mailto:brianwang9100@gmail.com)
 
 #### Features
+- Query for TopDVDs, New Releases, and Recommendations from users
+- Search and keep track of your favorite movies, your movie ratings, and average ratings for each movie across and all users
 - Firebase integration
-- Likes
 - Fully integrated Rating system
 - Admin system (banning and unbanning, locking and unlocking)
 - Animations, images, icons, etc.
--
-
 
 #### Screenshots
 </br>
