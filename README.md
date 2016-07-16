@@ -10,7 +10,7 @@
 - Cosmos
 
 </br>
-<img src="./ScreenShots/home.PNG" style="width: 50%; max-width: 200px">
+<img src="./ScreenShots/home.PNG" width = "50%">
 </br>
 #### Programmed with love by Brian Wang
 - [Github: (brianwang9100)](https://github.com/brianwang9100)
@@ -26,20 +26,20 @@
 
 #### Screenshots
 </br>
-<img src="./ScreenShots/login.PNG" style="width: 50%; max-width: 320px">
+<img src="./ScreenShots/login.PNG" width = "50%">
 </br>
 </br>
-<img src="./ScreeSshots/view.PNG" style="width: 50%; max-width: 320px">
+<img src="./ScreeSshots/view.PNG" width = "50%">
 </br>
 </br>
-<img src="./ScreenShots/view2.PNG" style="width: 50%; max-width: 320px">
+<img src="./ScreenShots/view2.PNG" width = "50%">
 </br>
 </br>
-<img src="./ScreenShots/rating.PNG" style="width: 50%; max-width: 320px">
+<img src="./ScreenShots/rating.PNG" width = "50%">
 </br>
 </br>
-<img src="./ScreenShots/beforesearch.PNG" style="width: 50%; max-width: 320px">
+<img src="./ScreenShots/beforesearch.PNG" width = "50%">
 </br>
 </br>
-<img src="./ScreenShots/search.PNG" style="width: 50%; max-width: 320px">
+<img src="./ScreenShots/search.PNG" width = "50%">
 </br>
