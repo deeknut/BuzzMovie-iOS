@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import FirebaseAuth
 
 var uid: String!
 
@@ -37,7 +38,7 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var containerViewHeight: NSLayoutConstraint!
     
     
-    var root = Firebase(url: "https://deeknutssquad.firebaseio.com/")
+//    var root = Firebase(url: "https://deeknutssquad.firebaseio.com/")
     
     
     var registerMode: Bool = false {
@@ -45,31 +46,31 @@ class LoginViewController: UIViewController {
             if registerMode {
                 animateToRegisterMode()
                 //loginRegisterButton = register
-                loginRegisterButton.removeTarget(nil, action: #selector(LoginViewController.prepareToLogin), forControlEvents: .TouchUpInside)
-                loginRegisterButton.addTarget(nil, action: #selector(LoginViewController.register), forControlEvents: .TouchUpInside)
-                loginRegisterButton.setAttributedTitle(NSAttributedString(string: "Register"), forState: .Normal)
+                loginRegisterButton.removeTarget(nil, action: #selector(LoginViewController.prepareToLogin), for: .touchUpInside)
+                loginRegisterButton.addTarget(nil, action: #selector(LoginViewController.register), for: .touchUpInside)
+                loginRegisterButton.setAttributedTitle(NSAttributedString(string: "Register"), for: UIControlState())
                 
                 //registerButton = back to login
-                registerButton.removeTarget(nil, action: #selector(LoginViewController.registerModeSwitch), forControlEvents: .TouchUpInside)
-                registerButton.addTarget(nil, action: #selector(LoginViewController.loginModeSwitch), forControlEvents: .TouchUpInside)
-                registerButton.setAttributedTitle(NSAttributedString(string: "Back to Login"), forState: .Normal)
+                registerButton.removeTarget(nil, action: #selector(LoginViewController.registerModeSwitch), for: .touchUpInside)
+                registerButton.addTarget(nil, action: #selector(LoginViewController.loginModeSwitch), for: .touchUpInside)
+                registerButton.setAttributedTitle(NSAttributedString(string: "Back to Login"), for: UIControlState())
                 
                 //passwordKeyboard
-                passwordField.returnKeyType = .Next
+                passwordField.returnKeyType = .next
             } else {
                 animateToLoginMode()
                 //loginRegisterButton = register
-                loginRegisterButton.removeTarget(nil, action: #selector(LoginViewController.register), forControlEvents: .TouchUpInside)
-                loginRegisterButton.addTarget(nil, action: #selector(LoginViewController.prepareToLogin), forControlEvents: .TouchUpInside)
-                loginRegisterButton.setAttributedTitle(NSAttributedString(string: "Login"), forState: .Normal)
+                loginRegisterButton.removeTarget(nil, action: #selector(LoginViewController.register), for: .touchUpInside)
+                loginRegisterButton.addTarget(nil, action: #selector(LoginViewController.prepareToLogin), for: .touchUpInside)
+                loginRegisterButton.setAttributedTitle(NSAttributedString(string: "Login"), for: UIControlState())
                 
                 //registerButton = back to login
-                registerButton.removeTarget(nil, action: #selector(LoginViewController.loginModeSwitch), forControlEvents: .TouchUpInside)
-                registerButton.addTarget(nil, action: #selector(LoginViewController.registerModeSwitch), forControlEvents: .TouchUpInside)
-                registerButton.setAttributedTitle(NSAttributedString(string: "Register"), forState: .Normal)
+                registerButton.removeTarget(nil, action: #selector(LoginViewController.loginModeSwitch), for: .touchUpInside)
+                registerButton.addTarget(nil, action: #selector(LoginViewController.registerModeSwitch), for: .touchUpInside)
+                registerButton.setAttributedTitle(NSAttributedString(string: "Register"), for: UIControlState())
                 
                 //passwordKeyboard
-                passwordField.returnKeyType = .Go
+                passwordField.returnKeyType = .go
             }
         }
     }
@@ -81,22 +82,22 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBarHidden = false
+        self.navigationController?.isNavigationBarHidden = false
         
-        loginRegisterButton.addTarget(nil, action: #selector(LoginViewController.prepareToLogin), forControlEvents: .TouchUpInside)
-        registerButton.addTarget(nil, action: #selector(LoginViewController.registerModeSwitch), forControlEvents: .TouchUpInside)
-        self.navigationController?.navigationBarHidden = true
+        loginRegisterButton.addTarget(nil, action: #selector(LoginViewController.prepareToLogin), for: .touchUpInside)
+        registerButton.addTarget(nil, action: #selector(LoginViewController.registerModeSwitch), for: .touchUpInside)
+        self.navigationController?.isNavigationBarHidden = true
         // Do any additional setup after loading the view.
     }
     
-    override func viewWillAppear(animated: Bool) {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LoginViewController.keyboardDidAppear(_:)), name: UIKeyboardWillChangeFrameNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LoginViewController.keyboardDidDisappear), name: UIKeyboardWillHideNotification, object: nil)
+    override func viewWillAppear(_ animated: Bool) {
+        NotificationCenter.default.addObserver(self, selector: #selector(LoginViewController.keyboardDidAppear(_:)), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(LoginViewController.keyboardDidDisappear), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         containerViewHeight.constant = 190
         self.view.layoutIfNeeded()
         
-        let defaults = NSUserDefaults.standardUserDefaults()
-        if let username = defaults.objectForKey("username"), password = defaults.objectForKey("password") {
+        let defaults = UserDefaults.standard
+        if let username = defaults.object(forKey: "username"), let password = defaults.object(forKey: "password") {
             usernameField.text = username as? String
             passwordField.text = password as? String
             prepareToLogin()
@@ -112,22 +113,22 @@ class LoginViewController: UIViewController {
     //MARK: - KEYBOARD
     //===========================================================================
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        let touch = touches.first!.locationInView(self.view)
-        if !CGRectContainsPoint(containerView.frame, touch) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touch = touches.first!.location(in: self.view)
+        if !containerView.frame.contains(touch) {
             usernameField.resignFirstResponder()
             passwordField.resignFirstResponder()
         }
     }
     
-    func keyboardDidAppear(notification: NSNotification) {
-        if let userInfo = notification.userInfo, frame = (userInfo[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue {
-            let height = frame().height
+    func keyboardDidAppear(_ notification: Notification) {
+        if let userInfo = notification.userInfo, let frame = (userInfo[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            let height = frame.height
             let constant = 0 - (height / (is4S() ? 2.5 : 3))
             
             if constant == containerViewCenterY.constant { return }
             
-            UIView.animateWithDuration(0.7, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: [], animations: {
+            UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: [], animations: {
                     self.containerViewCenterY.constant = constant
                     self.view.layoutIfNeeded()
                 }, completion: nil)
@@ -136,7 +137,7 @@ class LoginViewController: UIViewController {
     }
     
     func keyboardDidDisappear() {
-        UIView.animateWithDuration(0.7, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: [], animations: {
+        UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: [], animations: {
                 self.containerViewCenterY.constant = 0
                 self.view.layoutIfNeeded()
             }, completion: nil)
@@ -144,7 +145,7 @@ class LoginViewController: UIViewController {
     }
     
     
-    @IBAction func didPressNext(sender: UITextField) {
+    @IBAction func didPressNext(_ sender: UITextField) {
         let fieldName = sender.placeholder!
         switch fieldName {
             case "Username":
@@ -173,7 +174,7 @@ class LoginViewController: UIViewController {
         }
     }
     
-    @IBAction func editingDidBegin(sender: UITextField) {
+    @IBAction func editingDidBegin(_ sender: UITextField) {
         sender.textColor = StyleConstants.defaultBlueColor
     }
     
@@ -196,17 +197,17 @@ class LoginViewController: UIViewController {
     //MARK: - NSUSERDEFAULTS
     //===========================================================================
     func clearDefaultCredentials() {
-        let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.removeObjectForKey("username")
-        defaults.removeObjectForKey("password")
+        let defaults = UserDefaults.standard
+        defaults.removeObject(forKey: "username")
+        defaults.removeObject(forKey: "password")
         defaults.synchronize()
         
     }
     
-    func setDefaultCredentials(username:String, password:String) {
-        let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.setObject(username, forKey: "username")
-        defaults.setObject(password, forKey: "password")
+    func setDefaultCredentials(_ username:String, password:String) {
+        let defaults = UserDefaults.standard
+        defaults.set(username, forKey: "username")
+        defaults.set(password, forKey: "password")
         defaults.synchronize()
     }
     
@@ -214,7 +215,7 @@ class LoginViewController: UIViewController {
     //MARK: - SEGUES
     //===========================================================================
     
-    @IBAction func unwindToLogin(unwindSegue: UIStoryboardSegue, towardsViewController subsequentVC: UIViewController) {
+    @IBAction func unwindToLogin(_ unwindSegue: UIStoryboardSegue, towardsViewController subsequentVC: UIViewController) {
         if unwindSegue.identifier != "Admin" {
             clearAllFields()
             clearDefaultCredentials()
@@ -225,7 +226,7 @@ class LoginViewController: UIViewController {
     }
     
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
     }
     
@@ -242,21 +243,23 @@ class LoginViewController: UIViewController {
             return
         }
         
-        let usersRoot = root.childByAppendingPath("users")
-        usersRoot.observeSingleEventOfType(.Value, withBlock: {snapshot in
+        
+        let usersRoot = root?.child(byAppendingPath: "users")
+        usersRoot?.observeSingleEvent(of: .value, with: {snapshot in
             var found = false
-            for uidsnapshot in snapshot.children {
-                let fetchedEmail = uidsnapshot.value["email"] as! String
+            for u in snapshot.children {
+                let uidsnapshot = u as! FIRDataSnapshot
+                let fetchedEmail = uidsnapshot.value(forKey: "email") as! String
                 if (fetchedEmail == self.usernameField.text!) {
                     found = true
-                    let banned = uidsnapshot.value["banned"] as! String
+                    let banned = uidsnapshot.value(forKey: "banned") as! String
                     if banned == "true" {
                        //account banned.
                         self.titleLabel.text = "Account Banned. Contact Admin"
                         self.clearDefaultCredentials()
                         self.loginFailed()
                     } else {
-                        let locked = uidsnapshot.value["locked"] as! String
+                        let locked = uidsnapshot.value(forKey: "locked") as! String
                         if locked == "true" {
                             //account locked.
                             self.titleLabel.text = "Account Locked. Contact Admin"
@@ -282,37 +285,38 @@ class LoginViewController: UIViewController {
         resignAllResponders()
         loggingInLabel.text = "Logging in..."
         showLoginLabel()
-        self.root.authUser(self.usernameField.text, password: self.passwordField.text, withCompletionBlock: {error, authData in
+        
+        FIRAuth.auth()?.signIn(withEmail: self.usernameField.text!, password: self.passwordField.text!, completion: {authData, error in
             if error != nil {
                 self.loginFailed()
-                if (error.userInfo[NSLocalizedDescriptionKey]!.containsString("INVALID_PASSWORD")) {
-                    //invalid password, mark for incorrect login
-                    self.markUserForIncorrectLogin(self.usernameField.text!)
-                }
+//                if (error.userInfo[NSLocalizedDescriptionKey]!.contains("INVALID_PASSWORD")) {
+//                    //invalid password, mark for incorrect login
+//                    self.markUserForIncorrectLogin(self.usernameField.text!)
+//                }
             } else {
-                uid = authData.uid
-                let uidRoot = self.root.childByAppendingPath("users/\(uid)")
-                uidRoot.childByAppendingPath("loginattempts").setValue("0")
-                if (self.staySwitch.on) {
+                uid = authData?.uid
+                let uidRoot = root?.child(byAppendingPath: "users/\(uid)")
+                uidRoot?.child(byAppendingPath: "loginattempts").setValue("0")
+                if (self.staySwitch.isOn) {
                     self.setDefaultCredentials(self.usernameField.text!, password: self.passwordField.text!)
                 }
-                uidRoot.observeSingleEventOfType(.Value, withBlock: { snapshot in
-                    if let isAdmin = snapshot.value["admin"] as! String? {
+                uidRoot?.observeSingleEvent(of: .value, with: { snapshot in
+                    if let isAdmin = snapshot.value(forKey: "admin") as? String {
                         if isAdmin == "true" {
-                            let alertController = UIAlertController(title: "Admin Privileges", message: "Choose your mode", preferredStyle: .Alert)
-                            let actionAdmin = UIAlertAction(title: "Admin", style: .Default, handler: { action in
-                                self.performSegueWithIdentifier("AdminSegue", sender: self)
+                            let alertController = UIAlertController(title: "Admin Privileges", message: "Choose your mode", preferredStyle: .alert)
+                            let actionAdmin = UIAlertAction(title: "Admin", style: .default, handler: { action in
+                                self.performSegue(withIdentifier: "AdminSegue", sender: self)
                             })
-                            let actionUser = UIAlertAction(title: "User", style: .Default, handler: { action in
-                                self.performSegueWithIdentifier("UserSegue", sender: self)
+                            let actionUser = UIAlertAction(title: "User", style: .default, handler: { action in
+                                self.performSegue(withIdentifier: "UserSegue", sender: self)
                             })
                             alertController.addAction(actionAdmin)
                             alertController.addAction(actionUser)
                             
-                            self.presentViewController(alertController, animated: true, completion: nil)
+                            self.present(alertController, animated: true, completion: nil)
                         } else {
                             //default
-                            self.performSegueWithIdentifier("UserSegue", sender: self)
+                            self.performSegue(withIdentifier: "UserSegue", sender: self)
                             
                         }
                     }
@@ -321,30 +325,31 @@ class LoginViewController: UIViewController {
         })
     }
     
-    func markUserForIncorrectLogin(email:String) {
-        let usersRoot = root.childByAppendingPath("users")
-        usersRoot.observeSingleEventOfType(.Value, withBlock: {snapshot in
+    func markUserForIncorrectLogin(_ email:String) {
+        let usersRoot = root?.child(byAppendingPath: "users")
+        usersRoot?.observeSingleEvent(of: .value, with: {snapshot in
 //            print(snapshot.value)
-            for uidsnapshot in snapshot.children {
-                let fetchedEmail = uidsnapshot.value["email"] as! String
+            for u in snapshot.children {
+                let uidsnapshot = u as! FIRDataSnapshot
+                let fetchedEmail = uidsnapshot.value(forKey: "email") as! String
                 
                 if (fetchedEmail == email) {
-                    let attempts:Int = Int(uidsnapshot.value["loginattempts"] as! String)!
+                    let attempts:Int = uidsnapshot.value(forKey: "numattempts") as! Int
                     let uid = uidsnapshot.key
-                    let uidRoot = usersRoot.childByAppendingPath("\(uid)")
+                    let uidRoot = usersRoot?.child(byAppendingPath: "\(uid)")
                     if (attempts == 2) {
                         self.titleLabel.text = "Account Locked. Contact Admin"
-                        uidRoot.childByAppendingPath("locked").setValue("true")
+                        uidRoot?.child(byAppendingPath: "locked").setValue("true")
                     } else {
                         self.titleLabel.text = "Wrong Password. \(2 - attempts) Attempts Left"
                     }
-                    uidRoot.childByAppendingPath("loginattempts").setValue(String(attempts + 1))
+                    uidRoot?.child(byAppendingPath: "loginattempts").setValue(String(attempts + 1))
                 }
             }
         })
     }
     
-    func isLocked(email:String) {
+    func isLocked(_ email:String) {
     }
     
     func loginFailed() {
@@ -362,39 +367,40 @@ class LoginViewController: UIViewController {
     func register() {
         if (usernameField.text == "") {
             shakeCenterX()
-            usernameField.textColor = UIColor.redColor()
+            usernameField.textColor = UIColor.red
             return
         }
         if (passwordField.text == ""){
             shakeCenterX()
-            passwordField.textColor = UIColor.redColor()
+            passwordField.textColor = UIColor.red
             return
         }
         if (passwordField.text != retypePasswordField.text) {
             shakeCenterX()
             //maybe do something about how password don't match
-            passwordField.textColor = UIColor.redColor()
-            retypePasswordField.textColor = UIColor.redColor()
+            passwordField.textColor = UIColor.red
+            retypePasswordField.textColor = UIColor.red
             return
         }
         resignAllResponders()
         loggingInLabel.text = "Registering..."
         showRegisterLabel()
         
-        var dateFormatter:NSDateFormatter = {
-            let dateFormatter = NSDateFormatter()
+        let dateFormatter:DateFormatter = {
+            let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "MMMM d, yyyy"
             return dateFormatter
         }()
         
         //creation
-        root.createUser(usernameField.text, password: passwordField.text,
-            withValueCompletionBlock: { error, result in
+        
+        
+        FIRAuth.auth()?.createUser(withEmail: usernameField.text!, password: passwordField.text!, completion: {result, error in
                 if error != nil {
                     self.registerFailed()
                     // There was an error creating the account
                 } else {
-                    uid = result["uid"] as! String
+                    uid = result?.uid
                     let initialValues = [
                         "email": self.usernameField.text!,
                         "major": self.majorField.text!,
@@ -403,14 +409,14 @@ class LoginViewController: UIViewController {
                         "admin": "false",
                         "loginattempts": "0",
                         "banned": "false",
-                        "registerdate": dateFormatter.stringFromDate(NSDate())
+                        "registerdate": dateFormatter.string(from: Date())
                     ]
-                    let uidRoot = self.root.childByAppendingPath("users/\(uid)")
-                    uidRoot.setValue(initialValues)
+                    let uidRoot = root?.child(byAppendingPath: "users/\(uid)")
+                    uidRoot?.setValue(initialValues)
 //                    self.loginModeSwitch()
                     self.registerMode = false
                     self.animateToLoginMode()
-                    self.performSelector(#selector(LoginViewController.login), withObject: self, afterDelay: 1)
+                    self.perform(#selector(LoginViewController.login), with: self, afterDelay: 1)
                     print("Successfully created user account with uid: \(uid)")
                 }
         })
@@ -434,7 +440,7 @@ class LoginViewController: UIViewController {
         
         for i in 0..<animations.count {
             let constant = animations[i]
-            UIView.animateWithDuration(0.075, delay: 0.075 * Double(i), usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: [], animations: {
+            UIView.animate(withDuration: 0.075, delay: 0.075 * Double(i), usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: [], animations: {
                 self.containerViewCenterX.constant = constant
                 self.view.layoutIfNeeded()
                 }, completion: nil)
@@ -442,7 +448,7 @@ class LoginViewController: UIViewController {
     }
     
     func animateToRegisterMode() {
-        UIView.animateWithDuration(0.5, delay: 0, options: [], animations: {
+        UIView.animate(withDuration: 0.5, delay: 0, options: [], animations: {
             self.retypePasswordField.alpha = 1
             self.majorField.alpha = 1
             self.interestsField.alpha = 1
@@ -452,7 +458,7 @@ class LoginViewController: UIViewController {
     }
 
     func animateToLoginMode() {
-        UIView.animateWithDuration(0.5, delay: 0, options: [], animations: {
+        UIView.animate(withDuration: 0.5, delay: 0, options: [], animations: {
             self.retypePasswordField.alpha = 0
             self.majorField.alpha = 0
             self.interestsField.alpha = 0
@@ -462,7 +468,7 @@ class LoginViewController: UIViewController {
     }
     
     func showLoginFields() {
-        UIView.animateWithDuration(0.5, animations: {
+        UIView.animate(withDuration: 0.5, animations: {
             self.titleLabel.alpha = 1
             self.usernameField.alpha = 1
             self.passwordField.alpha = 1
@@ -475,7 +481,7 @@ class LoginViewController: UIViewController {
     }
     
     func showRegisterFields() {
-        UIView.animateWithDuration(0.5, animations: {
+        UIView.animate(withDuration: 0.5, animations: {
             self.titleLabel.alpha = 1
             self.usernameField.alpha = 1
             self.passwordField.alpha = 1
@@ -491,7 +497,7 @@ class LoginViewController: UIViewController {
     }
     
     func showLoginLabel() {
-        UIView.animateWithDuration(0.5, animations: {
+        UIView.animate(withDuration: 0.5, animations: {
             self.titleLabel.alpha = 0
             self.usernameField.alpha = 0
             self.passwordField.alpha = 0
@@ -504,7 +510,7 @@ class LoginViewController: UIViewController {
     }
     
     func showRegisterLabel() {
-        UIView.animateWithDuration(0.5, animations: {
+        UIView.animate(withDuration: 0.5, animations: {
             self.titleLabel.alpha = 0
             self.usernameField.alpha = 0
             self.passwordField.alpha = 0

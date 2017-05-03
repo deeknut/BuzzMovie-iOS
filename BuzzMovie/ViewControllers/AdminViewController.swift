@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import FirebaseDatabase
 
 
 class AdminViewController: UIViewController {
@@ -16,7 +17,7 @@ class AdminViewController: UIViewController {
     @IBOutlet weak var searchBar: UISearchBar!
     var filteredUsers:[User] = []
     var users:[User] = []
-    var root = Firebase(url: "https://deeknutssquad.firebaseio.com/")
+//    var root = Firebase(url: "https://deeknutssquad.firebaseio.com/")
 
     //=========================================================================
     //MARK - VIEWDIDLOAD/SETUP
@@ -25,8 +26,8 @@ class AdminViewController: UIViewController {
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
-        searchBar.autocapitalizationType = .None
-        searchBar.autocorrectionType = .No
+        searchBar.autocapitalizationType = .none
+        searchBar.autocorrectionType = .no
         loadUsers("")
         
         self.setNeedsStatusBarAppearanceUpdate()
@@ -38,11 +39,11 @@ class AdminViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func loadUsers(searchText: String) {
+    func loadUsers(_ searchText: String) {
         users = []
-        root.childByAppendingPath("users").observeSingleEventOfType(.Value, withBlock: { snapshot in
+        root?.child(byAppendingPath: "users").observeSingleEvent(of: .value, with: { snapshot in
             for uidsnapshot in snapshot.children {
-                let user = User(snapshot: uidsnapshot as! FDataSnapshot)
+                let user = User(snapshot: uidsnapshot as! FIRDataSnapshot)
                 if !user.admin {
                     self.users.append(user)
                 }
@@ -54,14 +55,14 @@ class AdminViewController: UIViewController {
     //===========================================================================
     //MARK - STATUSBAR
     //===========================================================================
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return .LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return .lightContent
     }
     
-    override func prefersStatusBarHidden() -> Bool {
+    override var prefersStatusBarHidden : Bool {
         return false
     }
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         searchBar.resignFirstResponder()
     }
 
@@ -71,50 +72,50 @@ extension AdminViewController: UITableViewDelegate, UITableViewDataSource {
     //=========================================================================
     //MARK - TABLEVIEW
     //===========================================================================
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return filteredUsers.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("AdminCell", forIndexPath: indexPath) as! AdminCell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "AdminCell", for: indexPath) as! AdminCell
         cell.backgroundColor = StyleConstants.defaultGrayColor
         let user = filteredUsers[indexPath.row]
         cell.emailLabel.text = user.email
-        cell.emailLabel.textColor = UIColor.whiteColor()
+        cell.emailLabel.textColor = UIColor.white
         if user.banned {
             cell.statusLabel.text = "BANNED"
-            cell.statusLabel.textColor = UIColor.redColor()
+            cell.statusLabel.textColor = UIColor.red
         } else if user.locked {
             cell.statusLabel.text = "LOCKED"
-            cell.statusLabel.textColor = UIColor.yellowColor()
+            cell.statusLabel.textColor = UIColor.yellow
         } else {
             cell.statusLabel.text = "ACTIVE"
-            cell.statusLabel.textColor = UIColor.greenColor()
+            cell.statusLabel.textColor = UIColor.green
         }
         
         return cell
     }
     
-    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
     
-    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let user = filteredUsers[indexPath.row]
-        let banAction = UITableViewRowAction(style: .Normal, title: "BAN", handler: {action, indexPath in
-            self.root.childByAppendingPath("users/\(user.uid)/banned").setValue("true")
+        let banAction = UITableViewRowAction(style: .normal, title: "BAN", handler: {action, indexPath in
+            root?.child(byAppendingPath: "users/\(user.uid)/banned").setValue("true")
             self.loadUsers(self.searchBar.text!)
         })
-        let unbanAction = UITableViewRowAction(style: .Normal, title: "UNBAN", handler: { action, indexPath in
-            self.root.childByAppendingPath("users/\(user.uid)/banned").setValue("false")
+        let unbanAction = UITableViewRowAction(style: .normal, title: "UNBAN", handler: { action, indexPath in
+            root?.child(byAppendingPath: "users/\(user.uid)/banned").setValue("false")
             self.loadUsers(self.searchBar.text!)
         })
-        let lockAction = UITableViewRowAction(style: .Normal, title: "LOCK", handler: {action, indexPath in
-            self.root.childByAppendingPath("users/\(user.uid)/locked").setValue("true")
+        let lockAction = UITableViewRowAction(style: .normal, title: "LOCK", handler: {action, indexPath in
+            root?.child(byAppendingPath: "users/\(user.uid)/locked").setValue("true")
             self.loadUsers(self.searchBar.text!)
         })
-        let unlockAction = UITableViewRowAction(style: .Normal, title: "UNLOCK", handler: {action, indexPath in
-            self.root.childByAppendingPath("users/\(user.uid)/locked").setValue("false")
+        let unlockAction = UITableViewRowAction(style: .normal, title: "UNLOCK", handler: {action, indexPath in
+            root?.child(byAppendingPath: "users/\(user.uid)/locked").setValue("false")
             self.loadUsers(self.searchBar.text!)
         })
         if user.banned {
@@ -126,17 +127,17 @@ extension AdminViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         
     }
     
-    func reloadTable(searchText: String) {
+    func reloadTable(_ searchText: String) {
         //filter
         if searchText == "" {
             filteredUsers = users
         } else {
             filteredUsers = users.filter({user in
-                return user.email.containsString(searchText)
+                return user.email.contains(searchText)
             })
         }
         self.tableView.reloadData()
@@ -151,11 +152,11 @@ extension AdminViewController: UISearchBarDelegate {
     //MARK - SEARCHBAR
     //===========================================================================
     
-    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         reloadTable(searchText)
     }
    
-    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
     }
     

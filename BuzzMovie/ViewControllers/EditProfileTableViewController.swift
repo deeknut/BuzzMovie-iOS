@@ -18,7 +18,7 @@ class EditProfileTableViewController: UITableViewController {
 
     var user:User!
     
-    var root = Firebase(url: "https://deeknutssquad.firebaseio.com/")
+//    var root = Firebase(url: "https://deeknutssquad.firebaseio.com/")
     //===========================================================================
     //MARK - VIEWDIDLOAD/SETUP
     //===========================================================================
@@ -48,23 +48,23 @@ class EditProfileTableViewController: UITableViewController {
     //===========================================================================
     //MARK - STATUS BAR
     //===========================================================================
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return .LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return .lightContent
     }
     
-    override func prefersStatusBarHidden() -> Bool {
+    override var prefersStatusBarHidden : Bool {
         return false
     }
     
     //===========================================================================
     //MARK - SEGUES
     //===========================================================================
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "Save" {
             //save the shit
-            let uidRoot = root.childByAppendingPath("users/\(uid)")
-            uidRoot.childByAppendingPath("major").setValue(majorTextField.text)
-            uidRoot.childByAppendingPath("interests").setValue(interestsTextView.text)
+            let uidRoot = root?.child(byAppendingPath: "users/\(uid)")
+            uidRoot?.child(byAppendingPath: "major").setValue(majorTextField.text)
+            uidRoot?.child(byAppendingPath: "interests").setValue(interestsTextView.text)
         }
     }
     

@@ -12,14 +12,14 @@ Example:
 Shows: ★★★★☆ (132)
 
 */
-@IBDesignable public class CosmosView: UIView {
+@IBDesignable open class CosmosView: UIView {
     
   /**
   
   The currently shown number of stars, usually between 1 and 5. If the value is decimal the stars will be shown according to the Fill Mode setting.
 
   */
-  @IBInspectable public var rating: Double = CosmosDefaultSettings.rating {
+  @IBInspectable open var rating: Double = CosmosDefaultSettings.rating {
     didSet {
       if oldValue != rating {
         update()
@@ -28,7 +28,7 @@ Shows: ★★★★☆ (132)
   }
   
   /// Currently shown text. Set it to nil to display just the stars without text.
-  @IBInspectable public var text: String? {
+  @IBInspectable open var text: String? {
     didSet {
       if oldValue != text {
         update()
@@ -37,7 +37,7 @@ Shows: ★★★★☆ (132)
   }
   
   /// Star rating settings.
-  public var settings = CosmosSettings() {
+  open var settings = CosmosSettings() {
     didSet {
       update()
     }
@@ -47,7 +47,7 @@ Shows: ★★★★☆ (132)
   private var viewSize = CGSize()
 
   /// Draws the stars when the view comes out of storyboard with default settings
-  public override func awakeFromNib() {
+  open override func awakeFromNib() {
     super.awakeFromNib()
     
     update()
@@ -73,7 +73,7 @@ Shows: ★★★★☆ (132)
   override public init(frame: CGRect) {
     super.init(frame: frame)
     update()
-    self.frame.size = intrinsicContentSize()
+    self.frame.size = intrinsicContentSize
     
     improvePerformance()
   }
@@ -89,9 +89,9 @@ Shows: ★★★★☆ (132)
   private func improvePerformance() {
     /// Cache the view into a bitmap instead of redrawing the stars each time
     layer.shouldRasterize = true
-    layer.rasterizationScale = UIScreen.mainScreen().scale
+    layer.rasterizationScale = UIScreen.main.scale
     
-    opaque = true
+    isOpaque = true
   }
   
   /**
@@ -99,21 +99,27 @@ Shows: ★★★★☆ (132)
   Updates the stars and optional text based on current values of `rating` and `text` properties.
   
   */
-  public func update() {
+  open func update() {
     
     // Create star layers
     // ------------
     
-    var layers = CosmosLayers.createStarLayers(rating, settings: settings)
-    layer.sublayers = layers
+    var layers = CosmosLayers.createStarLayers(
+      rating,
+      settings: settings,
+      isRightToLeft: RightToLeft.isRightToLeft(self)
+    )
     
     // Create text layer
     // ------------
 
     if let text = text {
       let textLayer = createTextLayer(text, layers: layers)
-      layers.append(textLayer)
+      layers = addTextLayer(textLayer: textLayer, layers: layers)
     }
+    
+    layer.sublayers = layers
+    
     
     // Update size
     // ------------
@@ -136,17 +142,46 @@ Shows: ★★★★☆ (132)
   - returns: The newly created text layer.
   
   */
-  private func createTextLayer(text: String, layers: [CALayer]) -> CALayer {
+  private func createTextLayer(_ text: String, layers: [CALayer]) -> CALayer {
     let textLayer = CosmosLayerHelper.createTextLayer(text,
       font: settings.textFont, color: settings.textColor)
     
     let starsSize = CosmosSize.calculateSizeToFitLayers(layers)
     
-    CosmosText.position(textLayer, starsSize: starsSize, textMargin: settings.textMargin)
+    if RightToLeft.isRightToLeft(self) {
+      CosmosText.position(textLayer, starsSize: CGSize(width: 0, height: starsSize.height), textMargin: 0)
+    } else {
+      CosmosText.position(textLayer, starsSize: starsSize, textMargin: settings.textMargin)
+    }
     
     layer.addSublayer(textLayer)
     
     return textLayer
+  }
+  
+  /**
+   
+   Adds text layer to the array of layers
+   
+   - parameter textLayer: A text layer.
+   - parameter layers: An array where the text layer will be added.
+   - returns: An array of layer with the text layer.
+   
+   */
+  private func addTextLayer(textLayer: CALayer, layers: [CALayer]) -> [CALayer] {
+    var allLayers = layers
+    // Position stars after the text for right-to-left languages
+    if RightToLeft.isRightToLeft(self) {
+      for starLayer in layers {
+        starLayer.position.x += textLayer.bounds.width + CGFloat(settings.textMargin);
+      }
+      
+      allLayers.insert(textLayer, at: 0)
+    } else {
+      allLayers.append(textLayer)
+    }
+    
+    return allLayers
   }
   
   /**
@@ -156,13 +191,13 @@ Shows: ★★★★☆ (132)
   - parameter layers: Array of layers containing stars and the text.
 
   */
-  private func updateSize(layers: [CALayer]) {
+  private func updateSize(_ layers: [CALayer]) {
     viewSize = CosmosSize.calculateSizeToFitLayers(layers)
     invalidateIntrinsicContentSize()
   }
   
   /// Returns the content size to fit all the star and text layers.
-  override public func intrinsicContentSize() -> CGSize {
+  override open var intrinsicContentSize:CGSize {
     return viewSize
   }
   
@@ -173,7 +208,7 @@ Shows: ★★★★☆ (132)
   }
   
   /// Called by the system in accessibility voice-over mode when the value is incremented by the user.
-  public override func accessibilityIncrement() {
+  open override func accessibilityIncrement() {
     super.accessibilityIncrement()
     
     rating += CosmosAccessibility.accessibilityIncrement(rating, settings: settings)
@@ -182,7 +217,7 @@ Shows: ★★★★☆ (132)
   }
   
   /// Called by the system in accessibility voice-over mode when the value is decremented by the user.
-  public override func accessibilityDecrement() {
+  open override func accessibilityDecrement() {
     super.accessibilityDecrement()
     
     rating -= CosmosAccessibility.accessibilityDecrement(rating, settings: settings)
@@ -193,34 +228,39 @@ Shows: ★★★★☆ (132)
   // MARK: - Touch recognition
   
   /// Closure will be called when user touches the cosmos view. The touch rating argument is passed to the closure.
-  public var didTouchCosmos: ((Double)->())?
+  open var didTouchCosmos: ((Double)->())?
   
   /// Closure will be called when the user lifts finger from the cosmos view. The touch rating argument is passed to the closure.
-  public var didFinishTouchingCosmos: ((Double)->())?
+  open var didFinishTouchingCosmos: ((Double)->())?
   
   /// Overriding the function to detect the first touch gesture.
-  public override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-    super.touchesBegan(touches, withEvent: event)
-    
-    if let touch = touches.first {
-      let location = touch.locationInView(self).x
-      onDidTouch(location, starsWidth: widthOfStars)
-    }
+  open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    super.touchesBegan(touches, with: event)
+    guard let location = touchLocationFromBeginningOfRating(touches) else { return }
+    onDidTouch(location)
   }
   
   /// Overriding the function to detect touch move.
-  public override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
-    super.touchesMoved(touches, withEvent: event)
+  open override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+    super.touchesMoved(touches, with: event)
+    guard let location = touchLocationFromBeginningOfRating(touches) else { return }
+    onDidTouch(location)
+  }
+  
+  /// Returns the distance of the touch relative to the left edge of the first star
+  func touchLocationFromBeginningOfRating(_ touches: Set<UITouch>) -> CGFloat? {
+    guard let touch = touches.first else { return nil }
+    var location = touch.location(in: self).x
     
-    if let touch = touches.first {
-      let location = touch.locationInView(self).x
-      onDidTouch(location, starsWidth: widthOfStars)
-    }
+    // In right-to-left languages, the first star will be on the right
+    if RightToLeft.isRightToLeft(self) { location = bounds.width - location }
+    
+    return location
   }
   
   /// Detecting event when the user lifts their finger.
-  public override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-    super.touchesEnded(touches, withEvent: event)
+  open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+    super.touchesEnded(touches, with: event)
     
     didFinishTouchingCosmos?(rating)
   }
@@ -234,9 +274,8 @@ Shows: ★★★★☆ (132)
   - parameter starsWidth: The width of the stars excluding the text.
   
   */
-  func onDidTouch(locationX: CGFloat, starsWidth: CGFloat) {
-    let calculatedTouchRating = CosmosTouch.touchRating(locationX, starsWidth: starsWidth,
-      settings: settings)
+  func onDidTouch(_ locationX: CGFloat) {
+    let calculatedTouchRating = CosmosTouch.touchRating(locationX, settings: settings)
     
     if settings.updateOnTouch {
       rating = calculatedTouchRating
@@ -253,19 +292,8 @@ Shows: ★★★★☆ (132)
   
   private var previousRatingForDidTouchCallback: Double = -123.192
   
-  
-  /// Width of the stars (excluding the text). Used for calculating touch location.
-  var widthOfStars: CGFloat {
-    if let sublayers = self.layer.sublayers where settings.totalStars <= sublayers.count {
-      let starLayers = Array(sublayers[0..<settings.totalStars])
-      return CosmosSize.calculateSizeToFitLayers(starLayers).width
-    }
-    
-    return 0
-  }
-  
   /// Increase the hitsize of the view if it's less than 44px for easier touching.
-  override public func pointInside(point: CGPoint, withEvent event: UIEvent?) -> Bool {
+  override open func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
     let oprimizedBounds = CosmosTouchTarget.optimize(bounds)
     return oprimizedBounds.contains(point)
   }
@@ -295,31 +323,31 @@ Shows: ★★★★☆ (132)
     didSet {
       settings.emptyColor = emptyColor
     }
-    }
+  }
     
-    @IBInspectable var emptyBorderColor: UIColor = CosmosDefaultSettings.emptyBorderColor {
-        didSet {
-            settings.emptyBorderColor = emptyBorderColor
-        }
-    }
-    
-    @IBInspectable var emptyBorderWidth: Double = CosmosDefaultSettings.emptyBorderWidth {
-        didSet {
-            settings.emptyBorderWidth = emptyBorderWidth
-        }
-    }
-    
-    @IBInspectable var filledBorderColor: UIColor = CosmosDefaultSettings.filledBorderColor {
-        didSet {
-            settings.filledBorderColor = filledBorderColor
-        }
-    }
-    
-    @IBInspectable var filledBorderWidth: Double = CosmosDefaultSettings.filledBorderWidth {
-        didSet {
-            settings.filledBorderWidth = filledBorderWidth
-        }
-    }
+  @IBInspectable var emptyBorderColor: UIColor = CosmosDefaultSettings.emptyBorderColor {
+      didSet {
+          settings.emptyBorderColor = emptyBorderColor
+      }
+  }
+  
+  @IBInspectable var emptyBorderWidth: Double = CosmosDefaultSettings.emptyBorderWidth {
+      didSet {
+          settings.emptyBorderWidth = emptyBorderWidth
+      }
+  }
+  
+  @IBInspectable var filledBorderColor: UIColor = CosmosDefaultSettings.filledBorderColor {
+      didSet {
+          settings.filledBorderColor = filledBorderColor
+      }
+  }
+  
+  @IBInspectable var filledBorderWidth: Double = CosmosDefaultSettings.filledBorderWidth {
+      didSet {
+          settings.filledBorderWidth = filledBorderWidth
+      }
+  }
   
   @IBInspectable var starMargin: Double = CosmosDefaultSettings.starMargin {
     didSet {
@@ -335,7 +363,7 @@ Shows: ★★★★☆ (132)
   
   @IBInspectable var textSize: Double = CosmosDefaultSettings.textSize {
     didSet {
-      settings.textFont = settings.textFont.fontWithSize(CGFloat(textSize))
+      settings.textFont = settings.textFont.withSize(CGFloat(textSize))
     }
   }
   
@@ -364,7 +392,7 @@ Shows: ★★★★☆ (132)
   }
   
   /// Draw the stars in interface buidler
-  public override func prepareForInterfaceBuilder() {
+  open override func prepareForInterfaceBuilder() {
     super.prepareForInterfaceBuilder()
     
     update()

@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import FirebaseDatabase
 import Cosmos
 
 class MovieRatingViewController: UIViewController {
@@ -24,7 +25,7 @@ class MovieRatingViewController: UIViewController {
     
     var movie:Movie!
     
-    var root = Firebase(url: "https://deeknutssquad.firebaseio.com/")
+//    var root = Firebase(url: "https://deeknutssquad.firebaseio.com/")
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,13 +42,13 @@ class MovieRatingViewController: UIViewController {
         
         if let recommendation = recommendation {
             recTextView.text = recommendation
-            recTextView.textColor = UIColor.whiteColor()
+            recTextView.textColor = UIColor.white
         } else {
             recTextView.text = "Write recommendation here..."
-            recTextView.textColor = UIColor.lightGrayColor()
+            recTextView.textColor = UIColor.lightGray
         }
         
-        cosmosView.settings.fillMode = .Half
+        cosmosView.settings.fillMode = .half
         cosmosView.didFinishTouchingCosmos = { value in
             self.ratingLabel.text = "\(value)"
         }
@@ -56,14 +57,14 @@ class MovieRatingViewController: UIViewController {
             self.ratingLabel.text = "\(value)"
         }
         
-        self.view.backgroundColor = UIColor.clearColor()
+        self.view.backgroundColor = UIColor.clear
         self.setNeedsStatusBarAppearanceUpdate()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MovieRatingViewController.keyboardDidAppear(_:)), name: UIKeyboardWillChangeFrameNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MovieRatingViewController.keyboardDidDisappear), name: UIKeyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MovieRatingViewController.keyboardDidAppear(_:)), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MovieRatingViewController.keyboardDidDisappear), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -71,15 +72,15 @@ class MovieRatingViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func keyboardDidAppear(notification: NSNotification) {
-        if let userInfo = notification.userInfo, frame = (userInfo[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue {
-            let height = frame().height
+    func keyboardDidAppear(_ notification: Notification) {
+        if let userInfo = notification.userInfo, let frame = (userInfo[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            let height = frame.height
             let constant = 0 - (height / (is4S() ? 2.5 : 3))
             
             if constant == containerViewConstraint.constant { return
             }
             
-            UIView.animateWithDuration(0.7, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: [], animations: {
+            UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: [], animations: {
                     self.containerViewConstraint.constant = constant
                     self.view.layoutIfNeeded()
                 }, completion: nil)
@@ -87,7 +88,7 @@ class MovieRatingViewController: UIViewController {
     }
     
     func keyboardDidDisappear() {
-        UIView.animateWithDuration(0.7, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: [], animations: {
+        UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: [], animations: {
                 self.containerViewConstraint.constant = 0
                 self.view.layoutIfNeeded()
             }, completion: nil)
@@ -95,9 +96,9 @@ class MovieRatingViewController: UIViewController {
         
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        let touch = touches.first!.locationInView(self.view)
-        if !CGRectContainsPoint(recTextView.frame, touch) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touch = touches.first!.location(in: self.view)
+        if !recTextView.frame.contains(touch) {
             recTextView.resignFirstResponder()
         }
     }
@@ -105,16 +106,16 @@ class MovieRatingViewController: UIViewController {
     //===========================================================================
     //MARK - STATUSBAR
     //===========================================================================
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return .LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return .lightContent
     }
     
-    override func prefersStatusBarHidden() -> Bool {
+    override var prefersStatusBarHidden : Bool {
         return false
     }
     
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         recTextView.resignFirstResponder()
     }
     
@@ -122,11 +123,11 @@ class MovieRatingViewController: UIViewController {
         saveRating()
     }
     
-    @IBAction func cancel(sender: UIButton) {
-        self.performSegueWithIdentifier("Exit", sender: self)
+    @IBAction func cancel(_ sender: UIButton) {
+        self.performSegue(withIdentifier: "Exit", sender: self)
     }
     func saveRating() {
-        var parameters:[String:AnyObject] = [
+        var parameters:[String:Any] = [
             "rtid": movie.RTid,
             "uid": uid,
             "rating": cosmosView.rating,
@@ -134,13 +135,13 @@ class MovieRatingViewController: UIViewController {
             "recommendation": recTextView.text
         ]
         if recTextView.text == "Write recommendation here..." {
-            parameters["recommendation"] = ""
+            parameters["recommendation"] = "" as AnyObject?
         }
-        root.childByAppendingPath("users/\(uid)/recommendations/\(movie.RTid)").setValue(parameters)
+        root?.child(byAppendingPath: "users/\(uid)/recommendations/\(movie.RTid)").setValue(parameters)
         
-        let movieRoot = root.childByAppendingPath("movies/\(movie.RTid)")
-        movieRoot.observeSingleEventOfType(.Value, withBlock: { snapshot in
-            if let totalRating = snapshot.value["totalrating"] as? Double, numRatings = snapshot.value["numratings"] as? Double {
+        let movieRoot = root?.child(byAppendingPath: "movies/\(movie.RTid)")
+        movieRoot?.observeSingleEvent(of: .value, with: { snapshot in
+            if let totalRating = snapshot.value(forKey: "totalrating") as? Double, let numRatings = snapshot.value(forKey: "numratings") as? Double {
                 if let userRating = self.userRating {
                     //preexisting rating
                     let avgRating = (totalRating - userRating + self.cosmosView.rating) / (numRatings)
@@ -149,7 +150,7 @@ class MovieRatingViewController: UIViewController {
                         "totalrating": totalRating - userRating + self.cosmosView.rating,
                         "numratings": numRatings
                     ]
-                    movieRoot.setValue(dict)
+                    movieRoot?.setValue(dict)
                 } else {
                     //new rating
                     let avgRating = (totalRating + self.cosmosView.rating) / (numRatings + 1)
@@ -158,7 +159,7 @@ class MovieRatingViewController: UIViewController {
                         "totalrating": totalRating + self.cosmosView.rating,
                         "numratings": numRatings + 1
                     ]
-                    movieRoot.setValue(dict)
+                    movieRoot?.setValue(dict)
                 }
             } else {
                 //first and new rating
@@ -167,9 +168,9 @@ class MovieRatingViewController: UIViewController {
                     "totalrating": self.cosmosView.rating,
                     "numratings": 1
                 ]
-                movieRoot.setValue(dict)
+                movieRoot?.setValue(dict)
             }
-            self.performSegueWithIdentifier("Exit", sender: self)
+            self.performSegue(withIdentifier: "Exit", sender: self)
         })
         
     }
@@ -177,17 +178,17 @@ class MovieRatingViewController: UIViewController {
 }
 
 extension MovieRatingViewController: UITextViewDelegate {
-    func textViewDidBeginEditing(textView: UITextView) {
+    func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.text == "Write recommendation here..." {
             textView.text = ""
-            textView.textColor = UIColor.whiteColor()
+            textView.textColor = UIColor.white
         }
     }
     
-    func textViewDidEndEditing(textView: UITextView) {
+    func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text == "" {
             textView.text = "Write recommendation here..."
-            textView.textColor = UIColor.lightGrayColor()
+            textView.textColor = UIColor.lightGray
         }
     }
 }

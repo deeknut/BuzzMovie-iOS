@@ -36,7 +36,7 @@ class ProfileTableViewController: UITableViewController {
     @IBOutlet weak var recImage3: UIImageView!
     
     @IBOutlet weak var profileBackgroundImageView: UIImageView!
-    var root = Firebase(url: "https://deeknutssquad.firebaseio.com/")
+//    var root = Firebase(url: "https://deeknutssquad.firebaseio.com/")
     
     var user:User! {
         didSet {
@@ -52,7 +52,7 @@ class ProfileTableViewController: UITableViewController {
         super.viewDidLoad()
         let labels = [likesLabel, recLabel, staticDateLabel, staticMajorLabel, staticInterestsLabel, dateLabel, majorLabel, interestsLabel]
         for label in labels {
-            label.textColor = UIColor.whiteColor()
+            label?.textColor = UIColor.white
         }
         loadUser()
     }
@@ -64,17 +64,17 @@ class ProfileTableViewController: UITableViewController {
     //===========================================================================
     //MARK - STATUS BAR
     //===========================================================================
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return .LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return .lightContent
     }
     
-    override func prefersStatusBarHidden() -> Bool {
+    override var prefersStatusBarHidden : Bool {
         return false
     }
     
     func loadUser() {
-        root.childByAppendingPath("users/\(uid)").observeSingleEventOfType(.Value, withBlock: { snapshot in
-            self.user = User(snapshot: snapshot)
+        root?.child(byAppendingPath: "users/\(uid)").observeSingleEvent(of: .value, with: { snapshot in
+            self.user = User(snapshot: snapshot as FIRDataSnapshot)
         })
     }
     
@@ -87,25 +87,25 @@ class ProfileTableViewController: UITableViewController {
     //===========================================================================
     //MARK - SEGUES
     //===========================================================================
-    @IBAction func prepareToLogout(sender: AnyObject) {
-        let alertController = UIAlertController(title: "Logout", message: "Are you sure?", preferredStyle: .Alert)
-        let actionYes = UIAlertAction(title: "Yes", style: .Default, handler: { action in
-            self.performSegueWithIdentifier("Exit", sender: self)
+    @IBAction func prepareToLogout(_ sender: AnyObject) {
+        let alertController = UIAlertController(title: "Logout", message: "Are you sure?", preferredStyle: .alert)
+        let actionYes = UIAlertAction(title: "Yes", style: .default, handler: { action in
+            self.performSegue(withIdentifier: "Exit", sender: self)
         })
-        let actionNo = UIAlertAction(title: "No", style: .Default, handler: nil)
+        let actionNo = UIAlertAction(title: "No", style: .default, handler: nil)
         alertController.addAction(actionYes)
         alertController.addAction(actionNo)
         
-        self.presentViewController(alertController, animated: true, completion: nil)
+        self.present(alertController, animated: true, completion: nil)
     }
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "EditSegue" {
-            let dest = segue.destinationViewController as! EditProfileTableViewController
+            let dest = segue.destination as! EditProfileTableViewController
             dest.user = self.user
         }
     }
     
-    @IBAction func unwindToProfile(unwindSegue: UIStoryboardSegue, towardsViewController subsequentVC: UIViewController) {
+    @IBAction func unwindToProfile(_ unwindSegue: UIStoryboardSegue, towardsViewController subsequentVC: UIViewController) {
         if unwindSegue.identifier == "Save" {
             loadUser()
         }
@@ -117,16 +117,16 @@ extension ProfileTableViewController {
     //===========================================================================
     //MARK - TABLEVIEW
     //===========================================================================
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if tableView.cellForRowAtIndexPath(indexPath)?.reuseIdentifier == "EditCell" {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if tableView.cellForRow(at: indexPath)?.reuseIdentifier == "EditCell" {
             if let user = user {
-                self.performSegueWithIdentifier("EditSegue", sender: self)
+                self.performSegue(withIdentifier: "EditSegue", sender: self)
             }
         }
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if let user = user {
             return user.email
         } else {

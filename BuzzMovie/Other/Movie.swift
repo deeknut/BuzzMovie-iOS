@@ -14,7 +14,7 @@ import Firebase
 
 class Movie {
 
-    var root = Firebase(url: "https://deeknutssquad.firebaseio.com/")
+//    var root = Firebase(url: "https://deeknutssquad.firebaseio.com/")
     
     //list of all genre ids
     static let genreMap:[String:String] = [
@@ -42,16 +42,16 @@ class Movie {
     
     
     //converts RT JSON Time to NSDate: 2016-3-26 -> NSDate
-    static var dateFromRTFormatter:NSDateFormatter {
-        let dateFormatter = NSDateFormatter()
+    static var dateFromRTFormatter:DateFormatter {
+        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         return dateFormatter
     }
     
     //converts NSDate to US Locale: NSDate -> Jan 2, 2001
-    static var localeFromDateFormatter: NSDateFormatter {
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateStyle = .MediumStyle
+    static var localeFromDateFormatter: DateFormatter {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
         return dateFormatter
     }
     
@@ -117,7 +117,7 @@ class Movie {
     var theaterReleaseDate: String {
 //        print(json)
         if let string = json["release_dates"]["theater"].string {
-            return Movie.localeFromDateFormatter.stringFromDate(Movie.dateFromRTFormatter.dateFromString(string)!)
+            return Movie.localeFromDateFormatter.string(from: Movie.dateFromRTFormatter.date(from: string)!)
         }
 
         return "TBD"
@@ -126,7 +126,7 @@ class Movie {
     //dvd release date formatted to US Locale: "June 18, 2010"
     var dvdReleaseDate: String {
         if let string = json["release_dates"]["dvd"].string {
-            return Movie.localeFromDateFormatter.stringFromDate(Movie.dateFromRTFormatter.dateFromString(string)!)
+            return Movie.localeFromDateFormatter.string(from: Movie.dateFromRTFormatter.date(from: string)!)
         }
         
         return "TBD"
@@ -180,16 +180,18 @@ class Movie {
 //        getImageAndGenre()
     }
     
-    func isEqualTo(movie: Movie) -> Bool {
+    func isEqualTo(_ movie: Movie) -> Bool {
         return self.RTid == movie.RTid
     }
     
     
-    func loadAvgRating(closure:(Double?) -> Void) {
+    func loadAvgRating(_ closure:@escaping (Double?) -> Void) {
         self.avgRating = nil
-        root.childByAppendingPath("movies/\(self.RTid)").observeSingleEventOfType(.Value, withBlock: { snapshot in
-            self.avgRating = snapshot.value["avgrating"] as? Double
-            closure(snapshot.value["avgrating"] as? Double)
+        root?.child(byAppendingPath: "movies/\(self.RTid)").observeSingleEvent(of: .value, with: { snapshot in
+            if let value = snapshot.value as? [String: Any], let doubleValue = value["avgrating"] as? Double {
+                self.avgRating = doubleValue
+                closure(doubleValue)
+            }
         })
     }
     
@@ -253,7 +255,7 @@ class Movie {
     
     func setImageAndGenreForCell() {
 //        print (self.originalImage)
-        if let image = self.originalImage, genreString = self.genreString, cell = self.cell {
+        if let image = self.originalImage, let genreString = self.genreString, let cell = self.cell {
             cell.posterImageView.image = image
             (cell as? MovieTableViewCell)?.backgroundImageView.image = image
             cell.genreLabel.text = genreString
@@ -265,8 +267,7 @@ class Movie {
             "api_key": TMDB_API_KEY,
             "query": title
         ]
-        Alamofire.request(.GET, searchurl, parameters: parameters)
-            .responseJSON { response in
+        Alamofire.request(searchurl, method: .get, parameters: parameters, encoding: JSONEncoding.default, headers: nil).responseJSON { response in
                 //                print(response.request)  // original URL request
                 //                print(response.response) // URL response
                 //                print(response.data)     // server data
@@ -276,12 +277,12 @@ class Movie {
 //                    print("\(unconvertedJSON)")
                     let json:JSON = JSON(unconvertedJSON)
                     for moviejson in json["results"].array! {
-                        if self.title.lowercaseString == moviejson["original_title"].string?.lowercaseString || self.title == moviejson["title"].string?.lowercaseString {
+                        if self.title.lowercased() == moviejson["original_title"].string?.lowercased() || self.title == moviejson["title"].string?.lowercased() {
                             //looking for poster
                             if let posterurl = moviejson["poster_path"].string {
                                 let imageurl:NSURL = NSURL(string: imagebaseurl + posterurl)!
-                                if let imagedata = NSData(contentsOfURL: imageurl) {
-                                    let image = UIImage(data: imagedata)
+                                if let imagedata = NSData(contentsOf: imageurl as URL) {
+                                    let image = UIImage(data: imagedata as Data)
 //                                    dispatch_async(dispatch_get_main_queue(), {
                                     self.originalImage = image
 //                                    })

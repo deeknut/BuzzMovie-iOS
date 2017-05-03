@@ -17,7 +17,7 @@ class MainTabBarController: UITabBarController {
         }
     }
     
-    @IBAction func unwindToTabBar(unwindSegue: UIStoryboardSegue, towardsViewController subsequentVC: UIViewController) {
-        performSegueWithIdentifier("unwindToLogin", sender: self)
+    @IBAction func unwindToTabBar(_ unwindSegue: UIStoryboardSegue, towardsViewController subsequentVC: UIViewController) {
+        performSegue(withIdentifier: "unwindToLogin", sender: self)
     }
 }

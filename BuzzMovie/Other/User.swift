@@ -10,8 +10,8 @@ import UIKit
 import Firebase
 
 class User: AnyObject {
-    var snapshot:FDataSnapshot!
-    init(snapshot:FDataSnapshot) {
+    var snapshot:FIRDataSnapshot!
+    init(snapshot:FIRDataSnapshot) {
         self.snapshot = snapshot
     }
     
@@ -20,30 +20,30 @@ class User: AnyObject {
     }
     
     var email:String {
-        return snapshot.value["email"] as! String
+        return snapshot.value(forKey: "email") as! String
     }
     
     var locked:Bool {
-        return snapshot.value["locked"] as! String == "true"
+        return snapshot.value(forKey: "locked") as! String == "true"
     }
     
     var banned:Bool {
-        return snapshot.value["banned"] as! String == "true"
+        return snapshot.value(forKey: "banned") as! String == "true"
     }
     
     var admin:Bool {
-        return snapshot.value["admin"] as! String == "true"
+        return snapshot.value(forKey: "admin") as! String == "true"
     }
     
     var registerDate:String {
-        return snapshot.value["registerdate"] as! String
+        return snapshot.value(forKey: "registerdate") as! String
     }
     
     var interests:String {
-        return snapshot.value["interests"] as! String
+        return snapshot.value(forKey: "interests") as! String
     }
     
     var major:String {
-        return snapshot.value["major"] as! String
+        return snapshot.value(forKey: "major") as! String
     }
 }

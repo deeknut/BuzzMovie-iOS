@@ -10,6 +10,7 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 import Firebase
+import FirebaseDatabase
 let RT_API_KEY = "yedukp76ffytfuy24zsqk7f5"
 let TMDB_API_KEY = "a45a0f8d482aeac6e5ea456259ac1cd6"
 //let OMDB_API_KEY = "a69daed3"
@@ -37,7 +38,6 @@ class HomeTableViewController: UIViewController {
     @IBOutlet weak var tableView2BottomConstraint: NSLayoutConstraint!
     
     //firebase
-    var root = Firebase(url: "https://deeknutssquad.firebaseio.com/")
     
     //tableView sources
     var newMovies:[Movie] = [] {
@@ -65,12 +65,12 @@ class HomeTableViewController: UIViewController {
     
     var currentLimits:[Int] = [10, 10, 10]
     
-    func movieDidSet(movies:[Movie],_ tableView: UITableView) {
+    func movieDidSet(_ movies:[Movie],_ tableView: UITableView) {
         reloadTable(movies, tableView)
         if movies.count == 0 {
-            tableView.hidden = true
+            tableView.isHidden = true
         } else {
-            tableView.hidden = false
+            tableView.isHidden = false
         }
     }
     
@@ -85,15 +85,15 @@ class HomeTableViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.searchBar.delegate = self
-        searchBar.hidden = true
+        searchBar.isHidden = true
        
         //refresh control
         let refreshControl0 = UIRefreshControl()
-        refreshControl0.addTarget(self, action: #selector(HomeTableViewController.refresh), forControlEvents: .ValueChanged)
+        refreshControl0.addTarget(self, action: #selector(HomeTableViewController.refresh), for: .valueChanged)
         let refreshControl1 = UIRefreshControl()
-        refreshControl1.addTarget(self, action: #selector(HomeTableViewController.refresh), forControlEvents: .ValueChanged)
+        refreshControl1.addTarget(self, action: #selector(HomeTableViewController.refresh), for: .valueChanged)
         let refreshControl2 = UIRefreshControl()
-        refreshControl2.addTarget(self, action: #selector(HomeTableViewController.refresh), forControlEvents: .ValueChanged)
+        refreshControl2.addTarget(self, action: #selector(HomeTableViewController.refresh), for: .valueChanged)
         tableView0.addSubview(refreshControl0)
         tableView1.addSubview(refreshControl1)
         tableView2.addSubview(refreshControl2)
@@ -103,9 +103,9 @@ class HomeTableViewController: UIViewController {
         searchBar.backgroundColor = StyleConstants.defaultGrayColor
         
         //default tableviews are hidden
-        self.tableView0.hidden = true
-        self.tableView1.hidden = true
-        self.tableView2.hidden = true
+        self.tableView0.isHidden = true
+        self.tableView1.isHidden = true
+        self.tableView2.isHidden = true
     
         
         
@@ -113,8 +113,8 @@ class HomeTableViewController: UIViewController {
         self.setNeedsStatusBarAppearanceUpdate()
     }
     
-    override func viewDidAppear(animated: Bool) {
-        self.navigationController?.navigationBarHidden = false
+    override func viewDidAppear(_ animated: Bool) {
+        self.navigationController?.isNavigationBarHidden = false
         for i in 0...2 {
             fetchMovies(apiUrls[i], segmentIndex: i, limit: currentLimits[i])
         }
@@ -129,11 +129,11 @@ class HomeTableViewController: UIViewController {
     //MARK - STATUS BAR
     //===========================================================================
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return .LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return .lightContent
     }
     
-    override func prefersStatusBarHidden() -> Bool {
+    override var prefersStatusBarHidden : Bool {
         return false
     }
 
@@ -142,7 +142,7 @@ class HomeTableViewController: UIViewController {
     //MARK - NAV BAR
     //===========================================================================
     
-    override func willMoveToParentViewController(parent: UIViewController?) {
+    override func willMove(toParentViewController parent: UIViewController?) {
 //        if let _ = parent {
 //            self.navigationController?.hidesBarsOnSwipe = true
 //        } else {
@@ -154,8 +154,8 @@ class HomeTableViewController: UIViewController {
     //MARK - SEGUES
     //===========================================================================
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let destination = segue.destinationViewController as! MovieViewController
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destination = segue.destination as! MovieViewController
         destination.movie = self.selectedMovie
         destination.selectedImage = self.selectedImage
         destination.selectedGenreString = self.selectedGenreString
@@ -163,7 +163,7 @@ class HomeTableViewController: UIViewController {
 //        destination.originalImage = selectedMovie.originalImage
     }
     
-    override func unwindForSegue(unwindSegue: UIStoryboardSegue, towardsViewController subsequentVC: UIViewController) {
+    override func unwind(for unwindSegue: UIStoryboardSegue, towardsViewController subsequentVC: UIViewController) {
         reloadTable(newMovies, tableView0)
         reloadTable(recommendedMovies, tableView1)
         reloadTable(topdvdMovies, tableView2)
@@ -173,7 +173,7 @@ class HomeTableViewController: UIViewController {
     //MARK - SEGCONTROL
     //===========================================================================
     
-    @IBAction func segValueDidChange(sender: AnyObject) {
+    @IBAction func segValueDidChange(_ sender: AnyObject) {
         searchBar.resignFirstResponder()
         setMovies()
     }
@@ -181,21 +181,21 @@ class HomeTableViewController: UIViewController {
     func setMovies() {
         switch movieSegControl.selectedSegmentIndex {
         case 0:
-            searchBar.hidden = true
+            searchBar.isHidden = true
             checkMovies(tableView0, newMovies)
-            tableView1.hidden = true
-            tableView2.hidden = true
+            tableView1.isHidden = true
+            tableView2.isHidden = true
             break
         case 1:
-            searchBar.hidden = false
-            tableView0.hidden = true
+            searchBar.isHidden = false
+            tableView0.isHidden = true
             checkMovies(tableView1, recommendedMovies)
-            tableView2.hidden = true
+            tableView2.isHidden = true
             break
         case 2:
-            searchBar.hidden = true
-            tableView0.hidden = true
-            tableView1.hidden = true
+            searchBar.isHidden = true
+            tableView0.isHidden = true
+            tableView1.isHidden = true
             checkMovies(tableView2, topdvdMovies)
             break
         default:
@@ -204,18 +204,18 @@ class HomeTableViewController: UIViewController {
         
     }
     
-    func checkMovies(tableView:UITableView,_ movies:[Movie]) {
+    func checkMovies(_ tableView:UITableView,_ movies:[Movie]) {
         if (movies.count != 0) {
-            tableView.hidden = false
+            tableView.isHidden = false
         } else {
-            tableView.hidden = true
+            tableView.isHidden = true
         }
     }
     
     //===========================================================================
     //MARK - API CALLS
     //===========================================================================
-    func fetchMovies(url: String, segmentIndex:Int, limit:Int) {
+    func fetchMovies(_ url: String, segmentIndex:Int, limit:Int) {
         if segmentIndex == 1 {
             fetchRecommendations({ movies in
                 self.rawRecommendedMovies = movies
@@ -223,7 +223,7 @@ class HomeTableViewController: UIViewController {
                     if self.searchBar.text == "" {
                         return true
                     }
-                    return movie.major!.containsString(self.searchBar.text!)
+                    return movie.major!.contains(self.searchBar.text!)
                 })
                 if !self.moviesIsEqual(tempMovies, self.recommendedMovies) {
                     self.recommendedMovies = tempMovies
@@ -238,8 +238,7 @@ class HomeTableViewController: UIViewController {
             "apikey": RT_API_KEY,
             "limit": "\(limit)"
         ]
-        Alamofire.request(.GET, url, parameters: parameters)
-            .responseJSON { response in
+        Alamofire.request(url, method: .get, parameters: parameters, encoding: JSONEncoding.default, headers: nil).responseJSON {response in
 //                    print(response.request)  // original URL request
 //                    print(response.response) // URL response
 //                    print(response.data)     // server data
@@ -276,15 +275,14 @@ class HomeTableViewController: UIViewController {
         }
     }
     
-    func fetchImageGenreAndSegue(movie:Movie) {
+    func fetchImageGenreAndSegue(_ movie:Movie) {
         let searchurl = "https://api.themoviedb.org/3/search/movie"
         let imagebaseurl = "http://image.tmdb.org/t/p/original"
         let parameters = [
             "api_key": TMDB_API_KEY,
             "query": movie.title
         ]
-        Alamofire.request(.GET, searchurl, parameters: parameters)
-            .responseJSON { response in
+        Alamofire.request(searchurl, method: .get, parameters: parameters, encoding: JSONEncoding.default, headers: nil).responseJSON {response in
                 //                print(response.request)  // original URL request
                 //                print(response.response) // URL response
                 //                print(response.data)     // server data
@@ -294,16 +292,16 @@ class HomeTableViewController: UIViewController {
 //                    print("\(unconvertedJSON)")
                     let json:JSON = JSON(unconvertedJSON)
                     for moviejson in json["results"].array! {
-                        if movie.title.lowercaseString == moviejson["original_title"].string?.lowercaseString || movie.title == moviejson["title"].string?.lowercaseString {
+                        if movie.title.lowercased() == moviejson["original_title"].string?.lowercased() || movie.title == moviejson["title"].string?.lowercased() {
                             //looking for poster
                             if let posterurl = moviejson["poster_path"].string {
                                 let imageurl:NSURL = NSURL(string: imagebaseurl + posterurl)!
-                                if let imagedata = NSData(contentsOfURL: imageurl) {
-                                    let image = UIImage(data: imagedata)
+                                if let imagedata = NSData(contentsOf: imageurl as URL) {
+                                    let image = UIImage(data: imagedata as Data)
                                     self.selectedImage = image
                                 }
                             } else {
-                                self.performSegueWithIdentifier("MovieView", sender: self)
+                                self.performSegue(withIdentifier: "MovieView", sender: self)
                                 return
 //                                print("movie.title: \(self.movie.title.lowercaseString)")
 //                                print("moviejson[original_title]: \(moviejson["original_title"].string!.lowercaseString)")
@@ -324,11 +322,11 @@ class HomeTableViewController: UIViewController {
                                 }
                                 self.selectedGenreString = genreString
                             }
-                            self.performSegueWithIdentifier("MovieView", sender: self)
+                            self.performSegue(withIdentifier: "MovieView", sender: self)
                             return
                         }
                         
-                        self.performSegueWithIdentifier("MovieView", sender: self)
+                        self.performSegue(withIdentifier: "MovieView", sender: self)
                         return
                     }
                 
@@ -336,22 +334,26 @@ class HomeTableViewController: UIViewController {
         }
     }
     
-    func fetchRecommendations(closure:([Movie]) -> Void) {
+    func fetchRecommendations(_ closure:@escaping ([Movie]) -> Void) {
         var movies:[Movie] = []
-        root.childByAppendingPath("users").observeSingleEventOfType(.Value, withBlock: { snapshot in
+        root?.child(byAppendingPath: "users").observeSingleEvent(of: .value, with: { snapshot in
             var usersCount:UInt = 0
-            for uidSnapshot in snapshot.children {
-                self.root.childByAppendingPath("users/\(uidSnapshot.key)/recommendations").observeSingleEventOfType(.Value, withBlock: {recSnapshots in
+            for s in snapshot.children {
+                
+                let uidSnapshot = s as! FIRDataSnapshot
+                
+                root?.child(byAppendingPath: "users/\(uidSnapshot.key)/recommendations").observeSingleEvent(of: .value, with: { recSnapshots in
                     if recSnapshots.childrenCount == 0 {
                         usersCount += 1
                     }
                     var recCount:UInt = 0
-                    for recommendation in recSnapshots.children {
+                    for r in recSnapshots.children {
+                        let recommendation = r as! FIRDataSnapshot
                         let RTid = recommendation.key
                         let url = "http://api.rottentomatoes.com/api/public/v1.0/movies/\(RTid).json"
-                        let major = recommendation.value["major"] as! String
-                        Alamofire.request(.GET, url, parameters: ["apikey": RT_API_KEY])
-                            .responseJSON { response in
+                        let major = recommendation.value(forKey: "major")
+                        let parameters = ["apikey": RT_API_KEY]
+                        Alamofire.request(url, method: .get, parameters: parameters, encoding: JSONEncoding.default, headers: nil).responseJSON {response in
                                 //                print(response.request)  // original URL request
                                 //                print(response.response) // URL response
                                 //                print(response.data)     // server data
@@ -361,13 +363,13 @@ class HomeTableViewController: UIViewController {
 //                                    print("\(unconvertedJSON)")
                                     let json:JSON = JSON(unconvertedJSON)
                                     let movie = Movie(json: json)
-                                    movie.major = major
+                                    movie.major = major as? String
                                     movie.loadAvgRating({avgRating in
                                         if let _ = avgRating {
                                             movies.append(movie)
                                         }
                                         if (recCount >= recSnapshots.childrenCount - 1 && usersCount >= snapshot.childrenCount - 1) {
-                                            movies.sortInPlace({movie1, movie2 in
+                                            movies.sort(by: {movie1, movie2 in
                                                 return (movie1.avgRating! - movie2.avgRating! > 0)
                                             })
                                             closure(movies)
@@ -389,14 +391,14 @@ class HomeTableViewController: UIViewController {
         })
     }
     
-    func moviesIsEqual(movies1:[Movie],_ movies2:[Movie]) -> Bool{
-        return movies1.elementsEqual(movies2, isEquivalent: {movie1, movie2 in return movie1.RTid == movie2.RTid })
+    func moviesIsEqual(_ movies1:[Movie],_ movies2:[Movie]) -> Bool{
+        return movies1.elementsEqual(movies2, by: {movie1, movie2 in return movie1.RTid == movie2.RTid })
     }
     
     //===========================================================================
     //MARK - REFRESH
     //===========================================================================
-    func refresh(refreshControl: UIRefreshControl) {
+    func refresh(_ refreshControl: UIRefreshControl) {
         let index = movieSegControl.selectedSegmentIndex
         fetchMovies(apiUrls[index], segmentIndex: index, limit: currentLimits[index])
         refreshControl.endRefreshing()
@@ -410,11 +412,11 @@ extension HomeTableViewController: UITableViewDelegate, UITableViewDataSource {
     //MARK - TABLEVIEW
     //===========================================================================
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
 
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         switch tableView.tag {
         case 0:
             return newMovies.count
@@ -428,21 +430,21 @@ extension HomeTableViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     //spacing between section
-    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 5
     }
     
-    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView()
-        view.backgroundColor = UIColor.clearColor()
+        view.backgroundColor = UIColor.clear
         return view
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
   
 //        print(indexPath.section)
-        tableView.registerNib(UINib.init(nibName: "MovieTableViewCell", bundle: nil), forCellReuseIdentifier: "MovieCell")
-        let cell = tableView.dequeueReusableCellWithIdentifier("MovieCell", forIndexPath: indexPath) as! MovieTableViewCell
+        tableView.register(UINib.init(nibName: "MovieTableViewCell", bundle: nil), forCellReuseIdentifier: "MovieCell")
+        let cell = tableView.dequeueReusableCell(withIdentifier: "MovieCell", for: indexPath) as! MovieTableViewCell
         var tempMovie:Movie = Movie(json: JSON([]))
         switch tableView.tag {
         case 0:
@@ -464,19 +466,19 @@ extension HomeTableViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 //        let movie:Movie!
-        selectedMovie = (tableView.cellForRowAtIndexPath(indexPath) as! MovieTableViewCell).movie
+        selectedMovie = (tableView.cellForRow(at: indexPath) as! MovieTableViewCell).movie
         selectedGenreString = nil
         selectedImage = nil
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
         fetchImageGenreAndSegue(selectedMovie)
         
 //        self.performSegueWithIdentifier("MovieView", sender: self)
         
     }
     
-    func reloadTable(movies:[Movie],_ tableView:UITableView) {
+    func reloadTable(_ movies:[Movie],_ tableView:UITableView) {
 //        tableView0BottomConstraint.constant = -48 - (tableView0.estimatedRowHeight*CGFloat(newMovies.count))
 //        tableView1BottomConstraint.constant = -48 - (tableView1.estimatedRowHeight*CGFloat(recommendedMovies.count))
 //        tableView2BottomConstraint.constant = -48 - (tableView2.estimatedRowHeight*CGFloat(topdvdMovies.count))
@@ -487,7 +489,7 @@ extension HomeTableViewController: UITableViewDelegate, UITableViewDataSource {
     //===========================================================================
     //MARK - SCROLL VIEW
     //===========================================================================
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
 ////        self.navigationController?.setNavigationBarHidden(true, animated: true)
         if(scrollView.contentOffset.y != -64 && scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.frame.size.height)) {
             //user has scrolled to the bottom
@@ -509,16 +511,16 @@ extension HomeTableViewController: UISearchBarDelegate{
     //MARK - RECOMMENDED SEARCH
     //===========================================================================
     
-    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
     }
     
-    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         let tempMovies = rawRecommendedMovies.filter({ movie in
             if searchText == "" {
                 return true
             }
-            return movie.major!.containsString(searchText)
+            return movie.major!.contains(searchText)
         })
         if !self.moviesIsEqual(tempMovies, self.recommendedMovies) {
             self.recommendedMovies = tempMovies

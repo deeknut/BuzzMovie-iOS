@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import FirebaseDatabase
 
 class MovieViewController: UIViewController {
     //===========================================================================
@@ -30,21 +31,21 @@ class MovieViewController: UIViewController {
     
     var user:User?
     
-    var root = Firebase(url: "https://deeknutssquad.firebaseio.com/")
+//    var root = Firebase(url: "https://deeknutssquad.firebaseio.com/")
     
     //===========================================================================
     //MARK - VIEWDIDLOAD/SETUP/ROTATE
     //===========================================================================
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBarHidden = true
+        self.navigationController?.isNavigationBarHidden = true
         if let image = self.selectedImage {
             backgroundImageView.image = image
         }
         titleLabel.text = movie.title
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.backgroundColor = UIColor.clearColor()
+        tableView.backgroundColor = UIColor.clear
         
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 500
@@ -55,38 +56,39 @@ class MovieViewController: UIViewController {
 
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         tableView.reloadData()
     }
     
-    func checkLikes(closure:(Bool) -> Void){
-        root.childByAppendingPath("users/\(uid)/likes").observeSingleEventOfType(.Value, withBlock: { snapshot in
-            if let likes = snapshot.children {
-                for like in likes {
-                    if (like.key == self.movie.RTid) {
-                        closure(true)
-                    }
+    func checkLikes(_ closure:@escaping (Bool) -> Void){
+        root!.child(byAppendingPath: "users/\(uid)/likes").observeSingleEvent(of: .value, with: { snapshot in
+            
+            for l in snapshot.children {
+                let like = l as! FIRDataSnapshot
+                if (like.key == self.movie.RTid) {
+                    closure(true)
                 }
             }
+
             closure(false)
         })
     }
     
     func loadUser() {
-        root.childByAppendingPath("users/\(uid)").observeSingleEventOfType(.Value, withBlock: { snapshot in
+        root!.child(byAppendingPath: "users/\(uid)").observeSingleEvent(of: .value, with: { snapshot in
             let user = User(snapshot: snapshot)
             self.user = user
         })
     }
     
-    func loadUserRecommendation(closure:(Double?, String?) -> Void) {
-        root.childByAppendingPath("users/\(uid)/recommendations/\(movie.RTid)").observeSingleEventOfType(.Value, withBlock: { snapshot in
-            closure(snapshot.value["rating"] as? Double, snapshot.value["recommendation"] as? String)
+    func loadUserRecommendation(_ closure:@escaping (Double?, String?) -> Void) {
+        root!.child(byAppendingPath: "users/\(uid)/recommendations/\(movie.RTid)").observeSingleEvent(of: .value, with: { snapshot in
+            closure(snapshot.value(forKey: "rating") as? Double, snapshot.value(forKey: "recommendation") as? String)
         })
     }
     
     
-    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
+    override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
         tableView.layoutIfNeeded()
     }
 
@@ -99,27 +101,27 @@ class MovieViewController: UIViewController {
     //===========================================================================
     //MARK - STATUSBAR
     //===========================================================================
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return .LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return .lightContent
     }
     
-    override func prefersStatusBarHidden() -> Bool {
+    override var prefersStatusBarHidden : Bool {
         return false
     }
     
     //===========================================================================
     //MARK - SEGUES
     //===========================================================================
-    @IBAction func unwindForMovieView(unwindSegue: UIStoryboardSegue, towardsViewController subsequentVC: UIViewController) {
+    @IBAction func unwindForMovieView(_ unwindSegue: UIStoryboardSegue, towardsViewController subsequentVC: UIViewController) {
         tableView.reloadData()
     }
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "Exit" {
-            self.navigationController?.navigationBarHidden = false
+            self.navigationController?.isNavigationBarHidden = false
         } else if segue.identifier == "RatingSegue" {
-            let dest = segue.destinationViewController as! MovieRatingViewController
-            dest.modalPresentationStyle = .OverCurrentContext
+            let dest = segue.destination as! MovieRatingViewController
+            dest.modalPresentationStyle = .overCurrentContext
             dest.userRating = self.userRating
             dest.recommendation = self.recommendation
             dest.user = self.user
@@ -134,32 +136,32 @@ extension MovieViewController:UITableViewDelegate, UITableViewDataSource {
     //===========================================================================
     //MARK - TABLEVIEW
     //===========================================================================
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //index == 0 is image
         //index == 1 is actions
         //index == 2 is information
         return 3
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
-            let cell = tableView.dequeueReusableCellWithIdentifier("MovieImageCell", forIndexPath: indexPath) as! MovieImageCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "MovieImageCell", for: indexPath) as! MovieImageCell
             if let image = selectedImage {
                 cell.movieImageView.image = image
             }
             return cell
         } else if indexPath.row == 1 {
-            let cell = tableView.dequeueReusableCellWithIdentifier("MovieActionCell", forIndexPath: indexPath) as! MovieActionCell
-            cell.backgroundColor = UIColor.clearColor()
+            let cell = tableView.dequeueReusableCell(withIdentifier: "MovieActionCell", for: indexPath) as! MovieActionCell
+            cell.backgroundColor = UIColor.clear
             checkLikes({ isLiked in
                 cell.setLike(isLiked)
             })
             
             loadUserRecommendation({ rating, recommendation in
-                if let rating = rating, recommendation = recommendation {
+                if let rating = rating, let recommendation = recommendation {
                     self.userRating = rating
                     self.recommendation = recommendation
                     cell.userRatingLabel.text = "Your rating: \(rating)"
@@ -172,20 +174,20 @@ extension MovieViewController:UITableViewDelegate, UITableViewDataSource {
             cell.delegate = self
             return cell
         } else {
-            let cell = tableView.dequeueReusableCellWithIdentifier("MovieInfoCell", forIndexPath: indexPath) as! MovieInfoCell
-            cell.backgroundColor = UIColor.clearColor()
+            let cell = tableView.dequeueReusableCell(withIdentifier: "MovieInfoCell", for: indexPath) as! MovieInfoCell
+            cell.backgroundColor = UIColor.clear
             cell.genreLabel.text = selectedGenreString ?? "Unknown Genre"
             cell.mpaaRatingLabel.text = movie.mpaaRating
             cell.synopsisLabel.text = movie.synopsis
             cell.titleLabel.text = movie.title
             movie.loadAvgRating({ avgRating in
                 if let avgRating = avgRating {
-                    dispatch_async(dispatch_get_main_queue(), {
+                    DispatchQueue.main.async(execute: {
                         self.avgRatingLabel.text = "\(avgRating)"
                         cell.avgRatingLabel.text = "\(avgRating)"
                     })
                 } else {
-                    dispatch_async(dispatch_get_main_queue(), {
+                    DispatchQueue.main.async(execute: {
                         self.avgRatingLabel.text = "TBD"
                         cell.avgRatingLabel.text = "TBD"
                     })
@@ -207,15 +209,15 @@ extension MovieViewController:UITableViewDelegate, UITableViewDataSource {
 }
 
 extension MovieViewController: MovieActionDelegate {
-    func didLike(button: UIButton) {
-        root.childByAppendingPath("users/\(uid)/likes/\(movie.RTid)").setValue(movie.title)
+    func didLike(_ button: UIButton) {
+        root!.child(byAppendingPath: "users/\(uid)/likes/\(movie.RTid)").setValue(movie.title)
     }
     
-    func didUnLike(button: UIButton) {
-        root.childByAppendingPath("users/\(uid)/likes/\(movie.RTid)").removeValue()
+    func didUnLike(_ button: UIButton) {
+        root!.child(byAppendingPath: "users/\(uid)/likes/\(movie.RTid)").removeValue()
     }
     
-    func didAddRating(button: UIButton) {
+    func didAddRating(_ button: UIButton) {
         if let _ = self.user {
 //            let dest = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("MovieRating") as! MovieRatingViewController
 //            dest.userRating = self.userRating
@@ -223,7 +225,7 @@ extension MovieViewController: MovieActionDelegate {
 //            dest.user = self.user
 //            dest.movie = self.movie
 //            self.presentViewController(dest, animated: true, completion: nil)
-            self.performSegueWithIdentifier("RatingSegue", sender: self)
+            self.performSegue(withIdentifier: "RatingSegue", sender: self)
         }
     }
 }

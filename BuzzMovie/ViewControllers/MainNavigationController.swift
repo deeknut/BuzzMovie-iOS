@@ -22,8 +22,8 @@ class MainNavigationController: UINavigationController {
     }
     
 
-    @IBAction func unwindToNav(unwindSegue: UIStoryboardSegue, towardsViewController subsequentVC: UIViewController) {
-        performSegueWithIdentifier("unwindToTabBar", sender: self)
+    @IBAction func unwindToNav(_ unwindSegue: UIStoryboardSegue, towardsViewController subsequentVC: UIViewController) {
+        performSegue(withIdentifier: "unwindToTabBar", sender: self)
     }
     /*
     // MARK: - Navigation
